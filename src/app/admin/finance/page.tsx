@@ -3,6 +3,8 @@ import { Sparkles, TrendingUp, TrendingDown, AlertTriangle, Plus, CreditCard } f
 import { Button } from '@/components/ui/button'
 import { BarChart } from '@/components/shared/charts/BarChart'
 import { cn } from '@/lib/utils'
+import { toast } from 'sonner'
+import { notifyFeeInvoice } from '@/lib/crossRoleEvents'
 
 const KPIS = [
   { label: 'Total Annual Revenue', value: '£14,284,500', change: '+12.4%', note: '88% of annual target reached', positive: true, icon: TrendingUp },
@@ -34,6 +36,16 @@ const PENDING = [
 ]
 
 export default function AdminFinancePage() {
+  function handleCreateInvoice() {
+    notifyFeeInvoice({
+      amount: 85000,
+      currency: '₦',
+      dueDate: '2026-06-01',
+      description: 'Term 3 Tuition Fee',
+    })
+    toast.success('Invoice created — parent notified')
+  }
+
   return (
     <div className="p-6 space-y-6">
       <div className="flex items-start justify-between">
@@ -44,7 +56,7 @@ export default function AdminFinancePage() {
         </div>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="gap-2"><Sparkles className="h-4 w-4" /> Launch Intelligence AI</Button>
-          <Button size="sm" className="gap-2"><Plus className="h-4 w-4" /> Create Invoice</Button>
+          <Button size="sm" className="gap-2" onClick={handleCreateInvoice}><Plus className="h-4 w-4" /> Create Invoice</Button>
         </div>
       </div>
 

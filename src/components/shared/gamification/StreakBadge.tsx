@@ -1,4 +1,5 @@
 'use client'
+import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { Flame } from 'lucide-react'
 
@@ -42,7 +43,13 @@ export function StreakBadge({ streak, size = 'md', className, showLabel = false,
       animate && isHot && 'animate-streak-pop',
       className
     )}>
-      <Flame className={cn(iconSizes[size], isHot && 'fill-current opacity-80')} />
+      <motion.span
+        animate={animate && isHot ? { scale: [1, 1.2, 1] } : undefined}
+        transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3 }}
+        className="inline-flex"
+      >
+        <Flame className={cn(iconSizes[size], isHot && 'fill-current opacity-80')} />
+      </motion.span>
       <span>{streak}</span>
       {showLabel && <span className="font-medium opacity-75">{streak === 1 ? 'day' : 'days'}</span>}
     </div>

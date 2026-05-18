@@ -6,6 +6,8 @@ import { LineChart } from '@/components/shared/charts/LineChart'
 import { cn } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback } from '@/components/ui/avatar'
+import { toast } from 'sonner'
+import { notifyAssignmentGraded, notifyAIRiskFlag } from '@/lib/crossRoleEvents'
 
 const CHART_DATA = [
   { name: 'Sep', value: 74 },
@@ -34,6 +36,22 @@ const SCHEDULE = [
 
 export default function TeacherDashboardPage() {
   const name = 'Sarah Johnson'
+
+  function handleGradeTask() {
+    notifyAssignmentGraded({
+      assignmentTitle: 'Midterm Essay — World History',
+      score: 41,
+      maxScore: 50,
+      feedback: 'Great analysis of primary sources. Argument structure could be stronger.',
+      studentRole: 'achiever',
+    })
+    toast.success('Grade published — student and parent notified')
+  }
+
+  function handleFlagAlert(studentName: string, subject: string, detail: string) {
+    notifyAIRiskFlag({ studentName, subject, reason: detail })
+    toast.success(`AI alert sent to your inbox for ${studentName}`)
+  }
 
   return (
     <div className="p-6 space-y-6">
@@ -89,10 +107,16 @@ export default function TeacherDashboardPage() {
                 <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
                   <TrendingDown className="h-4 w-4 text-red-500" />
                 </div>
-                <div>
+                <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-on-surface">{a.name}</p>
                   <p className="text-xs text-on-surface-variant">{a.detail}</p>
                 </div>
+                <button
+                  onClick={() => handleFlagAlert(a.name, a.detail.split(':')[0] ?? 'General', a.detail)}
+                  className="text-xs text-amber-600 hover:underline font-semibold shrink-0"
+                >
+                  Flag
+                </button>
               </div>
             ))}
           </div>
@@ -109,7 +133,16 @@ export default function TeacherDashboardPage() {
                   <p className="text-sm font-semibold text-on-surface">{t.title}</p>
                   <p className="text-xs text-on-surface-variant">{t.meta}</p>
                 </div>
-                <Badge variant={t.badgeVariant} size="sm">{t.badge}</Badge>
+                {t.title === 'Grade Midterm Essays' ? (
+                  <button
+                    onClick={handleGradeTask}
+                    className="shrink-0 text-xs px-3 py-1 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
+                  >
+                    Grade
+                  </button>
+                ) : (
+                  <Badge variant={t.badgeVariant} size="sm">{t.badge}</Badge>
+                )}
               </div>
             ))}
           </div>

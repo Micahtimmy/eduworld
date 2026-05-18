@@ -1,10 +1,12 @@
 'use client'
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
+import { motion } from 'framer-motion'
+import { Slot } from '@radix-ui/react-slot'
 import { cn } from '@/lib/utils'
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded font-label font-semibold text-label-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 active:scale-95',
+  'inline-flex items-center justify-center gap-2 rounded font-label font-semibold text-label-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
@@ -41,14 +43,31 @@ export interface ButtonProps
   asChild?: boolean
 }
 
+const MotionButton = motion.button
+
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, loading, children, disabled, ...props }, ref) => {
+  ({ className, variant, size, loading, children, disabled, asChild = false, ...props }, ref) => {
+    if (asChild) {
+      return (
+        <Slot
+          ref={ref}
+          className={cn(buttonVariants({ variant, size }), className)}
+          {...props}
+        >
+          {children}
+        </Slot>
+      )
+    }
+
     return (
-      <button
+      <MotionButton
         ref={ref}
         className={cn(buttonVariants({ variant, size }), className)}
         disabled={disabled || loading}
-        {...props}
+        whileHover={{ y: -1 }}
+        whileTap={{ scale: 0.97 }}
+        transition={{ duration: 0.1 }}
+        {...(props as React.ComponentPropsWithoutRef<typeof MotionButton>)}
       >
         {loading && (
           <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
@@ -57,7 +76,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </svg>
         )}
         {children}
-      </button>
+      </MotionButton>
     )
   }
 )

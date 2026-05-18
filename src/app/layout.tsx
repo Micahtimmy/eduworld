@@ -1,25 +1,6 @@
 import type { Metadata } from 'next'
-import { Plus_Jakarta_Sans, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/providers'
-
-const plusJakarta = Plus_Jakarta_Sans({
-  variable: '--font-display',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-})
-
-const inter = Inter({
-  variable: '--font-body',
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-})
-
-const jetbrainsMono = JetBrains_Mono({
-  variable: '--font-mono',
-  subsets: ['latin'],
-  weight: ['400', '500'],
-})
 
 export const metadata: Metadata = {
   title: 'EduWorld — AI-Native Global Learning Platform',
@@ -29,11 +10,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${plusJakarta.variable} ${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
-    >
+    <html lang="en" suppressHydrationWarning className="h-full antialiased">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-full bg-surface text-on-surface">
         <Providers>{children}</Providers>
       </body>

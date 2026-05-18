@@ -1,0 +1,654 @@
+﻿[
+    {
+        "id":  "d7a3b4d9f7c546658a101e0d6a2e618a",
+        "title":  "Admin — Global Institutional Health Monitor"
+    },
+    {
+        "id":  "0f61563c978643bcb00583e31aaf780b",
+        "title":  "Enterprise — Employee Performance \u0026 Growth Plan"
+    },
+    {
+        "id":  "be00cc7b5697439988aab154712a238d",
+        "title":  "Scholar — Career Gateway \u0026 Internships"
+    },
+    {
+        "id":  "c0465383de9a4b149eb88ad8bab0d419",
+        "title":  "Explorer — My Assignments (EWD-024)"
+    },
+    {
+        "id":  "89ff67e4d35d4cbaa761629014821b64",
+        "title":  "Explorer — Video Lesson: Solar System (EWD-017)"
+    },
+    {
+        "id":  "bb10d612e1634689a2d00a686bd49ffd",
+        "title":  "Achiever — AI Study Partner (EWD-028)"
+    },
+    {
+        "id":  "60c6b291df204848ac304363baf1d730",
+        "title":  "Teacher — Curriculum \u0026 Resource Repository"
+    },
+    {
+        "id":  "0347d5b4f12b48f39374697f6058d49b",
+        "title":  "Parent — Guardian Command Center Dashboard"
+    },
+    {
+        "id":  "dd726d2b4ec64f02b0035f4f0ec471d7",
+        "title":  "Admin — Premium Dashboard (EWD-004)"
+    },
+    {
+        "id":  "cf404929c7204041b9103c349f4c8a6e",
+        "title":  "Admin — Institutional Messaging \u0026 Alerts"
+    },
+    {
+        "id":  "ec23bdf7801b431788a47805a0247a22",
+        "title":  "Login to EduWorld"
+    },
+    {
+        "id":  "4523b82bb8a349ae89e556f436ef79ed",
+        "title":  "Admin — Elite Student Intake (EWD-005)"
+    },
+    {
+        "id":  "90d0086aa83b46a582dae8da54e84395",
+        "title":  "Parent — Guardian Settings \u0026 Household Management"
+    },
+    {
+        "id":  "7b084a27af1044f3b3d721487b2d73d1",
+        "title":  "Parent — Conference Booking Confirmation"
+    },
+    {
+        "id":  "f9d8871bc6a440d9b76034940954e075",
+        "title":  "Scholar — Research Archive \u0026 Legacy Vault"
+    },
+    {
+        "id":  "277f503ec02b4204b86ee810331b1319",
+        "title":  "Parent — Safety, Attendance \u0026 Absence Management"
+    },
+    {
+        "id":  "1aa59fd6b0d6408ba8d554f0a33f70a0",
+        "title":  "Parent — Child Academic Performance \u0026 Insights"
+    },
+    {
+        "id":  "26af14cae4794e9281b4cf9c51edcb0d",
+        "title":  "Achiever — Elite XP Exchange (Shop)"
+    },
+    {
+        "id":  "155d46912c534e1bb33794f31c3daa92",
+        "title":  "Scholar — Departmental News \u0026 Notice Board"
+    },
+    {
+        "id":  "ea7040d7d2af4f8db268749a426c338e",
+        "title":  "Scholar — Thesis \u0026 Dissertation Command"
+    },
+    {
+        "id":  "c37bbbaf95114dbdbf322e8c8e81c568",
+        "title":  "EduWorld Project Backlog"
+    },
+    {
+        "id":  "6bf95ef03ce844609c437a752c4a29da",
+        "title":  "Explorer — Onboarding: Name Entry (EWD-013)"
+    },
+    {
+        "id":  "221c1b62900948cf83a3786a4f20f525",
+        "title":  "Teacher — Academic Calendar \u0026 Scheduling"
+    },
+    {
+        "id":  "364b9b3e0ae64714b0cf85683b8412d5",
+        "title":  "Scholar — Continuous Assessment Scoreboard"
+    },
+    {
+        "id":  "74a6b84bf85843dfa462518ec3659288",
+        "title":  "Admin — Invite Students (EWD-005)"
+    },
+    {
+        "id":  "350ca613d7ad4c4682a803617f40556e",
+        "title":  "Achiever — Term Performance Report (Official)"
+    },
+    {
+        "id":  "a5fbccd1db624b30b5f1708f804c5aab",
+        "title":  "Scholar — Semantic Research \u0026 Gap Analysis"
+    },
+    {
+        "id":  "f05423a51dfe451bafb1aec1b800a90f",
+        "title":  "Parent — Extracurricular Enrollment Hub"
+    },
+    {
+        "id":  "d2a97e666ef04a87ab8480cd7b9729f4",
+        "title":  "Teacher — Student Groups \u0026 Cohort Management"
+    },
+    {
+        "id":  "c3c4c8c239ee4901861769119e7198ca",
+        "title":  "Admin — Elite Enrollment Review (EWD-011)"
+    },
+    {
+        "id":  "56f63d2b54f2435e90914bfbf95cb5bf",
+        "title":  "Enterprise — Skills Gap Analysis \u0026 Strategy"
+    },
+    {
+        "id":  "d41f9ef9447249039f18187cd4a34a6b",
+        "title":  "Teacher — Gradebook \u0026 Weighting Settings"
+    },
+    {
+        "id":  "de9c04156b0741b3b5a66baf043f6600",
+        "title":  "Admin — Event \u0026 Calendar Management"
+    },
+    {
+        "id":  "8e6f2fcbd0e446228e2bae5c129336b8",
+        "title":  "Global — Command Palette (Cmd+K) Navigation Hub"
+    },
+    {
+        "id":  "6e84976579154ca6a3b498e7debf0cac",
+        "title":  "Parent — Behavioral Insights \u0026 Social Growth"
+    },
+    {
+        "id":  "f4ac5b4dff1c4fb8abea4de7e3f214f8",
+        "title":  "Achiever — Peer Collaboration \u0026 Huddle Hub"
+    },
+    {
+        "id":  "153d754fdc9a4322bea6311ec9f3e7ee",
+        "title":  "EduWorld Project Categorization Matrix"
+    },
+    {
+        "id":  "4b5bf4f0155a405e939d961bde8aed25",
+        "title":  "Admin — Premium Individual Enrollment (EWD-006)"
+    },
+    {
+        "id":  "2322f990ada44e499e8d0a5eb56794be",
+        "title":  "Enterprise — Custom Program \u0026 Learning Paths"
+    },
+    {
+        "id":  "fa3f153ea34648818e3031cf48188a48",
+        "title":  "Teacher — Institutional Reporting \u0026 Admin Sync"
+    },
+    {
+        "id":  "1976b86065ea43bf808b593482e558f6",
+        "title":  "Explorer — Dynamic Interest Exploration (EWD-015) - Refined"
+    },
+    {
+        "id":  "0b4e0949ae0946a4acfceecb4330fbac",
+        "title":  "Achiever — Performance \u0026 Analytics Center"
+    },
+    {
+        "id":  "4c288470f2f044e0a8d7f972b01faf31",
+        "title":  "Achiever — Global Leaderboard (EWD-034)"
+    },
+    {
+        "id":  "afa123c0bb1045fc86274957cdd3198f",
+        "title":  "Scholar — Lecture Hall \u0026 Seminar Hub"
+    },
+    {
+        "id":  "4e94971a5d9847f18cc9cd569cf1cc8c",
+        "title":  "Explorer — Message Your Teacher (EWD-023)"
+    },
+    {
+        "id":  "cecb04ad1c9d4ba3867871ff3c3220cd",
+        "title":  "Scholar — Peer Research Huddle Hub"
+    },
+    {
+        "id":  "4f218f9512b2482bbc10c51b5d569d9c",
+        "title":  "Scholar — Faculty \u0026 Dean Communication Hub"
+    },
+    {
+        "id":  "80f482aef27e4e82b47020eefd0911bf",
+        "title":  "Join EduWorld — Role Selection"
+    },
+    {
+        "id":  "831a5a320e3e490695cb1075addb91cf",
+        "title":  "Explorer — Achievement Gallery (EWD-020)"
+    },
+    {
+        "id":  "d388bc749c964d1d92a211b42c716221",
+        "title":  "Teacher — Assignment Creation \u0026 Distribution"
+    },
+    {
+        "id":  "4c6dd999296e484392d312bf68773c2f",
+        "title":  "Parent — Student Health \u0026 Wellness Portal"
+    },
+    {
+        "id":  "075d44910e0d472e8ec2092ad5f0f436",
+        "title":  "Admin — Infrastructure \u0026 Asset Tracking"
+    },
+    {
+        "id":  "8d2dd0d2ff924b80bc96f33518f808da",
+        "title":  "Global — Command Palette (Cmd+K) Navigation Hub"
+    },
+    {
+        "id":  "126c8d0138ed47bf8222a055b7229827",
+        "title":  "Admin — Teacher Roster \u0026 Workload"
+    },
+    {
+        "id":  "d76c9120a8874563b985c970b055c059",
+        "title":  "Parent — XP Transaction History \u0026 Insights"
+    },
+    {
+        "id":  "daf31f8dcd594ab6acda82c36d2064eb",
+        "title":  "Teacher — Lesson Archive \u0026 Revision Curator"
+    },
+    {
+        "id":  "04198ed1e26e494483b6eb35bed68836",
+        "title":  "Achiever — Subject Exam Prep (EWD-026)"
+    },
+    {
+        "id":  "0535c9871e9d4db2a9ac506362de6582",
+        "title":  "Global — Unified Identity \u0026 Security Settings"
+    },
+    {
+        "id":  "bb613323d432491caeccbc85d0779c48",
+        "title":  "Explorer — Learning Dashboard (EWD-014)"
+    },
+    {
+        "id":  "3bcd6f88f85a4732b220503e2a4209ef",
+        "title":  "Admin — Data Governance \u0026 Security Vault"
+    },
+    {
+        "id":  "b94f081efc4e4796adad0cd629646f71",
+        "title":  "Admin — Roles \u0026 Permissions"
+    },
+    {
+        "id":  "62c13374161c42c88317dc66f0e19957",
+        "title":  "Enterprise — Workforce ROI \u0026 Analytics Dashboard"
+    },
+    {
+        "id":  "bb6f8c2a1b1e4524acf35573ae514d41",
+        "title":  "Admin — Staff Onboarding \u0026 Recruitment"
+    },
+    {
+        "id":  "b53ad177e42f416a981a370e84a3afb0",
+        "title":  "Scholar — AI Research Assistant"
+    },
+    {
+        "id":  "48321a66dc48453c82a9714a7cbf004d",
+        "title":  "Admin — Institutional Finance Overview"
+    },
+    {
+        "id":  "3a1cbca38ebf4ea2b93d2fb752e4a18e",
+        "title":  "Teacher — Course \u0026 Module Orchestration"
+    },
+    {
+        "id":  "5f285f9a683c487b847ae20234a9d9e8",
+        "title":  "Achiever — Onboarding: Welcome (EWD-029)"
+    },
+    {
+        "id":  "95dd4546ac934c64b7a570748fafd4f0",
+        "title":  "Achiever — Dashboard (EWD-025) - Light Mode"
+    },
+    {
+        "id":  "7ce479f620864b728bd7fd85188ca8d5",
+        "title":  "Achiever — Peer Leaderboard \u0026 Huddle Feed"
+    },
+    {
+        "id":  "df3805ee17aa452ea815a35bbbb6c25d",
+        "title":  "Scholar — Course Registration \u0026 Planning"
+    },
+    {
+        "id":  "565b197497f847d1a90d12f2f75324cc",
+        "title":  "Achiever — High-Energy Dashboard (EWD-025)"
+    },
+    {
+        "id":  "6af841cb3d924ef687300acc35579261",
+        "title":  "Scholar — Global Research Networking Hub"
+    },
+    {
+        "id":  "b8afccf91473463990f6619c612dc18b",
+        "title":  "Scholar — Academic Command Center (Ivy League Edition)"
+    },
+    {
+        "id":  "a03262cfeb874d788b0e17f169fcc673",
+        "title":  "Scholar — Peer Research \u0026 Huddle Hub"
+    },
+    {
+        "id":  "64000e721b374fbdae41dee29776be8f",
+        "title":  "Achiever — Curriculum Mastery Detail"
+    },
+    {
+        "id":  "7e119081aec645fba45d4dff43ed886c",
+        "title":  "Global — Support \u0026 Knowledge Architecture"
+    },
+    {
+        "id":  "c61a774c63154db383d828ee9139c593",
+        "title":  "Explorer — Lesson Viewer: Solar System (EWD-017)"
+    },
+    {
+        "id":  "1491d9883d0b4aafacb04e48ad39fe14",
+        "title":  "Achiever — Onboarding: AI Partner Intro (EWD-031)"
+    },
+    {
+        "id":  "c4afdfce82d445c399add95e4a9421a2",
+        "title":  "Teacher — Professional Growth \u0026 Wellness"
+    },
+    {
+        "id":  "b41c346580c044b69053362475f34fa3",
+        "title":  "Parent — Financial Center \u0026 Fee Management"
+    },
+    {
+        "id":  "825b5e2357e9468bb73540d6522d66c2",
+        "title":  "Teacher — Deep Student Insights \u0026 Analytics"
+    },
+    {
+        "id":  "2ad56b3cf00f4f27b8727fce901e6dc9",
+        "title":  "Scholar — Predictive Career \u0026 Internship Gateway"
+    },
+    {
+        "id":  "10bfeebd8d5d418abd4706775d1066d5",
+        "title":  "Scholar — Virtual Lab \u0026 Simulation Portal"
+    },
+    {
+        "id":  "b675e1be52dd4c3fac858c941ac179c6",
+        "title":  "Parent — Tuition \u0026 Lab Fees Payment Center"
+    },
+    {
+        "id":  "7ddaf6c532544908a59350727f1549ce",
+        "title":  "Admin — Elite Academic Assignment (EWD-010)"
+    },
+    {
+        "id":  "0b3ce55903174ea7a82a57096c7e0966",
+        "title":  "Scholar — Module Detail (Quantum Mechanics)"
+    },
+    {
+        "id":  "0aee090e85ea43b78693078a840ff8c8",
+        "title":  "Explorer — AI Tutor Chat (EWD-018)"
+    },
+    {
+        "id":  "4d1790c1b5924584bee16edab951e3c0",
+        "title":  "Explorer — Subject Hub: Science (EWD-016) - Refined"
+    },
+    {
+        "id":  "8d7cce65d2d34f11bc56ff01833f85f6",
+        "title":  "Explorer — AI Tutor Interaction (EWD-018)"
+    },
+    {
+        "id":  "2ac5834c54794b2c9f7f9376eb690cae",
+        "title":  "Explorer — Subject Hub: Science (EWD-016)"
+    },
+    {
+        "id":  "b5c03600ce3246cca4f7b461d68e82cd",
+        "title":  "Teacher — Student Real-Time Communication Hub"
+    },
+    {
+        "id":  "bd714e9f73104000b12a34493ffa33f4",
+        "title":  "Admin — Enrollment Success (EWD-012)"
+    },
+    {
+        "id":  "39c40b1dda4f40b5a73ebd903f84bd1b",
+        "title":  "Scholar — Professional Portfolio Hub"
+    },
+    {
+        "id":  "6b4500ed4a4749c19284cc76ff77bfc9",
+        "title":  "Explorer — Interest Exploration (EWD-015)"
+    },
+    {
+        "id":  "9af654cc017842f7b36db080343f6834",
+        "title":  "Teacher — AI Lesson Plan Creator"
+    },
+    {
+        "id":  "4955eee8cf4f491d891e9fe46ac1b9c4",
+        "title":  "Explorer — Daily Quest (EWD-019)"
+    },
+    {
+        "id":  "88249c1fe5cc4a13bfc7a9dcac8d1213",
+        "title":  "Teacher — Classroom Management \u0026 Roster"
+    },
+    {
+        "id":  "a42083980a5948d38c06df9277049e1a",
+        "title":  "Scholar — Lecturer Evaluation \u0026 Reviews"
+    },
+    {
+        "id":  "07d9db07f7db41c392771ca1fb968011",
+        "title":  "Global — Support \u0026 Knowledge Architecture"
+    },
+    {
+        "id":  "75ce95d1cf2140998925eeb0319a9907",
+        "title":  "Welcome to EduWorld"
+    },
+    {
+        "id":  "c724699fd7c84367a2f4bcb021230900",
+        "title":  "Teacher — Practical \u0026 Lab Management Hub"
+    },
+    {
+        "id":  "00713df62c564b65a55c65ba44ca312b",
+        "title":  "Teacher — Parent \u0026 Guardian Communication"
+    },
+    {
+        "id":  "619be300af9b41eabcce7f4bb9af1e70",
+        "title":  "Explorer — Go Premium Landing Page"
+    },
+    {
+        "id":  "3e54d3afe3b1469d8b235ca7b790b2fd",
+        "title":  "Scholar — Financial Aid \u0026 Scholarship Hub"
+    },
+    {
+        "id":  "c409e09cf908421b831fbe358db7487e",
+        "title":  "Global — Unified Identity \u0026 Security Settings"
+    },
+    {
+        "id":  "f41c909dac3f48b2b8d49b8cc0f4990b",
+        "title":  "Achiever — Video \u0026 Text Lesson Viewer"
+    },
+    {
+        "id":  "fb5da30d20cc436389a014679e14e5c3",
+        "title":  "Scholar — Workload \u0026 Wellness Optimizer"
+    },
+    {
+        "id":  "07cebd583a524ab78dafb0e5f472de8e",
+        "title":  "Explorer — Gamified Learning Journey Map"
+    },
+    {
+        "id":  "6b0896647ccb45b2af63fd31b3dca641",
+        "title":  "Admin — Bulk Mapping \u0026 Validation (EWD-007)"
+    },
+    {
+        "id":  "5785ca501e604bf28ae9f32f7c54e368",
+        "title":  "Admin — Elite Family Linking (EWD-008)"
+    },
+    {
+        "id":  "eda68ce3e4fb42c386064fd45fcf5918",
+        "title":  "Scholar — Research Workspace Dashboard"
+    },
+    {
+        "id":  "55503bdd000e45f292fdad57c212c9dc",
+        "title":  "Achiever — Collaborative Project Workspace"
+    },
+    {
+        "id":  "a80a24ebab8c454a8ea75848aec90829",
+        "title":  "Explorer — Shop (EWD-021)"
+    },
+    {
+        "id":  "8eb43f272d004a7a93d8ac28a93a38c0",
+        "title":  "Achiever — Subject Detail (AP Calculus BC)"
+    },
+    {
+        "id":  "1819c026504a414a856d12b1afc92f41",
+        "title":  "Parent — Academic Recovery \u0026 Improvement Hub"
+    },
+    {
+        "id":  "28cadde2ec544c5bb4919d45f1c5469b",
+        "title":  "Scholar — Practical Lab Management Hub"
+    },
+    {
+        "id":  "0b9f054eac9049d5b961112201af7ae8",
+        "title":  "Teacher — Content Visibility \u0026 Access Control"
+    },
+    {
+        "id":  "221df976f8074f12b1cf0eaf7778929e",
+        "title":  "Achiever — University Prep \u0026 Portfolio Hub"
+    },
+    {
+        "id":  "b86805b2c9094f0ea27d756587716ecc",
+        "title":  "Achiever — Class Activity Feed (EWD-027)"
+    },
+    {
+        "id":  "3662e504d2624a8f80831e854deed237",
+        "title":  "Admin — Curriculum \u0026 Standards Management"
+    },
+    {
+        "id":  "c14ba712dffe4789971c8c7bb52f1d02",
+        "title":  "Admin — Elite Student Profiling (EWD-006)"
+    },
+    {
+        "id":  "261b3d9f6de34f949395120382d2c6e1",
+        "title":  "Scholar — Academic Resources \u0026 Past Papers"
+    },
+    {
+        "id":  "ddfbd9bb79dd410ab38b6e4bcb0080d8",
+        "title":  "Explorer — Learning Dashboard (EWD-014) - Refined"
+    },
+    {
+        "id":  "0ae22154b75e4fc6bd63ea2b0a5b7841",
+        "title":  "Scholar — Lecturer Feedback \u0026 Grade Tracker"
+    },
+    {
+        "id":  "900984f75edc4e8f910dfb77d697c867",
+        "title":  "Admin — Elite Command Center (EWD-004)"
+    },
+    {
+        "id":  "fa3aabd1680d475abe8c5534c88dca46",
+        "title":  "Scholar — University Inbox \u0026 Mentorship"
+    },
+    {
+        "id":  "7a9ae4a2274d4baaa716d7b5596e21cb",
+        "title":  "Parent — School Event Calendar \u0026 Booking"
+    },
+    {
+        "id":  "3a547dae90a548718ad0a04820e50eb7",
+        "title":  "Achiever — Onboarding: Goal Setting (EWD-030)"
+    },
+    {
+        "id":  "9718e8ab028c4e26ad16a52a11c6b72a",
+        "title":  "Teacher — Grading \u0026 Feedback Workspace"
+    },
+    {
+        "id":  "5c671dadef6c49b68b85bc9abd9e700d",
+        "title":  "Scholar — Academic Dashboard (Course-Centric)"
+    },
+    {
+        "id":  "cfe523e4592c4d5aaca8bd1eba3b8b16",
+        "title":  "Teacher — AI Recommendation Control Center"
+    },
+    {
+        "id":  "9141279e18e244cc9a6d6a262fc4088a",
+        "title":  "Explorer — Onboarding: Name Entry (EWD-013) - Refined"
+    },
+    {
+        "id":  "98b3bcf43947451c80e7bfc0be4f607f",
+        "title":  "Teacher — Final Grade Sync \u0026 Institutional Review"
+    },
+    {
+        "id":  "232e5dfe24774868a9e47ad4b7ba47c6",
+        "title":  "Admin — School-Wide Analytics"
+    },
+    {
+        "id":  "9bd9d07642da451e8918901bfbe27712",
+        "title":  "Achiever — Academic Calendar \u0026 Deadlines"
+    },
+    {
+        "id":  "1f2135e2d8ae45d7b63da05b6551c4b8",
+        "title":  "Teacher — Professional Inbox \u0026 Unified Messaging"
+    },
+    {
+        "id":  "0d819f9e704446a6b44b5a3ed9cfdbc8",
+        "title":  "Scholar — Exam Schedule \u0026 Identity Hub"
+    },
+    {
+        "id":  "222920d02fa24d43867d25d6dc6bb668",
+        "title":  "Scholar — Global Exchange \u0026 Study Abroad Hub"
+    },
+    {
+        "id":  "1b52a2e1389f40a09dfb1ed8d7d848ce",
+        "title":  "Parent — Consolidated Household Billing Center"
+    },
+    {
+        "id":  "fd2f07a3081f4b3e8d9debcec423e58e",
+        "title":  "Teacher — Student Feedback \u0026 Review Loop"
+    },
+    {
+        "id":  "c27b5e7f9c8d4dd0bc7cf8812df05d3a",
+        "title":  "Teacher — Live Classroom Tools \u0026 Attendance"
+    },
+    {
+        "id":  "f4faf7f025e24595bb663a467f0129fb",
+        "title":  "Scholar — Library \u0026 Citation Manager"
+    },
+    {
+        "id":  "1d9a327950c946cd93eb801125f78f93",
+        "title":  "Scholar — Library \u0026 Citation Manager"
+    },
+    {
+        "id":  "0f1b911a73094db9ac24b8b0dc85d30c",
+        "title":  "Achiever — Subject Library (EWD-033)"
+    },
+    {
+        "id":  "dd3aad56a5e7426b89e3f500f555413c",
+        "title":  "Scholar — Atomic Learning \u0026 Seminar Hub"
+    },
+    {
+        "id":  "4690b3366d094f4ea7b6b2bd31b77860",
+        "title":  "Scholar — Degree Audit \u0026 Credit Tracker"
+    },
+    {
+        "id":  "53ed4b2f502443cb8a232a321912732e",
+        "title":  "Scholar — Course Detail (Lectures \u0026 Practicals)"
+    },
+    {
+        "id":  "bb723f5e549740388ab46ec63eb729a8",
+        "title":  "Parent — Official Document Vault \u0026 Signatures"
+    },
+    {
+        "id":  "68492a09b10d4f2e866ea1a298b0a4d1",
+        "title":  "Admin — Student Risk \u0026 Retention"
+    },
+    {
+        "id":  "530d525c1aeb4fc694d7380fb1775190",
+        "title":  "Scholar — Predictive Degree Audit \u0026 Planning"
+    },
+    {
+        "id":  "b2788c44b67c4b9ea0af635eef94dfca",
+        "title":  "Scholar — Professional Competency \u0026 Certifications"
+    },
+    {
+        "id":  "01e21bc69ab74ca6b844eb6336610708",
+        "title":  "Scholar — Grant Proposals \u0026 Funding Hub"
+    },
+    {
+        "id":  "e751e8045f554326a9dae9b528e3f9e7",
+        "title":  "Achiever — Advanced Assignment Tracker"
+    },
+    {
+        "id":  "78a761bfc74640d4b0897bbfde0483c0",
+        "title":  "Explorer — Learning Dashboard (Wired)"
+    },
+    {
+        "id":  "39ca84a6104b43e08b254664bccfa67d",
+        "title":  "Parent — School Communication \u0026 Messaging Hub"
+    },
+    {
+        "id":  "0e4f971b633b4656b27a922c0c87f7cf",
+        "title":  "Admin — Elite Bulk Mapping (EWD-007)"
+    },
+    {
+        "id":  "2af8ba5c04714b55aefa1ba7db494f34",
+        "title":  "Parent — Multi-Child Performance Comparison"
+    },
+    {
+        "id":  "65d6e60d61de4ad9a164e49c2f908c12",
+        "title":  "Explorer — Subject Topics: Science (EWD-016)"
+    },
+    {
+        "id":  "bb35762973c44759ae8723c322ce60b7",
+        "title":  "Admin — Faculty Scheduling \u0026 Clash Detection"
+    },
+    {
+        "id":  "793779d36cc64e07ad00e43c66d483cf",
+        "title":  "Explorer — Student Profile (EWD-022)"
+    },
+    {
+        "id":  "6f82e6eb3bfc43d6a0418de1f6462f96",
+        "title":  "Achiever — AI Personalized Study Plan"
+    },
+    {
+        "id":  "ae550cf1ff744669b93ff3795a5583e4",
+        "title":  "Teacher — Command Center Dashboard"
+    },
+    {
+        "id":  "2b15b76f999548fe9354b6bfdd10f374",
+        "title":  "Achiever — Exam Tracker (EWD-032)"
+    }
+]

@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html><html lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Welcome - EduWorld</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#f0f0f6",
+                        "on-tertiary-fixed": "#2a1700",
+                        "surface-variant": "#e2e2e8",
+                        "tertiary": "#5b3700",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-surface": "#191c20",
+                        "surface-bright": "#f9f9ff",
+                        "on-primary-fixed-variant": "#004787",
+                        "on-secondary-fixed": "#002113",
+                        "primary-container": "#1e5799",
+                        "primary-fixed": "#d5e3ff",
+                        "secondary-container": "#6cf8bb",
+                        "surface": "#f9f9ff",
+                        "surface-container-low": "#f3f3f9",
+                        "background": "#f9f9ff",
+                        "inverse-surface": "#2e3035",
+                        "on-secondary-container": "#00714d",
+                        "outline-variant": "#c2c6d2",
+                        "secondary": "#006c49",
+                        "on-surface-variant": "#424750",
+                        "on-secondary-fixed-variant": "#005236",
+                        "primary": "#003f7a",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#295fa1",
+                        "error-container": "#ffdad6",
+                        "tertiary-container": "#7a4c00",
+                        "surface-container": "#ededf4",
+                        "on-tertiary-container": "#ffc174",
+                        "outline": "#727781",
+                        "on-tertiary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e2e2e8",
+                        "on-primary-fixed": "#001c3b",
+                        "surface-container-high": "#e7e8ee",
+                        "on-primary-container": "#b0ceff",
+                        "on-tertiary-fixed-variant": "#653e00",
+                        "surface-dim": "#d9dae0",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-error-container": "#93000a",
+                        "on-background": "#191c20",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#a6c8ff",
+                        "tertiary-fixed": "#ffddb8",
+                        "primary-fixed-dim": "#a6c8ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xl": "32px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "gutter": "24px",
+                        "base": "4px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "3xl": "64px",
+                        "2xl": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "body-md": ["Inter"],
+                        "display-lg-mobile": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "code-md": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "code-md": ["14px", { "lineHeight": "20px", "fontWeight": "450" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "display-lg": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        .bg-custom-deep-blue {
+            background-color: #0F2340; /* Requested specifically by user prompt, normally use theme colors */
+        }
+
+        /* Abstract Node Animation */
+        .node-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .node {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.2);
+            animation: float 20s infinite ease-in-out alternate;
+        }
+
+        .connection {
+            position: absolute;
+            background: linear-gradient(to right, rgba(255,255,255,0.1), transparent);
+            height: 1px;
+            transform-origin: left center;
+            opacity: 0;
+            animation: pulse-connection 10s infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(calc(10vw - 5vw), calc(10vh - 5vh)); }
+        }
+
+        @keyframes pulse-connection {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.2; }
+        }
+
+        /* Generate some nodes */
+        .n1 { top: 20%; left: 15%; animation-delay: 0s; }
+        .n2 { top: 60%; left: 25%; animation-delay: -5s; }
+        .n3 { top: 30%; left: 75%; animation-delay: -10s; }
+        .n4 { top: 70%; left: 80%; animation-delay: -15s; }
+        .n5 { top: 85%; left: 45%; animation-delay: -2s; }
+        .n6 { top: 15%; left: 55%; animation-delay: -7s; }
+        .n7 { top: 45%; left: 50%; animation-delay: -12s; width: 6px; height: 6px; background-color: rgba(108, 248, 187, 0.6); box-shadow: 0 0 15px 3px rgba(108, 248, 187, 0.3);} /* Emerald highlight */
+
+        /* Connections */
+        .c1 { top: 20%; left: 15%; width: 45%; transform: rotate(20deg); animation-delay: 0s; }
+        .c2 { top: 45%; left: 50%; width: 30%; transform: rotate(-30deg); animation-delay: -3s; }
+        .c3 { top: 60%; left: 25%; width: 25%; transform: rotate(15deg); animation-delay: -6s; }
+        .c4 { top: 45%; left: 50%; width: 40%; transform: rotate(45deg); animation-delay: -9s; }
+    </style>
+</head>
+<body class="bg-custom-deep-blue text-on-primary h-screen w-screen overflow-hidden flex flex-col justify-center items-center relative">
+<!-- Abstract Network Animation Background -->
+<div class="node-container">
+<div class="node n1"></div>
+<div class="node n2"></div>
+<div class="node n3"></div>
+<div class="node n4"></div>
+<div class="node n5"></div>
+<div class="node n6"></div>
+<div class="node n7"></div>
+<div class="connection c1"></div>
+<div class="connection c2"></div>
+<div class="connection c3"></div>
+<div class="connection c4"></div>
+</div>
+<!-- Main Content Canvas -->
+<main class="relative z-10 flex flex-col items-center justify-center w-full max-w-4xl px-lg text-center space-y-xl">
+<!-- Branding -->
+<div class="space-y-sm flex flex-col items-center">
+<h1 class="font-display-lg text-display-lg md:font-display-lg md:text-display-lg text-white tracking-tight">
+                EduWorld
+            </h1>
+<p class="font-headline-md text-headline-md text-primary-fixed-dim/90 font-medium">
+                The world learns here.
+            </p>
+</div>
+<!-- Call to Actions -->
+<div class="flex flex-col sm:flex-row gap-md pt-lg w-full sm:w-auto justify-center items-center">
+<button class="w-full sm:w-auto px-xl py-sm rounded-lg border-2 border-white/30 text-white font-label-md text-label-md hover:bg-white/10 transition-colors duration-200 backdrop-blur-sm">
+                Sign in
+            </button>
+<button class="w-full sm:w-auto px-xl py-sm rounded-lg bg-white text-custom-deep-blue font-label-md text-label-md hover:bg-surface-container-low transition-colors duration-200 shadow-md">
+                Get started
+            </button>
+</div>
+<!-- Intelligent Indicator -->
+<div class="absolute bottom-2xl flex items-center gap-xs text-secondary-container/80 font-body-sm text-body-sm opacity-80">
+<span class="material-symbols-outlined text-sm" style="font-size: 16px;">auto_awesome</span>
+<span class="">Powered by Global Intelligence</span>
+</div>
+</main>
+<!-- Suppressed Navigation Shells -->
+<!-- As per rules: "Linear/Transactional: Login, Sign-up, Onboarding... splash screens" -> Suppress Navigation -->
+<!-- No TopAppBar, SideNav, or BottomNavBar is rendered here. -->
+<script>
+        // Simple subtle parallax effect for the nodes based on mouse movement
+        document.addEventListener('mousemove', (e) => {
+            const nodes = document.querySelectorAll('.node');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            nodes.forEach((node, index) => {
+                const speed = (index + 1) * 0.5;
+                const moveX = (x - 0.5) * speed * 20;
+                const moveY = (y - 0.5) * speed * 20;
+                node.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            });
+        });
+    </script>
+
+
+<div class="fixed bottom-md right-md z-50 text-primary-fixed-dim/30 font-body-sm text-body-sm pointer-events-none select-none tracking-widest uppercase">EWD-001</div></body></html>

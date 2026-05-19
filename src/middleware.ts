@@ -12,7 +12,7 @@ const ROLE_HOME: Record<string, string> = {
   enterprise: '/enterprise',
 }
 
-const PUBLIC_ROUTES = ['/', '/login', '/signup', '/onboarding', '/support']
+const PUBLIC_ROUTES = ['/', '/login', '/signup', '/onboarding', '/forgot-password', '/reset-password', '/support', '/auth']
 
 export async function middleware(request: NextRequest) {
   const response = NextResponse.next({ request })

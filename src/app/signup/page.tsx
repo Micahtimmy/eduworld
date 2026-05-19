@@ -6,26 +6,23 @@ import { useRouter } from 'next/navigation'
 import { createBrowserClient } from '@/lib/supabase/client'
 import { toast } from 'sonner'
 
-type RoleId = 'explorer' | 'scholar' | 'teacher' | 'parent' | 'admin' | 'government' | 'enterprise_manager'
+type RoleId = 'explorer' | 'scholar' | 'teacher' | 'parent' | 'admin' | 'enterprise_manager'
 
 const ROLE_CARDS = [
-  { id: 'explorer' as RoleId,           icon: 'explore',               title: 'Student (Explorer/Achiever)',  desc: 'Begin your learning journey.' },
-  { id: 'scholar' as RoleId,            icon: 'school',                title: 'Scholar (University)',         desc: 'Advanced academic research.' },
-  { id: 'teacher' as RoleId,            icon: 'co_present',            title: 'Teacher',                      desc: 'Guide and inspire students.' },
-  { id: 'parent' as RoleId,             icon: 'family_home',           title: 'Parent / Guardian',            desc: 'Monitor learning progress.' },
-  { id: 'admin' as RoleId,              icon: 'admin_panel_settings',  title: 'School Admin',                 desc: 'Manage institutional operations.' },
-  { id: 'government' as RoleId,         icon: 'account_balance',       title: 'Government Official',          desc: 'Oversee educational policy.' },
-  { id: 'enterprise_manager' as RoleId, icon: 'business_center',       title: 'Enterprise Manager',           desc: 'Corporate training oversight.' },
-  { id: 'admin' as RoleId,              icon: 'domain',                title: 'Institution Administrator',    desc: 'Multi-campus management.' },
+  { id: 'explorer' as RoleId,           icon: 'explore',               title: 'Student (K-12)',               desc: 'Begin your learning journey as an Explorer or Achiever.' },
+  { id: 'scholar' as RoleId,            icon: 'school',                title: 'Scholar (University)',         desc: 'Advanced academic coursework and research.' },
+  { id: 'teacher' as RoleId,            icon: 'co_present',            title: 'Teacher',                      desc: 'Guide, grade and inspire your students.' },
+  { id: 'parent' as RoleId,             icon: 'family_home',           title: 'Parent / Guardian',            desc: 'Monitor your child\'s learning and progress.' },
+  { id: 'admin' as RoleId,              icon: 'admin_panel_settings',  title: 'School Administrator',         desc: 'Manage your institution\'s operations.' },
+  { id: 'enterprise_manager' as RoleId, icon: 'business_center',       title: 'Enterprise Manager',           desc: 'Oversee corporate training and workforce learning.' },
 ]
 
 const LABEL: Record<RoleId, string> = {
-  explorer:           'Student (Explorer/Achiever)',
+  explorer:           'Student (Explorer / Achiever)',
   scholar:            'Scholar',
   teacher:            'Teacher',
   parent:             'Parent / Guardian',
-  admin:              'Administrator',
-  government:         'Government Official',
+  admin:              'School Administrator',
   enterprise_manager: 'Enterprise Manager',
 }
 
@@ -110,10 +107,9 @@ export default function SignupPage() {
               gridTemplateColumns: 'repeat(1, 1fr)',
               gap: 16,
             }}
-            className="sm:grid-cols-2 lg:grid-cols-4"
+            className="sm:grid-cols-2 lg:grid-cols-3"
           >
             {ROLE_CARDS.map((card, idx) => {
-              const isSelected = selectedRole === card.id && idx === ROLE_CARDS.findIndex((c, i) => c.id === card.id && i === idx)
               const selected = selectedRole === card.id
               return (
                 <button
@@ -305,9 +301,11 @@ export default function SignupPage() {
         </div>
 
         <style>{`
-          .sm\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+          @media (min-width: 640px) {
+            .sm\\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
+          }
           @media (min-width: 1024px) {
-            .lg\\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+            .lg\\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
           }
         `}</style>
       </div>

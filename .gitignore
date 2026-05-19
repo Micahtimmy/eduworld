@@ -40,6 +40,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Claude local settings
+# Claude local settings (API keys — never commit)
 .claude/settings.local.json
-.claude/

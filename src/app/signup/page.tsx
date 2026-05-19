@@ -43,7 +43,10 @@ export default function SignupPage() {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: fullName, role: selectedRole } },
+      options: {
+        data: { full_name: fullName, role: selectedRole },
+        emailRedirectTo: `${window.location.origin}/auth/callback`,
+      },
     })
     if (error) {
       toast.error(error.message)

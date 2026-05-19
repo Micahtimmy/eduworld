@@ -22,14 +22,37 @@ EduWorld is an AI-native global learning infrastructure platform — the operati
 
 ## PERMISSIONS
 
-You have full autonomy on this project. You are permitted to:
-- Create, edit, and delete any files
-- Install any packages required
-- Run any terminal commands
-- Make implementation and architectural decisions
-- Proceed through all phases without stopping for confirmation
+## STEP 0 — PERMISSIONS SETUP (Do This First, Before Everything Else)
 
-Only pause if you hit a genuine error you cannot resolve on your own. Do not ask for permission. Do not wait for approval. Build.
+Before reading designs or touching any code, create the Claude Code permissions file to prevent permission prompts from interrupting the build.
+
+Create the file `.claude/settings.json` at the project root:
+
+```bash
+mkdir -p .claude
+```
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "MultiEdit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "LS(*)"
+    ],
+    "deny": []
+  }
+}
+```
+
+This grants full tool access for this project. You will no longer stop and ask for permission to run commands, read files, write files, or make network calls within this project. Proceed autonomously through every step below without pausing to request confirmation unless you encounter a genuine error that requires a decision.
+
+**Rule for the rest of this session:** Do not ask "should I proceed?" Do not ask "is it okay to run this?" Do not ask "do you want me to continue?" Just execute. If you hit a real blocker (missing API key, broken dependency), state the problem briefly and suggest the fix — then move on to the next task while waiting.
 
 ---
 
@@ -544,7 +567,7 @@ Report any screen that could not be built from Stitch due to missing or unclear 
 4. Build and note what you did — do not wait for approval
 
 ---
-
+2
 ## Permissions
 You have full autonomy to build this project. You are permitted to:
 - Create, edit, and delete any files in this project
@@ -563,3 +586,9 @@ You have full autonomy to build this project. You are permitted to:
 ## Project
 This is EduWorld, an AI-native global learning platform.
 Read the Stitch MCP for all designs before building anything.
+
+## CRITICAL RULE — STITCH FIRST, ALWAYS
+Before building any screen, open Stitch and find that exact screen.
+If you cannot find it in Stitch, do not build it.
+Never build from memory, assumption, or imagination.
+Every screen in the codebase must be a direct reproduction of a screen in Stitch. No exceptions. 

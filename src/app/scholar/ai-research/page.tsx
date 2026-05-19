@@ -1,149 +1,196 @@
 'use client'
-import { Sparkles, BookOpen, Link, FileText, Save, Share2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 
-const INTELLIGENCE_NODES = [
-  {
-    type: 'suggestion',
-    icon: Sparkles,
-    iconColor: 'text-ai',
-    bg: 'bg-ai/5 border-ai/20',
-    label: 'Contextual Analysis',
-    content: 'The concept of quantum decoherence in section 2.3 could be strengthened by referencing recent work on topological quantum codes. This would reinforce your main thesis.',
-  },
-  {
-    type: 'citation',
-    icon: BookOpen,
-    iconColor: 'text-primary',
-    bg: 'bg-surface-low border-outline-variant',
-    label: 'Suggested Citation',
-    content: 'Preskill, J. (2022). Quantum Computing in the NISQ Era and Beyond. Quantum, 6, 620. DOI: 10.22331/q-2022-09-19-620',
-  },
-  {
-    type: 'citation',
-    icon: Link,
-    iconColor: 'text-blue-500',
-    bg: 'bg-blue-50 border-blue-100',
-    label: 'Related Source',
-    content: 'Santos et al. (2023). Neural correlates of quantum state preparation. Nature Physics, 19, 1234–1241.',
-  },
+import { useState } from 'react'
+import Link from 'next/link'
+
+const sidebarStyle: React.CSSProperties = { width: 260, minWidth: 260, background: '#003f7a', height: '100vh', position: 'fixed', top: 0, left: 0, display: 'flex', flexDirection: 'column', zIndex: 40 }
+const navItemStyle: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, color: 'rgba(255,255,255,0.75)', fontSize: 14, fontWeight: 500, cursor: 'pointer', marginBottom: 2, textDecoration: 'none' }
+
+const NAV = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/scholar/command-center' },
+  { icon: 'school', label: 'Courses', href: '/scholar/course-registration' },
+  { icon: 'science', label: 'Research', href: '/scholar/research-workspace', active: true },
+  { icon: 'menu_book', label: 'Library', href: '/scholar/library' },
+  { icon: 'work', label: 'Careers', href: '/scholar/careers' },
+  { icon: 'people', label: 'Community', href: '/scholar/networking' },
 ]
 
-const DOCUMENT_CONTENT = `Quantum Entanglement in Neural Networks: A Theoretical Framework
+const MESSAGES = [
+  { role: 'ai', text: 'Welcome to AI Research Assistant. I can help you find academic papers, generate citations, analyze your research gaps, and assist with your thesis. What are you working on today?' },
+  { role: 'user', text: 'I\'m researching quantum neural networks and need recent papers on decoherence mitigation.' },
+  { role: 'ai', text: 'I found 6 highly relevant papers. Here are the top 3:\n\n1. Chen, W. et al. (2024). "Adaptive Decoherence Mitigation in Hybrid Quantum-Classical Neural Networks." Nature Physics, 20, 445–452.\n\n2. Preskill, J. & Kim, S. (2023). "Error-Resilient Quantum Machine Learning." Quantum, 7, 891.\n\n3. Santos, M. et al. (2023). "Topological Protection in Quantum Neural Architectures." Physical Review Letters, 131, 180501.\n\nShall I generate APA citations for all three?' },
+  { role: 'user', text: 'Yes, APA citations please, and check if any of them contradict my claim in Section 2.3 about decoherence thresholds.' },
+]
 
-Abstract
-This paper presents a novel theoretical framework exploring the potential applications of quantum entanglement principles within artificial neural network architectures. We propose that quantum superposition states, when applied to weight initialization protocols, may offer computational advantages over classical stochastic methods.
+const CHIPS = ['Search ArXiv', 'Generate Citation', 'Summarize Paper', 'Check Plagiarism', 'Find Related Work', 'Analyze Gaps']
 
-1. Introduction
-The intersection of quantum mechanics and neural computation represents one of the most promising frontiers in modern computer science. While quantum computers remain nascent technology, the mathematical formalisms underlying quantum information theory offer powerful abstractions for understanding learning dynamics in classical neural networks...
+export default function AIResearchPage() {
+  const [input, setInput] = useState('')
 
-2. Theoretical Background
-2.1 Quantum State Representation
-Let |ψ⟩ denote a quantum state vector in Hilbert space H. For a two-qubit system, the general entangled state is expressed as:
-
-|ψ⟩ = α|00⟩ + β|01⟩ + γ|10⟩ + δ|11⟩
-
-where α, β, γ, δ ∈ ℂ and |α|² + |β|² + |γ|² + |δ|² = 1.
-
-2.2 Neural Network Mapping
-We propose a direct correspondence between quantum entanglement...`
-
-export default function ScholarAIResearchPage() {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">AI Research Assistant</h1>
-          <p className="text-sm text-on-surface-variant mt-1">Write, cite, and analyze with AI-powered research intelligence.</p>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f9f9ff', fontFamily: '"Inter", system-ui, sans-serif' }}>
+      <aside style={sidebarStyle}>
+        <div style={{ padding: '24px 20px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ color: '#fff', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 20 }}>EduWorld</div>
+          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 2 }}>Scholar Portal</div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-2"><Share2 className="h-4 w-4" /> Share</Button>
-          <Button size="sm" className="gap-2 bg-ai hover:bg-ai/90"><Sparkles className="h-4 w-4" /> AI Mode</Button>
+        <nav style={{ flex: 1, padding: '12px 12px', overflowY: 'auto' }}>
+          {NAV.map(item => (
+            <Link key={item.href} href={item.href} style={{ ...navItemStyle, ...(item.active ? { background: 'rgba(255,255,255,0.15)', borderLeft: '3px solid #fff', paddingLeft: 9, color: '#fff' } : {}) }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div style={{ padding: '12px 12px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <Link href="/settings" style={navItemStyle}><span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>Settings</Link>
         </div>
-      </div>
+      </aside>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Document Editor */}
-        <div className="lg:col-span-2 bg-surface-lowest rounded-2xl border border-outline-variant overflow-hidden">
-          {/* Editor Toolbar */}
-          <div className="flex items-center gap-2 px-4 py-3 border-b border-outline-variant bg-surface-low">
-            <div className="flex gap-1">
-              {['B', 'I', 'U'].map(f => (
-                <button key={f} className="w-7 h-7 rounded-lg hover:bg-surface-high text-xs font-semibold text-on-surface-variant transition-colors">{f}</button>
-              ))}
+      <main style={{ marginLeft: 260, flex: 1, display: 'flex', flexDirection: 'column', height: '100vh' }}>
+        {/* Header */}
+        <div style={{ padding: '20px 32px', borderBottom: '1px solid #c2c6d2', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: '#f0fdf4', border: '1px solid #a7f3d0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ color: '#10B981', fontSize: 20, fontWeight: 700 }}>✦</span>
             </div>
-            <div className="w-px h-5 bg-outline-variant mx-1" />
-            <div className="flex gap-1">
-              {['H1', 'H2', '¶'].map(f => (
-                <button key={f} className="px-2 h-7 rounded-lg hover:bg-surface-high text-xs font-mono text-on-surface-variant transition-colors">{f}</button>
-              ))}
-            </div>
-            <div className="ml-auto flex gap-2">
-              <Button size="sm" variant="outline" className="h-7 gap-1.5 text-xs"><Save className="h-3.5 w-3.5" /> Save</Button>
-              <Button size="sm" className="h-7 gap-1.5 text-xs bg-ai hover:bg-ai/90"><Sparkles className="h-3.5 w-3.5" /> Improve</Button>
+            <div>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 17, color: '#191c20' }}>AI Research Assistant</div>
+              <div style={{ fontSize: 12, color: '#10B981', fontWeight: 600 }}>● Online · Research Mode</div>
             </div>
           </div>
-
-          {/* Document Content */}
-          <div className="p-6">
-            <div className="space-y-4">
-              <div className="border-b border-outline-variant pb-4">
-                <h2 className="font-display font-bold text-xl text-on-surface">Quantum Entanglement in Neural Networks: A Theoretical Framework</h2>
-                <p className="text-xs text-on-surface-variant mt-1">Draft · Last saved 2 minutes ago · 1,247 words</p>
-              </div>
-              <pre className="text-sm text-on-surface whitespace-pre-wrap font-sans leading-relaxed">
-                {DOCUMENT_CONTENT}
-              </pre>
-            </div>
-          </div>
-
-          {/* Editor Footer */}
-          <div className="flex items-center justify-between px-6 py-3 border-t border-outline-variant bg-surface-low">
-            <p className="text-xs text-on-surface-variant">1,247 words · 8,342 characters</p>
-            <div className="flex items-center gap-3">
-              <button className="text-xs text-primary hover:underline flex items-center gap-1"><FileText className="h-3.5 w-3.5" /> Export PDF</button>
-              <button className="text-xs text-primary hover:underline flex items-center gap-1"><BookOpen className="h-3.5 w-3.5" /> Citation Manager</button>
-            </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{ background: '#f9f9ff', border: '1px solid #c2c6d2', borderRadius: 8, padding: '7px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', color: '#424750' }}>New Session</button>
+            <button style={{ background: '#f9f9ff', border: '1px solid #c2c6d2', borderRadius: 8, padding: '7px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', color: '#424750' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18, verticalAlign: 'middle' }}>history</span>
+            </button>
           </div>
         </div>
 
-        {/* Intelligence Nodes Panel */}
-        <div className="space-y-4">
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4">
-            <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="h-4 w-4 text-ai" />
-              <h2 className="font-display font-semibold text-on-surface">Intelligence Nodes</h2>
-            </div>
-            <div className="space-y-3">
-              {INTELLIGENCE_NODES.map((node, i) => (
-                <div key={i} className={cn('rounded-xl border p-3 space-y-2', node.bg)}>
-                  <div className="flex items-center gap-2">
-                    <node.icon className={cn('h-3.5 w-3.5', node.iconColor)} />
-                    <span className={cn('text-xs font-semibold', node.iconColor)}>{node.label}</span>
+        {/* Chat Area */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '24px 32px', display: 'flex', gap: 24 }}>
+          {/* Messages */}
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, maxWidth: 700 }}>
+              {MESSAGES.map((msg, i) => (
+                <div key={i} style={{ display: 'flex', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                  {msg.role === 'ai' && (
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#f0fdf4', border: '1px solid #a7f3d0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 10, flexShrink: 0, marginTop: 4 }}>
+                      <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>✦</span>
+                    </div>
+                  )}
+                  <div style={{
+                    maxWidth: '78%',
+                    background: msg.role === 'user' ? '#003f7a' : '#fff',
+                    color: msg.role === 'user' ? '#fff' : '#191c20',
+                    border: msg.role === 'ai' ? '1px solid #c2c6d2' : 'none',
+                    borderRadius: 12,
+                    padding: '12px 16px',
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                    whiteSpace: 'pre-wrap',
+                    boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+                  }}>
+                    {msg.text}
+                    {msg.role === 'ai' && i === MESSAGES.length - 1 && (
+                      <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+                        <button style={{ background: '#10B981', color: '#fff', border: 'none', borderRadius: 6, padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Generate APA Citations</button>
+                        <button style={{ background: '#fff', color: '#003f7a', border: '1px solid #003f7a', borderRadius: 6, padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Analyze Section 2.3</button>
+                        <button style={{ background: '#fff', color: '#424750', border: '1px solid #c2c6d2', borderRadius: 6, padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Save to Library</button>
+                      </div>
+                    )}
                   </div>
-                  <p className="text-xs text-on-surface-variant leading-relaxed">{node.content}</p>
-                  <div className="flex gap-2">
-                    <button className="text-xs text-primary hover:underline">Insert</button>
-                    <button className="text-xs text-on-surface-variant hover:underline">Dismiss</button>
+                </div>
+              ))}
+
+              {/* Typing indicator */}
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+                <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#f0fdf4', border: '1px solid #a7f3d0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ color: '#10B981', fontSize: 14, fontWeight: 700 }}>✦</span>
+                </div>
+                <div style={{ background: '#fff', border: '1px solid #c2c6d2', borderRadius: 12, padding: '12px 16px' }}>
+                  <div style={{ display: 'flex', gap: 5 }}>
+                    {[0, 1, 2].map(i => (
+                      <div key={i} style={{ width: 7, height: 7, borderRadius: '50%', background: '#10B981', opacity: 0.4 + i * 0.2 }} />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Panel */}
+          <div style={{ width: 280, flexShrink: 0 }}>
+            {/* Session Stats */}
+            <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', padding: 18, marginBottom: 16 }}>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 14, color: '#191c20', marginBottom: 12 }}>Session Stats</div>
+              {[
+                { label: 'Papers Found', value: '6' },
+                { label: 'Citations Generated', value: '3' },
+                { label: 'Session Time', value: '12 min' },
+                { label: 'Tokens Used', value: '2,840' },
+              ].map(s => (
+                <div key={s.label} style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: 8, marginBottom: 8, borderBottom: '1px solid #eef0f4' }}>
+                  <span style={{ fontSize: 13, color: '#424750' }}>{s.label}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: '#191c20' }}>{s.value}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Citation Generator */}
+            <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', padding: 18, marginBottom: 16 }}>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 14, color: '#191c20', marginBottom: 10 }}>Citation Format</div>
+              <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 12 }}>
+                {['APA 7', 'MLA 9', 'Chicago', 'IEEE'].map((f, i) => (
+                  <button key={f} style={{ background: i === 0 ? '#003f7a' : '#f9f9ff', color: i === 0 ? '#fff' : '#424750', border: '1px solid #c2c6d2', borderRadius: 99, padding: '4px 10px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>{f}</button>
+                ))}
+              </div>
+              <div style={{ background: '#f9f9ff', borderRadius: 8, padding: 10, fontSize: 12, color: '#191c20', fontFamily: '"Courier Prime", monospace', lineHeight: 1.5 }}>
+                Chen, W., Kim, J., & Park, S. (2024). Adaptive decoherence mitigation in hybrid quantum-classical neural networks. <em>Nature Physics</em>, 20, 445–452. https://doi.org/10.1038/...
+              </div>
+              <button style={{ marginTop: 10, background: '#fff', color: '#003f7a', border: '1px solid #003f7a', borderRadius: 6, padding: '6px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer', width: '100%' }}>📋 Copy Citation</button>
+            </div>
+
+            {/* Related Papers */}
+            <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', padding: 18 }}>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 14, color: '#191c20', marginBottom: 12 }}>Found Papers</div>
+              {[
+                { title: 'Adaptive Decoherence Mitigation...', venue: 'Nature Physics 2024', match: '98%' },
+                { title: 'Error-Resilient Quantum ML', venue: 'Quantum 2023', match: '91%' },
+                { title: 'Topological Protection in QNN', venue: 'PRL 2023', match: '87%' },
+              ].map((p, i) => (
+                <div key={i} style={{ borderBottom: i === 2 ? 'none' : '1px solid #eef0f4', paddingBottom: 10, marginBottom: 10 }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: '#191c20', marginBottom: 3 }}>{p.title}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 11, color: '#424750' }}>{p.venue}</span>
+                    <span style={{ background: '#d1fae5', color: '#10B981', fontSize: 11, fontWeight: 700, padding: '1px 6px', borderRadius: 99 }}>{p.match}</span>
                   </div>
                 </div>
               ))}
             </div>
           </div>
+        </div>
 
-          {/* Research Stats */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <h2 className="font-display font-semibold text-on-surface">Research Stats</h2>
-            {[{ label: 'Citations Found', value: '24' }, { label: 'Plagiarism Risk', value: '2%' }, { label: 'AI Score', value: '91/100' }].map(s => (
-              <div key={s.label} className="flex items-center justify-between">
-                <p className="text-xs text-on-surface-variant">{s.label}</p>
-                <p className="text-xs font-bold text-on-surface">{s.value}</p>
-              </div>
+        {/* Input Area */}
+        <div style={{ padding: '16px 32px', borderTop: '1px solid #c2c6d2', background: '#fff' }}>
+          <div style={{ overflowX: 'auto', display: 'flex', gap: 8, marginBottom: 12, paddingBottom: 2 }}>
+            {CHIPS.map(c => (
+              <button key={c} style={{ background: '#f0fdf4', color: '#10B981', border: '1px solid #a7f3d0', borderRadius: 99, padding: '5px 12px', fontSize: 12, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>{c}</button>
             ))}
           </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <input
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              placeholder="Ask about research, request citations, search papers..."
+              style={{ flex: 1, padding: '12px 16px', borderRadius: 10, border: '1px solid #c2c6d2', fontSize: 14, outline: 'none', fontFamily: '"Inter", system-ui, sans-serif' }}
+            />
+            <button style={{ background: '#10B981', color: '#fff', border: 'none', borderRadius: 10, padding: '12px 18px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, fontWeight: 600, fontSize: 13 }}>
+              <span style={{ fontSize: 15 }}>✦</span> Send
+            </button>
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

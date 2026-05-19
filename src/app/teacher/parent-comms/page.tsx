@@ -1,150 +1,153 @@
 'use client'
-import { Sparkles, Phone, Video, Paperclip, Send, Plus, Calendar, History } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard' },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox', active: true },
+]
 
 const THREADS = [
-  { name: 'Maria Garcia', time: '10:42 AM', preview: 'RE: Leo\'s Math progress this week', student: 'Leo Garcia' },
-  { name: 'David Chen', time: 'Yesterday', preview: 'Emma\'s reading assignment feedback', student: 'Emma Chen', unread: true },
+  { initials: 'MG', name: 'Maria Garcia', time: '10:42 AM', preview: "RE: Leo's Math progress this week", student: 'Leo Garcia', active: true },
+  { initials: 'DC', name: 'David Chen', time: 'Yesterday', preview: "Emma's reading assignment feedback", student: 'Emma Chen', unread: true },
+  { initials: 'RS', name: 'Rachel Smith', time: 'Jan 23', preview: 'Behavior plan follow-up', student: 'John Smith' },
 ]
 
-const MESSAGES = [
-  { sender: 'Maria Garcia', text: 'Good morning! I noticed Leo\'s math scores have improved. How is he doing with fractions?', time: '10:40 AM', isMe: false },
-  { sender: 'Me', text: "Good morning Maria! Leo has been making excellent progress. He completed the worksheet I sent and got 8/10. I've attached the next worksheet for extra practice!", time: '10:45 AM', isMe: true },
+const MSGS = [
+  { initials: 'MG', text: "Good morning! I noticed Leo's math scores have improved. How is he doing with fractions?", time: '10:40 AM', me: false },
+  { initials: 'ME', text: "Good morning Maria! Leo has been making excellent progress. He completed the worksheet and got 8/10. I've attached the next worksheet!", time: '10:45 AM', me: true },
 ]
 
-const CONFERENCES = [
-  { family: 'Chen Family', student: 'Emma Chen', topic: 'Math Progress', date: 'Tomorrow', time: '3:30–4:00 PM' },
-  { family: 'Smith Family', student: 'John Smith', topic: 'Behavior Plan', date: 'Oct 24', time: '4:15–4:45 PM' },
-]
-
-const ACTIVITY = [
-  { text: 'Broadcast sent to Grade 4 parents', time: '2h ago' },
-  { text: 'Message received from David Chen', time: 'Yesterday' },
-  { text: 'System report auto-generated', time: '3 days ago' },
-]
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Teacher</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: item.active ? '#f3f3f9' : 'transparent', borderLeft: item.active ? `3px solid ${T.primary}` : '3px solid transparent', color: item.active ? T.primary : T.textMuted, fontFamily: T.fontBody, fontWeight: item.active ? 600 : 400, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
+}
 
 export default function TeacherParentCommsPage() {
   return (
-    <div className="p-6 h-full">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
-        {/* Conversations */}
-        <div className="lg:col-span-3 bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-4">
-          <div>
-            <h2 className="font-display font-semibold text-on-surface">Conversations</h2>
-            <p className="text-xs text-on-surface-variant">Active parent threads</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">🌐 Auto-Translate On</span>
-          </div>
-          <div className="space-y-2">
-            {THREADS.map(t => (
-              <div key={t.name} className={`p-3 rounded-xl cursor-pointer transition-colors ${t.name === 'Maria Garcia' ? 'bg-primary/5 border border-primary/20' : 'hover:bg-surface-low'}`}>
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-on-surface">{t.name}</p>
-                  <p className="text-xs text-on-surface-variant">{t.time}</p>
-                </div>
-                <p className="text-xs text-on-surface-variant mt-0.5">👤 {t.student}</p>
-                <p className="text-xs text-on-surface-variant truncate mt-0.5">{t.preview}</p>
-                {t.unread && <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full font-semibold">Unread</span>}
+    <div style={{ display: 'flex', height: '100vh', fontFamily: T.fontBody, overflow: 'hidden' }}>
+      <Sidebar />
+      {/* Threads list */}
+      <div style={{ width: 260, background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+        <div style={{ padding: '18px 16px', borderBottom: `1px solid ${T.border}` }}>
+          <h2 style={{ fontFamily: T.fontHead, fontSize: 15, fontWeight: 700, color: T.textPrimary, marginBottom: 4 }}>Parent Conversations</h2>
+          <span style={{ fontSize: 11, fontWeight: 700, color: T.ai, background: T.ai + '15', padding: '2px 8px', borderRadius: 20 }}>🌐 Auto-Translate On</span>
+        </div>
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          {THREADS.map(t => (
+            <div key={t.name} style={{ padding: '12px 16px', cursor: 'pointer', borderBottom: `1px solid ${T.border}`, background: t.active ? T.primary + '06' : 'transparent', borderLeft: t.active ? `3px solid ${T.primary}` : '3px solid transparent' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontWeight: 700, fontSize: 13, color: T.textPrimary }}>{t.name}</span>
+                <span style={{ fontSize: 11, color: T.textMuted }}>{t.time}</span>
               </div>
+              <div style={{ fontSize: 11, color: T.textMuted, marginTop: 2 }}>👤 {t.student}</div>
+              <div style={{ fontSize: 12, color: T.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 2 }}>{t.preview}</div>
+              {t.unread && <span style={{ fontSize: 10, fontWeight: 700, background: T.primary, color: '#fff', padding: '2px 8px', borderRadius: 10, marginTop: 4, display: 'inline-block' }}>Unread</span>}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Chat */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: T.bg }}>
+        <div style={{ padding: '14px 20px', background: T.surface, borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 38, height: 38, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: T.primary }}>MG</div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: 15, color: T.textPrimary }}>Maria Garcia</div>
+            <div style={{ fontSize: 12, color: T.textMuted }}>Parent of: Leo Garcia (Grade 4)</div>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            {['phone', 'videocam'].map(icon => (
+              <button key={icon} style={{ width: 36, height: 36, borderRadius: 8, background: T.bg, border: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18, color: T.textMuted }}>{icon}</span>
+              </button>
             ))}
           </div>
         </div>
 
-        {/* Chat */}
-        <div className="lg:col-span-6 bg-surface-lowest rounded-2xl border border-outline-variant flex flex-col">
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-outline-variant">
-            <div className="w-9 h-9 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">MG</div>
-            <div className="flex-1">
-              <p className="font-semibold text-sm text-on-surface">Maria Garcia</p>
-              <p className="text-xs text-on-surface-variant">Parent of: Leo Garcia (Grade 4)</p>
-            </div>
-            <div className="flex gap-2">
-              <button className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center text-on-surface-variant hover:bg-surface-high"><Phone className="h-3.5 w-3.5" /></button>
-              <button className="w-8 h-8 rounded-lg bg-surface-low flex items-center justify-center text-on-surface-variant hover:bg-surface-high"><Video className="h-3.5 w-3.5" /></button>
-            </div>
+        <div style={{ flex: 1, overflowY: 'auto', padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ textAlign: 'center' }}>
+            <span style={{ fontSize: 11, color: T.textMuted, background: T.border + '50', padding: '4px 14px', borderRadius: 20 }}>Today</span>
           </div>
-          <div className="text-center py-2">
-            <span className="text-xs bg-surface-lowest text-on-surface-variant px-3 py-0.5 rounded-full border border-outline-variant">Today</span>
-          </div>
-          <div className="flex-1 p-4 space-y-4 overflow-y-auto">
-            {MESSAGES.map((m, i) => (
-              <div key={i} className={`flex gap-3 ${m.isMe ? 'flex-row-reverse' : ''}`}>
-                {!m.isMe && <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary shrink-0 mt-0.5">MG</div>}
-                <div className={`max-w-xs ${m.isMe ? 'items-end' : 'items-start'} flex flex-col gap-1`}>
-                  <div className={`px-4 py-2.5 rounded-2xl text-sm ${m.isMe ? 'bg-primary text-white rounded-br-sm' : 'bg-surface-low text-on-surface rounded-bl-sm'}`}>{m.text}</div>
-                  <p className="text-xs text-on-surface-variant">{m.time}</p>
-                </div>
+          {MSGS.map((m, i) => (
+            <div key={i} style={{ display: 'flex', gap: 10, justifyContent: m.me ? 'flex-end' : 'flex-start' }}>
+              {!m.me && <div style={{ width: 34, height: 34, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: T.primary, flexShrink: 0 }}>MG</div>}
+              <div style={{ maxWidth: '55%' }}>
+                <div style={{ background: m.me ? T.primary : T.surface, color: m.me ? '#fff' : T.textPrimary, borderRadius: m.me ? '16px 4px 16px 16px' : '4px 16px 16px 16px', padding: '12px 14px', fontSize: 14, border: m.me ? 'none' : `1px solid ${T.border}` }}>{m.text}</div>
+                <div style={{ fontSize: 11, color: T.textMuted, marginTop: 4, textAlign: m.me ? 'right' : 'left' }}>{m.time}</div>
               </div>
-            ))}
-          </div>
-          <div className="px-4 py-2 border-t border-outline-variant">
-            <div className="flex items-center gap-1 mb-2">
-              <Sparkles className="h-3 w-3 text-ai" />
-              <p className="text-xs text-ai">AI Reply Suggestion Active</p>
             </div>
-            <div className="flex items-center gap-2">
-              <button className="text-on-surface-variant hover:text-primary"><Paperclip className="h-4 w-4" /></button>
-              <input className="flex-1 bg-surface-low rounded-xl px-3 py-2 text-sm outline-none border border-outline-variant focus:border-primary placeholder:text-on-surface-variant" placeholder="Type a message..." />
-              <button className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white"><Send className="h-3.5 w-3.5" /></button>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Right Panel */}
-        <div className="lg:col-span-3 space-y-4">
-          {/* Broadcast */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <span className="text-base">📢</span>
-              <h2 className="font-display font-semibold text-on-surface">Broadcast</h2>
-            </div>
-            <select className="w-full px-3 py-2 text-sm bg-surface-low border border-outline-variant rounded-xl outline-none text-on-surface">
-              <option>All Parents (Grade 4)</option>
-              <option>Whole School</option>
-              <option>Specific Class...</option>
-            </select>
-            <textarea className="w-full px-3 py-2 text-sm bg-surface-low border border-outline-variant rounded-xl outline-none resize-none placeholder:text-on-surface-variant" rows={3} placeholder="Type announcement..." />
-            <Button size="sm" className="w-full gap-2"><Send className="h-3.5 w-3.5" /> Send Broadcast</Button>
+        <div style={{ padding: '12px 20px', background: T.surface, borderTop: `1px solid ${T.border}` }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+            <span style={{ fontSize: 13, color: T.ai }}>✦</span>
+            <span style={{ fontSize: 12, color: T.ai, fontWeight: 600 }}>AI Reply Suggestion Active</span>
           </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <input placeholder="Type a message..." style={{ flex: 1, background: T.bg, border: `1px solid ${T.border}`, borderRadius: 12, padding: '10px 16px', fontFamily: T.fontBody, fontSize: 14, color: T.textPrimary, outline: 'none' }} />
+            <button style={{ width: 40, height: 40, borderRadius: '50%', background: T.primary, border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#fff' }}>send</span>
+            </button>
+          </div>
+        </div>
+      </div>
 
-          {/* Conferences */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Calendar className="h-4 w-4 text-primary" />
-                <h2 className="font-display font-semibold text-on-surface">Upcoming Conferences</h2>
-              </div>
-              <button className="text-xs text-primary hover:underline">View Calendar</button>
-            </div>
-            <div className="space-y-2">
-              {CONFERENCES.map(c => (
-                <div key={c.family} className="p-3 bg-surface-low rounded-xl">
-                  <p className="text-sm font-semibold text-on-surface">{c.family}</p>
-                  <p className="text-xs text-on-surface-variant">👤 {c.student} · {c.topic}</p>
-                  <p className="text-xs text-on-surface-variant">{c.date} · ⏰ {c.time}</p>
-                </div>
-              ))}
-            </div>
-            <Button size="sm" variant="outline" className="w-full gap-1"><Plus className="h-3.5 w-3.5" /> Schedule New</Button>
-          </div>
+      {/* Right panel */}
+      <div style={{ width: 240, background: T.surface, borderLeft: `1px solid ${T.border}`, padding: 16, display: 'flex', flexDirection: 'column', gap: 16, flexShrink: 0 }}>
+        {/* Broadcast */}
+        <div>
+          <div style={{ fontFamily: T.fontHead, fontSize: 14, fontWeight: 700, color: T.textPrimary, marginBottom: 10 }}>📢 Broadcast</div>
+          <select style={{ width: '100%', padding: '8px 12px', background: T.bg, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 13, marginBottom: 8, fontFamily: T.fontBody, color: T.textPrimary }}>
+            <option>All Parents (Grade 4)</option>
+            <option>Whole School</option>
+          </select>
+          <textarea placeholder="Type announcement..." rows={3} style={{ width: '100%', padding: '8px 12px', background: T.bg, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 13, resize: 'none', fontFamily: T.fontBody, marginBottom: 8, color: T.textPrimary, boxSizing: 'border-box' }} />
+          <button style={{ width: '100%', padding: '9px 0', background: T.primary, color: '#fff', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Send Broadcast</button>
+        </div>
 
-          {/* Activity */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <History className="h-4 w-4 text-primary" />
-              <h2 className="font-display font-semibold text-on-surface">Recent Activity</h2>
+        {/* Conferences */}
+        <div>
+          <div style={{ fontFamily: T.fontHead, fontSize: 14, fontWeight: 700, color: T.textPrimary, marginBottom: 10 }}>Upcoming Conferences</div>
+          {[
+            { family: 'Chen Family', student: 'Emma Chen', date: 'Tomorrow', time: '3:30–4:00 PM' },
+            { family: 'Smith Family', student: 'John Smith', date: 'May 24', time: '4:15–4:45 PM' },
+          ].map(c => (
+            <div key={c.family} style={{ background: T.bg, borderRadius: 10, padding: '10px 12px', marginBottom: 8 }}>
+              <div style={{ fontWeight: 600, fontSize: 13, color: T.textPrimary }}>{c.family}</div>
+              <div style={{ fontSize: 11, color: T.textMuted }}>{c.student} · {c.date} · {c.time}</div>
             </div>
-            <div className="space-y-2">
-              {ACTIVITY.map(a => (
-                <div key={a.text}>
-                  <p className="text-xs text-on-surface">{a.text}</p>
-                  <p className="text-xs text-on-surface-variant">{a.time}</p>
-                </div>
-              ))}
-            </div>
-            <button className="text-xs text-primary hover:underline">View Full Log →</button>
-          </div>
+          ))}
+          <button style={{ width: '100%', padding: '8px 0', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 12, color: T.primary, fontWeight: 600, cursor: 'pointer' }}>+ Schedule New</button>
         </div>
       </div>
     </div>

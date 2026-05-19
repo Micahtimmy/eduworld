@@ -1,143 +1,167 @@
 'use client'
-import { Sparkles, AlertTriangle, Package, ClipboardList, ChevronRight, MoreHorizontal, CheckCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard' },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox' },
+]
 
 const ALERTS = [
-  { initials: 'EL', name: 'Elena Luvov', dept: 'Dept. of Humanities', issue: 'Outdated History Textbooks', date: 'Oct 24, 2023', urgency: 'Critical', status: 'Triage' },
-  { initials: 'JM', name: 'James Morton', dept: 'Computer Science', issue: 'Server Latency (Lab 402)', date: 'Oct 23, 2023', urgency: 'Medium', status: 'Assigned' },
+  { initials: 'EL', name: 'Elena Luvov', dept: 'Dept. of Humanities', issue: 'Outdated History Textbooks', date: 'Oct 24, 2025', urgency: 'Critical' },
+  { initials: 'JM', name: 'James Morton', dept: 'Computer Science', issue: 'Server Latency (Lab 402)', date: 'Oct 23, 2025', urgency: 'Medium' },
 ]
 
-const ACTIVE_SUBMISSIONS = [
-  { title: 'Science Lab Refurbishment', status: 'Approved', sub: 'Awaiting Finance Signature • 2 days ago' },
-  { title: 'Math Curriculum Error', status: 'Under Review', sub: 'Assigned to: Dean Miller • 5 hours ago' },
+const SUBMISSIONS = [
+  { title: 'Science Lab Refurbishment', status: 'Approved', sub: 'Awaiting Finance Signature · 2 days ago' },
+  { title: 'Math Curriculum Error', status: 'Under Review', sub: 'Assigned to: Dean Miller · 5 hours ago' },
 ]
+
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Teacher</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: 'transparent', borderLeft: '3px solid transparent', color: T.textMuted, fontFamily: T.fontBody, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
+}
 
 export default function TeacherReportingPage() {
   return (
-    <div className="p-6 space-y-6">
-      <div>
-        <p className="text-xs text-on-surface-variant mb-1">EduWorld Admin › Institutional Reporting</p>
-        <div className="flex items-start justify-between">
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: 'auto', padding: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
           <div>
-            <h1 className="font-display font-bold text-2xl text-on-surface">Teacher-to-Admin Portal</h1>
-            <p className="text-sm text-on-surface-variant mt-1">Flag curriculum issues, resource requests, and end-of-term institutional reviews for administrative oversight.</p>
+            <p style={{ fontSize: 12, color: T.textMuted, marginBottom: 4 }}>EduWorld Admin › Institutional Reporting</p>
+            <h1 style={{ fontFamily: T.fontHead, fontSize: 24, fontWeight: 800, color: T.textPrimary, margin: 0 }}>Teacher-to-Admin Portal</h1>
+            <p style={{ fontSize: 14, color: T.textMuted, marginTop: 4 }}>Flag curriculum issues, resource requests, and end-of-term reviews.</p>
           </div>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm">View History</Button>
-            <Button size="sm">New Submission</Button>
-          </div>
-        </div>
-      </div>
-
-      {/* AI Recommendation Banner */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-5">
-        <div className="flex items-start gap-4">
-          <div className="flex-1">
-            <div className="flex items-center gap-1.5 mb-1">
-              <Sparkles className="h-3.5 w-3.5 text-amber-600" />
-              <span className="text-xs font-bold text-amber-700 uppercase tracking-wide">AI Recommendation</span>
-            </div>
-            <p className="font-semibold text-on-surface">Curriculum Optimization Opportunity</p>
-            <p className="text-xs text-on-surface-variant mt-1">EduWorld AI detected a trend in Grade 9 Biology — 14 educators flagged insufficient lab materials for &ldquo;Cellular Structures.&rdquo;</p>
-            <div className="flex gap-2 mt-3">
-              <Button size="sm" className="h-7 text-xs gap-1 bg-amber-600 hover:bg-amber-700"><Sparkles className="h-3 w-3" /> Generate Resource Request</Button>
-              <Button variant="outline" size="sm" className="h-7 text-xs">Dismiss</Button>
-            </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{ padding: '9px 16px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10, fontSize: 13, color: T.textPrimary, cursor: 'pointer' }}>View History</button>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 18px', background: T.primary, border: 'none', borderRadius: 10, fontSize: 13, color: '#fff', cursor: 'pointer', fontWeight: 600 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add</span>New Submission
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Action Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {[
-          { icon: AlertTriangle, color: 'text-red-500', bg: 'bg-red-50', title: 'Flag Curriculum Issue', desc: 'Report errors, outdated materials, or standards misalignment.', cta: 'Start Report →' },
-          { icon: Package, color: 'text-blue-500', bg: 'bg-blue-50', title: 'Resource Request', desc: 'Requisitions for supplies, digital tools, guest speaker funding.', cta: 'Submit Request →' },
-          { icon: ClipboardList, color: 'text-purple-500', bg: 'bg-purple-50', title: 'End-of-Term Institutional Review', desc: 'Feedback on policy, leadership, operational efficiency.', cta: 'Open Now →' },
-        ].map(c => (
-          <div key={c.title} className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <div className={`w-10 h-10 rounded-xl ${c.bg} flex items-center justify-center`}>
-              <c.icon className={`h-5 w-5 ${c.color}`} />
-            </div>
-            <p className="font-semibold text-on-surface">{c.title}</p>
-            <p className="text-xs text-on-surface-variant">{c.desc}</p>
-            <button className="text-xs text-primary hover:underline font-semibold">{c.cta}</button>
+        {/* AI Banner */}
+        <div style={{ background: T.xp + '10', border: `1px solid ${T.xp}30`, borderRadius: 16, padding: 22, marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+            <span style={{ fontSize: 14, color: T.xp }}>✦</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: T.xp, textTransform: 'uppercase', letterSpacing: '0.05em' }}>AI Recommendation</span>
           </div>
-        ))}
-      </div>
-
-      {/* Active Submissions */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-        <h2 className="font-display font-semibold text-on-surface">Active Submission Status</h2>
-        {ACTIVE_SUBMISSIONS.map(s => (
-          <div key={s.title} className="flex items-center gap-3 p-3 bg-surface-low rounded-xl">
-            <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-on-surface">{s.title}</p>
-              <p className="text-xs text-on-surface-variant">{s.sub}</p>
-            </div>
-            <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${s.status === 'Approved' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>{s.status}</span>
-          </div>
-        ))}
-        <button className="text-xs text-primary hover:underline">View All Submissions</button>
-      </div>
-
-      {/* Institutional Pulse */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 flex items-center gap-2">
-        <span className="text-blue-500 text-lg">ℹ</span>
-        <p className="text-xs text-blue-700">Faculty feedback volume is up 24% this term, indicating increased educator engagement with administration.</p>
-      </div>
-
-      {/* Global Systemic Alerts */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display font-semibold text-on-surface">Global Systemic Alerts</h2>
-          <div className="flex gap-1">
-            {['All Types', 'Pending Only'].map((t, i) => (
-              <button key={t} className={`px-3 py-1 rounded-lg text-xs font-semibold ${i === 0 ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-low'}`}>{t}</button>
-            ))}
+          <div style={{ fontWeight: 700, fontSize: 15, color: T.textPrimary, marginBottom: 6 }}>Curriculum Optimization Opportunity</div>
+          <div style={{ fontSize: 13, color: T.textMuted, marginBottom: 12 }}>EduWorld AI detected a trend in Grade 9 Biology — 14 educators flagged insufficient lab materials for "Cellular Structures."</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', background: T.xp, color: '#fff', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 15 }}>auto_awesome</span>Generate Resource Request
+            </button>
+            <button style={{ padding: '8px 16px', background: T.surface, color: T.textMuted, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 13, cursor: 'pointer' }}>Dismiss</button>
           </div>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+
+        {/* Action Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+          {[
+            { icon: 'warning', color: T.error, title: 'Flag Curriculum Issue', desc: 'Report errors, outdated materials, or standards misalignment.', cta: 'Start Report →' },
+            { icon: 'inventory_2', color: '#0891b2', title: 'Resource Request', desc: 'Requisitions for supplies, digital tools, guest speaker funding.', cta: 'Submit Request →' },
+            { icon: 'assignment', color: '#7c3aed', title: 'End-of-Term Review', desc: 'Feedback on policy, leadership, operational efficiency.', cta: 'Open Now →' },
+          ].map(c => (
+            <div key={c.title} style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: c.color + '18', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 14 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 22, color: c.color }}>{c.icon}</span>
+              </div>
+              <div style={{ fontWeight: 700, fontSize: 15, color: T.textPrimary, marginBottom: 6 }}>{c.title}</div>
+              <div style={{ fontSize: 13, color: T.textMuted, marginBottom: 14 }}>{c.desc}</div>
+              <button style={{ fontSize: 13, color: T.primary, fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>{c.cta}</button>
+            </div>
+          ))}
+        </div>
+
+        {/* Submissions */}
+        <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, marginBottom: 24 }}>
+          <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary, marginBottom: 14 }}>Active Submissions</h2>
+          {SUBMISSIONS.map(s => (
+            <div key={s.title} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 14px', background: T.bg, borderRadius: 10, marginBottom: 8 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20, color: T.ai }}>check_circle</span>
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 600, fontSize: 14, color: T.textPrimary }}>{s.title}</div>
+                <div style={{ fontSize: 12, color: T.textMuted }}>{s.sub}</div>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: s.status === 'Approved' ? T.ai + '20' : T.xp + '20', color: s.status === 'Approved' ? T.ai : T.xp }}>{s.status}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Systemic Alerts Table */}
+        <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary }}>Global Systemic Alerts</h2>
+            <div style={{ display: 'flex', gap: 6 }}>
+              {['All Types', 'Pending Only'].map((t, i) => (
+                <button key={t} style={{ padding: '5px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer', background: i === 0 ? T.primary : 'transparent', color: i === 0 ? '#fff' : T.textMuted, border: i === 0 ? 'none' : `1px solid ${T.border}` }}>{t}</button>
+              ))}
+            </div>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
-              <tr className="text-xs text-on-surface-variant border-b border-outline-variant">
-                <th className="text-left pb-3 font-semibold">Reporting Teacher</th>
-                <th className="text-left pb-3 font-semibold">Issue Category</th>
-                <th className="text-left pb-3 font-semibold">Date Filed</th>
-                <th className="text-left pb-3 font-semibold">Urgency</th>
-                <th className="text-left pb-3 font-semibold">Admin Status</th>
-                <th className="text-left pb-3 font-semibold">Actions</th>
+              <tr style={{ borderBottom: `1px solid ${T.border}` }}>
+                {['Teacher', 'Issue', 'Date Filed', 'Urgency', 'Actions'].map(h => (
+                  <th key={h} style={{ textAlign: 'left', paddingBottom: 10, fontSize: 11, fontWeight: 700, color: T.textMuted, textTransform: 'uppercase', paddingRight: 16 }}>{h}</th>
+                ))}
               </tr>
             </thead>
             <tbody>
-              {ALERTS.map(a => (
-                <tr key={a.name} className="border-b border-outline-variant last:border-0">
-                  <td className="py-3">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">{a.initials}</div>
+              {ALERTS.map((a, i) => (
+                <tr key={a.name} style={{ borderBottom: i < ALERTS.length - 1 ? `1px solid ${T.border}` : 'none' }}>
+                  <td style={{ padding: '12px 16px 12px 0' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 30, height: 30, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: T.primary }}>{a.initials}</div>
                       <div>
-                        <p className="font-medium text-on-surface text-xs">{a.name}</p>
-                        <p className="text-xs text-on-surface-variant">{a.dept}</p>
+                        <div style={{ fontWeight: 600, fontSize: 13, color: T.textPrimary }}>{a.name}</div>
+                        <div style={{ fontSize: 11, color: T.textMuted }}>{a.dept}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="py-3 text-xs text-on-surface-variant">{a.issue}</td>
-                  <td className="py-3 text-xs text-on-surface-variant">{a.date}</td>
-                  <td className="py-3">
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${a.urgency === 'Critical' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'}`}>{a.urgency}</span>
+                  <td style={{ paddingRight: 16, fontSize: 13, color: T.textMuted }}>{a.issue}</td>
+                  <td style={{ paddingRight: 16, fontSize: 12, color: T.textMuted }}>{a.date}</td>
+                  <td style={{ paddingRight: 16 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: a.urgency === 'Critical' ? T.error + '20' : T.xp + '20', color: a.urgency === 'Critical' ? T.error : T.xp }}>{a.urgency}</span>
                   </td>
-                  <td className="py-3 text-xs text-on-surface-variant">{a.status}</td>
-                  <td className="py-3">
-                    <button className="w-7 h-7 rounded-lg bg-surface-low flex items-center justify-center hover:bg-surface-high">
-                      <MoreHorizontal className="h-3.5 w-3.5 text-on-surface-variant" />
-                    </button>
+                  <td>
+                    <button style={{ padding: '5px 14px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 12, color: T.primary, fontWeight: 600, cursor: 'pointer' }}>Review</button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

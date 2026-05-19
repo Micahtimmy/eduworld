@@ -1,169 +1,242 @@
 'use client'
-import { Sparkles, AlertTriangle, CheckSquare, Plus, Users, Calendar, ClipboardCheck, Megaphone, TrendingDown } from 'lucide-react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { LineChart } from '@/components/shared/charts/LineChart'
-import { cn } from '@/lib/utils'
-import { Badge } from '@/components/ui/badge'
-import { Avatar, AvatarFallback } from '@/components/ui/avatar'
-import { toast } from 'sonner'
-import { notifyAssignmentGraded, notifyAIRiskFlag } from '@/lib/crossRoleEvents'
 
-const CHART_DATA = [
-  { name: 'Sep', value: 74 },
-  { name: 'Oct', value: 79 },
-  { name: 'Nov', value: 76 },
-  { name: 'Dec', value: 83 },
-  { name: 'Jan', value: 85 },
+const T = {
+  bg: '#f9f9ff',
+  surface: '#ffffff',
+  primary: '#003f7a',
+  primaryContainer: '#1e5799',
+  ai: '#10B981',
+  xp: '#F59E0B',
+  textPrimary: '#191c20',
+  textMuted: '#424750',
+  border: '#c2c6d2',
+  error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard', active: true },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox' },
 ]
 
-const ALERTS = [
-  { name: 'Julian Mercer', detail: 'Missed 3 consecutive assignments in AP Physics.' },
-  { name: 'Sarah Jenkins', detail: 'Test score deviation: -25% from personal baseline.' },
+const stats = [
+  { label: 'Students', value: '128', icon: 'people', color: T.primary },
+  { label: 'Classes', value: '4', icon: 'school', color: '#7c3aed' },
+  { label: 'Pending Grades', value: '23', icon: 'grading', color: T.xp },
+  { label: 'Avg Score', value: '87%', icon: 'trending_up', color: T.ai },
 ]
 
-const TASKS = [
-  { icon: '📝', title: 'Grade Midterm Essays', meta: 'World History · 24 submissions', badge: 'Due Today', badgeVariant: 'destructive' as const },
-  { icon: '✉️', title: 'Unread Parent Messages', meta: '3 messages pending reply', badge: 'Action Needed', badgeVariant: 'warning' as const },
-  { icon: '📋', title: 'Approve Q2 Lesson Plans', meta: 'Department requirement', badge: 'Due Friday', badgeVariant: 'secondary' as const },
+const schedule = [
+  { title: 'AP Physics — Section 1', sub: 'Room 402 · Thermodynamics', time: '09:00 AM', color: T.primary },
+  { title: 'Office Hours', sub: 'Virtual (Zoom) & Room 402', time: '11:30 AM', color: T.ai },
+  { title: 'World History — Section 3', sub: 'Room 310 · Cold War', time: '01:00 PM', color: T.xp },
+  { title: 'AP Literature — Section 2', sub: 'Room 215 · Modernism', time: '03:00 PM', color: '#7c3aed' },
 ]
 
-const SCHEDULE = [
-  { title: 'AP Physics — Section 1', sub: 'Room 402 · Topic: Thermodynamics', time: '09:00 AM', color: 'border-blue-500' },
-  { title: 'Office Hours', sub: 'Virtual (Zoom) & Room 402', time: '11:30 AM', color: 'border-green-500' },
-  { title: 'World History — Section 3', sub: 'Room 310 · Topic: Cold War', time: '01:00 PM', color: 'border-amber-500' },
+const submissions = [
+  { student: 'Alex Rivera', subject: 'AP Physics', type: 'Lab Report', status: 'Pending', statusColor: T.xp },
+  { student: 'Maya Chen', subject: 'World History', type: 'Essay', status: 'Graded', statusColor: T.ai },
+  { student: 'Jordan Lee', subject: 'AP Literature', type: 'Analysis', status: 'Pending', statusColor: T.xp },
+  { student: 'Sam Patel', subject: 'AP Physics', type: 'Problem Set', status: 'Late', statusColor: T.error },
+  { student: 'Priya Nair', subject: 'Calculus', type: 'Quiz', status: 'Pending', statusColor: T.xp },
 ]
 
-export default function TeacherDashboardPage() {
-  const name = 'Sarah Johnson'
-
-  function handleGradeTask() {
-    notifyAssignmentGraded({
-      assignmentTitle: 'Midterm Essay — World History',
-      score: 41,
-      maxScore: 50,
-      feedback: 'Great analysis of primary sources. Argument structure could be stronger.',
-      studentRole: 'achiever',
-    })
-    toast.success('Grade published — student and parent notified')
-  }
-
-  function handleFlagAlert(studentName: string, subject: string, detail: string) {
-    notifyAIRiskFlag({ studentName, subject, reason: detail })
-    toast.success(`AI alert sent to your inbox for ${studentName}`)
-  }
-
+function Sidebar() {
   return (
-    <div className="p-6 space-y-6">
-      {/* Hero */}
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">Overview</h1>
-          <p className="text-sm text-on-surface-variant mt-1">Your daily teaching insights and tasks, {name.split(' ')[0]}.</p>
-        </div>
-        <Link href="/teacher/ai-studio">
-          <Button className="gap-2 bg-ai hover:bg-ai/90">
-            <Sparkles className="h-4 w-4" /> AI Lesson Generator
-          </Button>
-        </Link>
+    <aside style={{
+      width: 260, minHeight: '100vh', background: T.surface,
+      borderRight: `1px solid ${T.border}`, display: 'flex',
+      flexDirection: 'column', padding: '24px 0', flexShrink: 0,
+    }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{
+          display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600,
+          color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px',
+        }}>Teacher</span>
       </div>
-
-      {/* Quick Actions */}
-      <div className="flex flex-wrap gap-3">
-        {[
-          { icon: <Plus className="h-4 w-4" />, label: 'Create Lesson', href: '/teacher/ai-studio' },
-          { icon: <ClipboardCheck className="h-4 w-4" />, label: 'Take Attendance', href: '/teacher/classes' },
-          { icon: <Megaphone className="h-4 w-4" />, label: 'Broadcast Announcement', href: '/teacher/messages' },
-        ].map(a => (
-          <Link key={a.label} href={a.href}>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-xl border border-outline-variant text-sm font-medium text-on-surface hover:border-primary/50 hover:bg-surface-low transition-all">
-              {a.icon} {a.label}
-            </button>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px',
+              borderRadius: 8, marginBottom: 2, cursor: 'pointer',
+              background: item.active ? '#f3f3f9' : 'transparent',
+              borderLeft: item.active ? `3px solid ${T.primary}` : '3px solid transparent',
+              color: item.active ? T.primary : T.textMuted,
+              fontFamily: T.fontBody, fontWeight: item.active ? 600 : 400, fontSize: 14,
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
           </Link>
         ))}
+      </nav>
+      <div style={{ padding: '0 12px' }}>
+        <Link href="/settings" style={{ textDecoration: 'none' }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px',
+            borderRadius: 8, color: T.textMuted, fontFamily: T.fontBody, fontSize: 14,
+          }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>
+            Settings
+          </div>
+        </Link>
       </div>
+    </aside>
+  )
+}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Performance Chart */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="font-display font-semibold text-on-surface">Class Performance Overview</h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-ai/10 text-ai font-medium">✦ AI</span>
+export default function TeacherDashboardPage() {
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: 'auto', padding: 32 }}>
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+          <div>
+            <p style={{ fontSize: 13, color: T.textMuted, marginBottom: 4 }}>Monday, May 18, 2026</p>
+            <h1 style={{ fontFamily: T.fontHead, fontSize: 26, fontWeight: 800, color: T.textPrimary, margin: 0 }}>
+              Good morning, Mr. Johnson
+            </h1>
+            <p style={{ fontSize: 14, color: T.textMuted, marginTop: 4 }}>Here's what's happening in your classes today</p>
           </div>
-          <p className="text-xs text-on-surface-variant mb-4">Average term scores across all assigned sections</p>
-          <LineChart data={CHART_DATA} height={180} />
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{
+              display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px',
+              background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10,
+              fontSize: 14, color: T.textPrimary, cursor: 'pointer', fontFamily: T.fontBody,
+            }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>notifications</span>
+              <span style={{ background: T.error, color: '#fff', borderRadius: '50%', width: 18, height: 18, fontSize: 11, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>3</span>
+            </button>
+            <Link href="/teacher/assignments" style={{ textDecoration: 'none' }}>
+              <button style={{
+                display: 'flex', alignItems: 'center', gap: 8, padding: '10px 18px',
+                background: T.primary, border: 'none', borderRadius: 10,
+                fontSize: 14, color: '#fff', cursor: 'pointer', fontFamily: T.fontBody, fontWeight: 600,
+              }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>add</span>
+                Create Assignment
+              </button>
+            </Link>
+          </div>
         </div>
 
-        {/* Critical Alerts */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5">
-          <div className="flex items-center gap-2 mb-1">
-            <h2 className="font-display font-semibold text-on-surface">Critical Alerts</h2>
-            <span className="text-xs px-2 py-0.5 rounded-full bg-ai/10 text-ai font-medium">✦ AI</span>
-          </div>
-          <p className="text-xs text-on-surface-variant mb-4">AI-flagged students requiring attention</p>
-          <div className="divide-y divide-outline-variant">
-            {ALERTS.map(a => (
-              <div key={a.name} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
-                <div className="w-8 h-8 rounded-full bg-red-100 flex items-center justify-center">
-                  <TrendingDown className="h-4 w-4 text-red-500" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-on-surface">{a.name}</p>
-                  <p className="text-xs text-on-surface-variant">{a.detail}</p>
-                </div>
-                <button
-                  onClick={() => handleFlagAlert(a.name, a.detail.split(':')[0] ?? 'General', a.detail)}
-                  className="text-xs text-amber-600 hover:underline font-semibold shrink-0"
-                >
-                  Flag
-                </button>
+        {/* Stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 28 }}>
+          {stats.map(s => (
+            <div key={s.label} style={{
+              background: T.surface, border: `1px solid ${T.border}`, borderRadius: 14,
+              padding: '20px 20px', display: 'flex', alignItems: 'center', gap: 14,
+            }}>
+              <div style={{
+                width: 46, height: 46, borderRadius: 12, background: s.color + '18',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 22, color: s.color }}>{s.icon}</span>
               </div>
-            ))}
+              <div>
+                <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 24, color: T.textPrimary }}>{s.value}</div>
+                <div style={{ fontSize: 12, color: T.textMuted, marginTop: 2 }}>{s.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* AI Suggestion */}
+        <div style={{
+          background: T.ai + '12', border: `1px solid ${T.ai}40`, borderRadius: 14,
+          padding: '16px 20px', marginBottom: 28, display: 'flex', alignItems: 'center', gap: 12,
+        }}>
+          <span style={{ fontSize: 18, color: T.ai }}>✦</span>
+          <div style={{ flex: 1 }}>
+            <span style={{ fontFamily: T.fontHead, fontWeight: 700, fontSize: 14, color: T.ai }}>AI Insight · </span>
+            <span style={{ fontSize: 14, color: T.textPrimary }}>3 students need additional support in Calculus. Review their recent quiz performance and consider a targeted revision session.</span>
+          </div>
+          <button style={{
+            padding: '8px 16px', background: T.ai, color: '#fff', border: 'none',
+            borderRadius: 8, fontSize: 13, cursor: 'pointer', fontWeight: 600,
+          }}>View Students</button>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: 24 }}>
+          {/* Today's Schedule */}
+          <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+            <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary, marginBottom: 18 }}>Today's Schedule</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              {schedule.map(s => (
+                <div key={s.title} style={{
+                  display: 'flex', alignItems: 'center', gap: 14,
+                  padding: '12px 14px', borderRadius: 10, background: T.bg,
+                  borderLeft: `4px solid ${s.color}`,
+                }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: 14, color: T.textPrimary }}>{s.title}</div>
+                    <div style={{ fontSize: 12, color: T.textMuted, marginTop: 2 }}>{s.sub}</div>
+                  </div>
+                  <div style={{ fontWeight: 600, fontSize: 13, color: T.textMuted }}>{s.time}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Submissions */}
+          <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+              <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary }}>Recent Submissions</h2>
+              <Link href="/teacher/gradebook" style={{ fontSize: 13, color: T.primary, fontWeight: 600, textDecoration: 'none' }}>View All</Link>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {submissions.map((s, i) => (
+                <div key={s.student} style={{
+                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                  padding: '11px 0', borderBottom: i < submissions.length - 1 ? `1px solid ${T.border}` : 'none',
+                }}>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 14, color: T.textPrimary }}>{s.student}</div>
+                    <div style={{ fontSize: 12, color: T.textMuted }}>{s.subject} · {s.type}</div>
+                  </div>
+                  <span style={{
+                    fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 20,
+                    background: s.statusColor + '20', color: s.statusColor,
+                  }}>{s.status}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
-        {/* Task Queue */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5">
-          <h2 className="font-display font-semibold text-on-surface mb-4">Task Queue</h2>
-          <div className="divide-y divide-outline-variant">
-            {TASKS.map(t => (
-              <div key={t.title} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
-                <span className="text-xl">{t.icon}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-semibold text-on-surface">{t.title}</p>
-                  <p className="text-xs text-on-surface-variant">{t.meta}</p>
-                </div>
-                {t.title === 'Grade Midterm Essays' ? (
-                  <button
-                    onClick={handleGradeTask}
-                    className="shrink-0 text-xs px-3 py-1 rounded-lg bg-primary text-white font-semibold hover:bg-primary/90 transition-colors"
-                  >
-                    Grade
-                  </button>
-                ) : (
-                  <Badge variant={t.badgeVariant} size="sm">{t.badge}</Badge>
-                )}
-              </div>
-            ))}
-          </div>
+        {/* Quick Actions */}
+        <div style={{ display: 'flex', gap: 12, marginTop: 24 }}>
+          {[
+            { label: 'Grade Queue', icon: 'grading', href: '/teacher/gradebook' },
+            { label: 'Message Students', icon: 'message', href: '/teacher/student-comms' },
+            { label: 'Take Attendance', icon: 'how_to_reg', href: '/teacher/classroom' },
+            { label: 'Upload Resources', icon: 'upload', href: '/teacher/resources' },
+          ].map(a => (
+            <Link key={a.label} href={a.href} style={{ textDecoration: 'none', flex: 1 }}>
+              <button style={{
+                width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                padding: '12px 16px', background: T.surface, border: `1px solid ${T.border}`,
+                borderRadius: 10, fontSize: 14, color: T.textPrimary, cursor: 'pointer',
+                fontFamily: T.fontBody, fontWeight: 500, transition: 'border-color 0.2s',
+              }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18, color: T.primary }}>{a.icon}</span>
+                {a.label}
+              </button>
+            </Link>
+          ))}
         </div>
-
-        {/* Today's Schedule */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5">
-          <h2 className="font-display font-semibold text-on-surface mb-4">Today's Schedule</h2>
-          <div className="space-y-3">
-            {SCHEDULE.map(s => (
-              <div key={s.title} className={`border-l-4 pl-3 py-1 ${s.color}`}>
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-on-surface">{s.title}</p>
-                  <span className="text-sm font-mono text-on-surface-variant">{s.time}</span>
-                </div>
-                <p className="text-xs text-on-surface-variant">{s.sub}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      </main>
     </div>
   )
 }

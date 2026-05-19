@@ -1,177 +1,163 @@
 'use client'
-import { Sparkles, Megaphone, ClipboardList, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
-const GROUPS = [
-  {
-    name: 'Project Alpha', tag: 'High Performance', tagColor: 'green', sub: 'Capstone Research Phase',
-    members: ['LC', 'JS', 'MR'], extra: '+2',
-    progress: 85, progressLabel: 'Milestone Progress',
-    activity: 'Submitted Outline.v2',
-  },
-  {
-    name: 'Advanced Lab', tag: 'AI Generated', tagColor: 'blue', sub: 'Skill-Matched Pairing',
-    members: ['AK', 'EW', 'DG'], extra: null,
-    compatibility: 98,
-    schedule: 'Lab C @ 2:00 PM',
-  },
-  {
-    name: 'Remedial Support', tag: 'Priority Attention', tagColor: 'red', sub: 'Foundational Concepts',
-    members: ['TB', 'SP'], extra: null,
-    retention: 42,
-    alert: 'Critical gap in Module 3 detected.',
-  },
-  {
-    name: 'Science Explorers', tag: 'General', tagColor: 'gray', sub: 'Weekly Fieldwork Prep',
-    members: ['FZ', 'EP'], extra: null,
-    permissions: true,
-    messages: 4,
-  },
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard' },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups', active: true },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox' },
 ]
 
-const TAG_STYLES: Record<string, string> = {
-  green: 'bg-green-100 text-green-700',
-  blue: 'bg-blue-100 text-blue-700',
-  red: 'bg-red-100 text-red-700',
-  gray: 'bg-surface-high text-on-surface-variant',
+const GROUPS = [
+  { name: 'Project Alpha', tag: 'High Performance', tagColor: T.ai, sub: 'Capstone Research Phase', members: ['LC', 'JS', 'MR', 'AP'], extra: '+2', progress: 85 },
+  { name: 'Advanced Lab', tag: 'AI Generated', tagColor: '#0891b2', sub: 'Skill-Matched Pairing', members: ['AK', 'EW', 'DG'], extra: null, compat: 98 },
+  { name: 'Remedial Support', tag: 'Priority Attention', tagColor: T.error, sub: 'Foundational Concepts', members: ['TB', 'SP'], extra: null, retention: 42 },
+  { name: 'Science Explorers', tag: 'General', tagColor: T.textMuted, sub: 'Weekly Fieldwork Prep', members: ['FZ', 'EP', 'LN'], extra: null },
+]
+
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Teacher</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: item.active ? '#f3f3f9' : 'transparent', borderLeft: item.active ? `3px solid ${T.primary}` : '3px solid transparent', color: item.active ? T.primary : T.textMuted, fontFamily: T.fontBody, fontWeight: item.active ? 600 : 400, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
 }
 
 export default function TeacherStudentGroupsPage() {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">Groups & Cohorts</h1>
-          <p className="text-sm text-on-surface-variant mt-1">Manage student groups, performance-based cohorts, and project pairings.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-1.5"><Megaphone className="h-3.5 w-3.5" /> Broadcast Message</Button>
-          <Button variant="outline" size="sm" className="gap-1.5"><ClipboardList className="h-3.5 w-3.5" /> Bulk Assignment</Button>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        {[
-          { label: 'Total Students', value: '124', sub: '+4 this month' },
-          { label: 'Active Groups', value: '12', sub: 'Avg. 6 per group' },
-          { label: 'Class Health', value: '92%', sub: '' },
-        ].map(s => (
-          <div key={s.label} className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 text-center">
-            <p className="font-display font-bold text-2xl text-on-surface">{s.value}</p>
-            <p className="text-xs text-on-surface-variant mt-1">{s.label}</p>
-            {s.sub && <p className="text-xs text-green-600 font-semibold">{s.sub}</p>}
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: 'auto', padding: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+          <div>
+            <h1 style={{ fontFamily: T.fontHead, fontSize: 24, fontWeight: 800, color: T.textPrimary, margin: 0 }}>Groups & Cohorts</h1>
+            <p style={{ fontSize: 14, color: T.textMuted, marginTop: 4 }}>Manage student groups, performance-based cohorts, and project pairings.</p>
           </div>
-        ))}
-      </div>
-
-      {/* AI Insight */}
-      <div className="bg-ai/5 border border-ai/20 rounded-2xl p-3 flex items-center gap-2">
-        <Sparkles className="h-3.5 w-3.5 text-ai shrink-0" />
-        <p className="text-xs text-on-surface-variant flex-1">Group &apos;Alpha&apos; shows high collaboration. Consider pairing student &apos;L. Chen&apos; for peer-tutoring in the Remedial Support group.</p>
-      </div>
-
-      {/* Filter tabs */}
-      <div className="flex gap-2">
-        {['All Cohorts', 'Project Groups', 'Performance-Based'].map((tab, i) => (
-          <button key={tab} className={`px-4 py-1.5 rounded-full text-sm font-semibold transition-colors ${i === 0 ? 'bg-primary text-white' : 'bg-surface-low text-on-surface-variant hover:bg-surface-high'}`}>{tab}</button>
-        ))}
-      </div>
-
-      {/* Group Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {GROUPS.map(g => (
-          <div key={g.name} className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="font-semibold text-on-surface">{g.name}</p>
-                  <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${TAG_STYLES[g.tagColor]}`}>{g.tag}</span>
-                </div>
-                <p className="text-xs text-on-surface-variant">{g.sub}</p>
-              </div>
-              <button className="text-on-surface-variant text-sm">⋮</button>
-            </div>
-
-            <div className="flex items-center gap-1.5">
-              {g.members.map(m => (
-                <div key={m} className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">{m}</div>
-              ))}
-              {g.extra && <span className="text-xs text-on-surface-variant">{g.extra}</span>}
-            </div>
-
-            {'progress' in g && g.progress !== undefined && (
-              <div className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="text-on-surface-variant">{g.progressLabel}</span>
-                  <span className="font-bold text-on-surface">{g.progress}%</span>
-                </div>
-                <div className="h-1.5 bg-surface-high rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full" style={{ width: `${g.progress}%` }} />
-                </div>
-                <p className="text-xs text-on-surface-variant">{g.activity}</p>
-              </div>
-            )}
-
-            {'compatibility' in g && g.compatibility !== undefined && (
-              <div className="space-y-1">
-                <p className="font-display font-bold text-2xl text-on-surface">{g.compatibility}% <span className="text-sm font-normal text-on-surface-variant">Compatibility</span></p>
-                <p className="text-xs text-on-surface-variant">Optimized for collaborative problem solving and peer review stability.</p>
-                <p className="text-xs text-on-surface-variant">🕒 {g.schedule}</p>
-              </div>
-            )}
-
-            {'retention' in g && g.retention !== undefined && (
-              <div className="space-y-1">
-                <p className="text-xs text-red-600 font-semibold">⚠ Retention Rate: {g.retention}%</p>
-                <p className="text-xs text-on-surface-variant">{g.alert}</p>
-              </div>
-            )}
-
-            {'permissions' in g && g.permissions && (
-              <div className="space-y-1">
-                <p className="text-xs text-green-600">✓ Permissions Finalized</p>
-                {g.messages && <p className="text-xs text-on-surface-variant">💬 {g.messages} unread messages</p>}
-              </div>
-            )}
-
-            <div className="flex gap-2">
-              {g.name === 'Project Alpha' && (
-                <><Button size="sm" variant="outline" className="h-7 text-xs flex-1">View Analytics</Button><Button size="sm" className="h-7 text-xs flex-1">Message Group</Button></>
-              )}
-              {g.name === 'Advanced Lab' && (
-                <><Button size="sm" className="h-7 text-xs flex-1">Confirm Setup</Button><Button size="sm" variant="outline" className="h-7 text-xs flex-1">Reshuffle</Button></>
-              )}
-              {g.name === 'Remedial Support' && (
-                <><Button size="sm" className="h-7 text-xs flex-1">Open Live Session</Button><Button size="sm" variant="outline" className="h-7 text-xs flex-1">Add Resource</Button></>
-              )}
-              {g.name === 'Science Explorers' && (
-                <><Button size="sm" variant="outline" className="h-7 text-xs flex-1">Assign Tasks</Button><Button size="sm" variant="outline" className="h-7 text-xs flex-1">Permissions</Button></>
-              )}
-            </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 16px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10, fontSize: 13, color: T.textPrimary, cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>campaign</span>Broadcast
+            </button>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 18px', background: T.primary, border: 'none', borderRadius: 10, fontSize: 13, color: '#fff', cursor: 'pointer', fontWeight: 600 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add</span>Create Group
+            </button>
           </div>
-        ))}
+        </div>
 
-        {/* Create Cohort card */}
-        <div className="border-2 border-dashed border-outline-variant rounded-2xl p-4 flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-primary/50 transition-colors min-h-40">
-          <div className="w-10 h-10 rounded-full bg-surface-low flex items-center justify-center">
-            <Plus className="h-5 w-5 text-on-surface-variant" />
+        {/* Stats */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+          {[
+            { label: 'Total Students', value: '124', sub: '+4 this month', color: T.primary },
+            { label: 'Active Groups', value: '12', sub: 'Avg. 6 per group', color: '#7c3aed' },
+            { label: 'Class Health', value: '92%', sub: '▲ Good', color: T.ai },
+          ].map(s => (
+            <div key={s.label} style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 14, padding: '20px 22px', textAlign: 'center' }}>
+              <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 28, color: s.color }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: T.textMuted, marginTop: 4 }}>{s.label}</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: T.ai, marginTop: 4 }}>{s.sub}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* AI Insight */}
+        <div style={{ background: T.ai + '10', border: `1px solid ${T.ai}30`, borderRadius: 12, padding: '12px 16px', marginBottom: 24, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <span style={{ fontSize: 15, color: T.ai }}>✦</span>
+          <span style={{ fontSize: 13, color: T.textMuted }}>Group 'Alpha' shows high collaboration. Consider pairing 'L. Chen' for peer-tutoring in Remedial Support.</span>
+        </div>
+
+        {/* Filters */}
+        <div style={{ display: 'flex', gap: 8, marginBottom: 20 }}>
+          {['All Cohorts', 'Project Groups', 'Performance-Based'].map((tab, i) => (
+            <button key={tab} style={{ padding: '7px 16px', borderRadius: 20, fontSize: 13, fontWeight: 600, cursor: 'pointer', background: i === 0 ? T.primary : T.surface, color: i === 0 ? '#fff' : T.textMuted, border: i === 0 ? 'none' : `1px solid ${T.border}` }}>{tab}</button>
+          ))}
+        </div>
+
+        {/* Group Cards */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+          {GROUPS.map(g => (
+            <div key={g.name} style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                    <span style={{ fontWeight: 700, fontSize: 16, color: T.textPrimary }}>{g.name}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: '2px 10px', borderRadius: 20, background: g.tagColor + '20', color: g.tagColor }}>{g.tag}</span>
+                  </div>
+                  <div style={{ fontSize: 12, color: T.textMuted }}>{g.sub}</div>
+                </div>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.textMuted }}>⋮</button>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 14 }}>
+                {g.members.map(m => (
+                  <div key={m} style={{ width: 30, height: 30, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: T.primary }}>{m}</div>
+                ))}
+                {g.extra && <span style={{ fontSize: 12, color: T.textMuted, marginLeft: 4 }}>{g.extra}</span>}
+              </div>
+
+              {g.progress !== undefined && (
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <span style={{ fontSize: 12, color: T.textMuted }}>Milestone Progress</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: T.textPrimary }}>{g.progress}%</span>
+                  </div>
+                  <div style={{ height: 8, background: T.border + '50', borderRadius: 4, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${g.progress}%`, background: T.primary, borderRadius: 4 }} />
+                  </div>
+                </div>
+              )}
+              {g.compat !== undefined && (
+                <div style={{ marginBottom: 14, padding: '10px 12px', background: T.bg, borderRadius: 10 }}>
+                  <span style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 22, color: T.textPrimary }}>{g.compat}% </span>
+                  <span style={{ fontSize: 13, color: T.textMuted }}>Compatibility</span>
+                </div>
+              )}
+              {g.retention !== undefined && (
+                <div style={{ marginBottom: 14, padding: '10px 12px', background: T.error + '10', borderRadius: 10 }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: T.error }}>⚠ Retention: {g.retention}%</div>
+                  <div style={{ fontSize: 12, color: T.textMuted, marginTop: 3 }}>Critical gap in Module 3 detected.</div>
+                </div>
+              )}
+
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button style={{ flex: 1, padding: '9px 0', background: T.primary, color: '#fff', border: 'none', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Message Group</button>
+                <button style={{ flex: 1, padding: '9px 0', background: T.surface, color: T.primary, border: `1px solid ${T.primary}`, borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>View Analytics</button>
+              </div>
+            </div>
+          ))}
+
+          {/* Create card */}
+          <div style={{ border: `2px dashed ${T.border}`, borderRadius: 16, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, cursor: 'pointer', minHeight: 180, padding: 24 }}>
+            <div style={{ width: 44, height: 44, borderRadius: '50%', background: T.bg, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 22, color: T.textMuted }}>add</span>
+            </div>
+            <div style={{ fontWeight: 600, fontSize: 14, color: T.textPrimary }}>Create Cohort</div>
+            <div style={{ fontSize: 12, color: T.textMuted }}>Manually add a new group</div>
           </div>
-          <p className="font-semibold text-sm text-on-surface">Create Cohort</p>
-          <p className="text-xs text-on-surface-variant">Manually add a new group</p>
         </div>
-      </div>
-
-      {/* AI Optimization */}
-      <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 space-y-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-ai" />
-          <span className="text-xs font-bold text-ai uppercase">Enhanced Intelligence</span>
-        </div>
-        <p className="font-semibold text-on-surface">Optimize your classroom dynamics instantly.</p>
-        <p className="text-xs text-on-surface-variant">AI analyzes performance data, behavioral compatibility, and historical peer ratings to generate optimal group suggestions.</p>
-        <Button size="sm">Start Auto-Grouping</Button>
-      </div>
+      </main>
     </div>
   )
 }

@@ -1,122 +1,360 @@
 'use client'
-import { Sparkles } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 
-const SKILLS = ['Transformers', 'Attention Mechanisms', 'LLM Fine-tuning']
+import Link from 'next/link'
+
+const MAP_NODES = [
+  {
+    id: 1,
+    label: 'Foundations Island',
+    status: 'completed',
+    icon: 'check_circle',
+    color: '#22c55e',
+    x: 8,
+    y: 65,
+  },
+  {
+    id: 2,
+    label: 'Science World',
+    status: 'active',
+    icon: 'science',
+    color: '#6c63ff',
+    pct: 72,
+    x: 38,
+    y: 40,
+    isPlayer: true,
+  },
+  {
+    id: 3,
+    label: 'Math Kingdom',
+    status: 'locked',
+    icon: 'lock',
+    color: '#6b7280',
+    x: 65,
+    y: 60,
+  },
+  {
+    id: 4,
+    label: 'Language Arts',
+    status: 'locked',
+    icon: 'lock',
+    color: '#6b7280',
+    x: 85,
+    y: 35,
+  },
+]
 
 export default function ExplorerJourneyMapPage() {
   return (
-    <div className="p-4 space-y-5 pb-24">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="font-display font-bold text-xl text-on-surface">Learning Explorer</h1>
-        <div className="flex items-center gap-1.5 bg-xp/10 text-xp px-2 py-0.5 rounded-full">
-          <span className="text-xs">⭐</span>
-          <span className="text-xs font-bold">3,240 XP</span>
+    <div
+      style={{
+        minHeight: '100vh',
+        fontFamily: '"Nunito", system-ui, sans-serif',
+        background: 'linear-gradient(180deg, #0d1b4b 0%, #0a3d62 50%, #1a6b8a 100%)',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Top bar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px 20px',
+          position: 'relative',
+          zIndex: 10,
+        }}
+      >
+        <Link
+          href="/explorer/dashboard"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255,255,255,0.15)',
+            color: '#fff',
+            textDecoration: 'none',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>arrow_back</span>
+        </Link>
+
+        <div style={{ fontWeight: 800, fontSize: 16, color: '#fff' }}>Learning Journey</div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#facc15' }}>star</span>
+          <span style={{ fontWeight: 700, fontSize: 13, color: '#fff' }}>1,250 XP</span>
         </div>
       </div>
 
       {/* Global Progress */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-2">
-        <div className="flex items-center justify-between text-sm">
-          <span className="font-semibold text-on-surface">Global Progress</span>
-          <span className="font-bold text-primary">64%</span>
+      <div
+        style={{
+          margin: '0 20px 16px',
+          backgroundColor: 'rgba(255,255,255,0.08)',
+          borderRadius: 14,
+          padding: '12px 16px',
+          position: 'relative',
+          zIndex: 10,
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#FFD700' }}>flag</span>
+            <span style={{ fontWeight: 700, fontSize: 13, color: '#fff' }}>Global Progress</span>
+          </div>
+          <span style={{ fontWeight: 800, fontSize: 14, color: '#FFD700' }}>64%</span>
         </div>
-        <div className="h-2 bg-surface-high rounded-full overflow-hidden">
-          <div className="h-full bg-primary rounded-full" style={{ width: '64%' }} />
+        <div style={{ height: 8, backgroundColor: 'rgba(255,255,255,0.15)', borderRadius: 4, overflow: 'hidden' }}>
+          <div style={{ width: '64%', height: '100%', background: 'linear-gradient(90deg, #FFD700, #f97316)', borderRadius: 4 }} />
         </div>
       </div>
 
-      {/* Island Map */}
-      <div className="space-y-3">
-        {/* Island 1 — Completed */}
-        <div className="bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-green-200 flex items-center justify-center shrink-0">
-            <span className="text-2xl">🏝</span>
-          </div>
-          <div className="flex-1">
-            <p className="text-sm font-semibold text-on-surface">Foundations Island</p>
-            <p className="text-xs text-green-700 font-semibold">✓ Completed</p>
-          </div>
-          <span className="text-green-500 text-xl">✓</span>
+      {/* Current Quest badge */}
+      <div style={{ padding: '0 20px 8px', position: 'relative', zIndex: 10 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            backgroundColor: 'rgba(108,99,255,0.2)',
+            border: '1px solid rgba(108,99,255,0.4)',
+            borderRadius: 20,
+            padding: '8px 16px',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#FFD700' }}>star</span>
+          <span style={{ fontWeight: 700, fontSize: 12, color: '#fff' }}>Current Quest: The Solar System</span>
         </div>
+      </div>
 
-        {/* Island 2 — Active */}
-        <div className="bg-primary/5 border-2 border-primary rounded-2xl p-4 space-y-3">
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-full bg-primary/20 flex items-center justify-center shrink-0 relative">
-              <span className="text-2xl">🧠</span>
-              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-primary flex items-center justify-center">
-                <span className="text-white text-[10px] font-bold">72%</span>
-              </div>
+      {/* Map area */}
+      <div
+        style={{
+          position: 'relative',
+          height: 380,
+          margin: '8px 0',
+          zIndex: 5,
+        }}
+      >
+        {/* Ocean wave texture */}
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            opacity: 0.08,
+            backgroundImage:
+              'repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(255,255,255,0.15) 28px, rgba(255,255,255,0.15) 30px)',
+          }}
+        />
+
+        {/* SVG path connector */}
+        <svg
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M10 67 Q22 50 40 42 Q52 52 67 62 Q76 48 87 37"
+            fill="none"
+            stroke="rgba(255,255,255,0.22)"
+            strokeWidth="0.7"
+            strokeDasharray="2 2"
+          />
+        </svg>
+
+        {/* Map nodes */}
+        {MAP_NODES.map((node) => (
+          <div
+            key={node.id}
+            style={{
+              position: 'absolute',
+              left: `${node.x}%`,
+              top: `${node.y}%`,
+              transform: 'translate(-50%, -50%)',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 6,
+            }}
+          >
+            <div
+              style={{
+                width: 'isPlayer' in node && node.isPlayer ? 70 : 56,
+                height: 'isPlayer' in node && node.isPlayer ? 70 : 56,
+                borderRadius: '50%',
+                backgroundColor:
+                  node.status === 'completed'
+                    ? 'rgba(34,197,94,0.2)'
+                    : node.status === 'active'
+                    ? 'rgba(108,99,255,0.25)'
+                    : 'rgba(107,114,128,0.12)',
+                border: `2px solid ${node.color}`,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: 'isPlayer' in node && node.isPlayer ? '0 0 20px rgba(108,99,255,0.4)' : 'none',
+                position: 'relative',
+              }}
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{
+                  fontSize: 'isPlayer' in node && node.isPlayer ? 28 : 22,
+                  color: node.color,
+                }}
+              >
+                {node.icon}
+              </span>
+              {'isPlayer' in node && node.isPlayer && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: -14,
+                    right: -6,
+                    width: 24,
+                    height: 24,
+                    borderRadius: '50%',
+                    background: 'linear-gradient(135deg, #6c63ff, #3b82f6)',
+                    border: '2px solid #fff',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontWeight: 800,
+                    fontSize: 10,
+                    color: '#fff',
+                  }}
+                >
+                  E
+                </div>
+              )}
             </div>
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <p className="text-sm font-semibold text-on-surface">AI & Machine Learning</p>
-                <span className="text-[10px] bg-ai/10 text-ai px-1.5 py-0.5 rounded font-bold">✦ Current Quest</span>
+
+            {'pct' in node && node.pct !== undefined && (
+              <div
+                style={{
+                  backgroundColor: 'rgba(108,99,255,0.25)',
+                  borderRadius: 20,
+                  padding: '2px 8px',
+                  fontWeight: 800,
+                  fontSize: 10,
+                  color: '#c4b5fd',
+                }}
+              >
+                {node.pct}%
               </div>
-              <p className="text-xs text-on-surface-variant">Neural Networks</p>
-              <p className="text-xs text-primary font-semibold mt-0.5">Finish 2 more modules to level up!</p>
+            )}
+
+            <div
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.45)',
+                borderRadius: 20,
+                padding: '3px 10px',
+                fontWeight: 700,
+                fontSize: 10,
+                color: '#fff',
+                whiteSpace: 'nowrap',
+                backdropFilter: 'blur(4px)',
+              }}
+            >
+              {node.label}
             </div>
           </div>
-          <div className="h-1.5 bg-surface-high rounded-full overflow-hidden">
-            <div className="h-full bg-primary rounded-full" style={{ width: '72%' }} />
-          </div>
-        </div>
-
-        {/* Island 3 — Locked */}
-        <div className="bg-surface-lowest border border-outline-variant rounded-2xl p-4 flex items-center gap-4 opacity-60">
-          <div className="w-14 h-14 rounded-2xl bg-surface-high flex items-center justify-center shrink-0">
-            <span className="text-2xl">🔒</span>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-on-surface">Executive Leadership</p>
-            <p className="text-xs text-on-surface-variant">Locked — complete current quest to unlock</p>
-          </div>
-        </div>
-
-        {/* Island 4 — Locked */}
-        <div className="bg-surface-lowest border border-outline-variant rounded-2xl p-4 flex items-center gap-4 opacity-40">
-          <div className="w-14 h-14 rounded-2xl bg-surface-high flex items-center justify-center shrink-0">
-            <span className="text-2xl">🔒</span>
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-on-surface">Global Ethics</p>
-            <p className="text-xs text-on-surface-variant">Locked</p>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Daily Quest */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-ai">✦</span>
-            <h2 className="font-display font-semibold text-on-surface">Daily Quest</h2>
+      {/* Bottom cards */}
+      <div style={{ padding: '0 20px 32px', display: 'flex', flexDirection: 'column', gap: 12, position: 'relative', zIndex: 10 }}>
+        {/* Finish modules prompt */}
+        <div
+          style={{
+            backgroundColor: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 14,
+            padding: '12px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10,
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#facc15' }}>trending_up</span>
+          <span style={{ fontWeight: 600, fontSize: 13, color: '#e2e8f0' }}>
+            Finish 2 more modules to level up!
+          </span>
+        </div>
+
+        {/* Daily Quest card */}
+        <div
+          style={{
+            backgroundColor: 'rgba(255,255,255,0.08)',
+            border: '1px solid rgba(255,255,255,0.12)',
+            borderRadius: 14,
+            padding: '14px 16px',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#FFD700' }}>workspace_premium</span>
+              <span style={{ fontWeight: 700, fontSize: 13, color: '#fff' }}>Daily Quest</span>
+            </div>
+            <span
+              style={{
+                backgroundColor: 'rgba(250,204,21,0.2)',
+                color: '#FFD700',
+                fontWeight: 800,
+                fontSize: 11,
+                padding: '2px 8px',
+                borderRadius: 20,
+              }}
+            >
+              +200 XP
+            </span>
           </div>
-          <span className="text-xs bg-xp/10 text-xp px-2 py-0.5 rounded-full font-bold">+200 XP</span>
+          <div style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 3, overflow: 'hidden' }}>
+            <div style={{ width: '33%', height: '100%', background: 'linear-gradient(90deg, #6c63ff, #3b82f6)', borderRadius: 3 }} />
+          </div>
+          <div style={{ fontWeight: 500, fontSize: 11, color: '#8892a4', marginTop: 4 }}>Quiz: 1/3 completed</div>
         </div>
-        <p className="text-xs text-on-surface-variant">Complete the &apos;Linear Regression&apos; quiz with a score over 85% to claim your daily XP reward.</p>
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-on-surface-variant">Quiz Progress</span>
-          <span className="text-xs font-bold text-on-surface">1/3</span>
-        </div>
-        <Button className="w-full">⚡ Jump In</Button>
+
+        {/* Continue button */}
+        <Link
+          href="/explorer/subjects/science/topics"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            padding: '14px',
+            borderRadius: 50,
+            background: 'linear-gradient(135deg, #6c63ff, #3b82f6)',
+            color: '#fff',
+            fontWeight: 800,
+            fontSize: 15,
+            textDecoration: 'none',
+            boxShadow: '0 4px 20px rgba(108,99,255,0.4)',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>play_arrow</span>
+          Continue Journey
+        </Link>
       </div>
 
-      {/* AI Skill Forecast */}
-      <div className="bg-ai/5 border border-ai/20 rounded-2xl p-4 space-y-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-3.5 w-3.5 text-ai" />
-          <p className="text-sm font-semibold text-on-surface">AI Skill Forecast</p>
-        </div>
-        <p className="text-sm font-semibold text-on-surface">Bridge your gaps in Advanced NLP</p>
-        <p className="text-xs text-on-surface-variant">This path could increase your hireability by 15% based on current market demand.</p>
-        <div className="flex flex-wrap gap-2">
-          {SKILLS.map(s => (
-            <span key={s} className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">{s}</span>
-          ))}
-        </div>
+      {/* Watermark */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 12,
+          right: 16,
+          fontFamily: '"Nunito", system-ui, sans-serif',
+          fontSize: 11,
+          color: 'rgba(255,255,255,0.3)',
+          zIndex: 10,
+        }}
+      >
+        EWD-MAP
       </div>
     </div>
   )

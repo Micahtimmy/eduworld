@@ -1,110 +1,337 @@
 'use client'
-import { Sparkles, Check } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 
-const BENEFITS = [
-  { icon: '👩‍🏫', title: 'Live Teacher Access', desc: 'Book 1-on-1 sessions with certified teachers anytime, anywhere.' },
-  { icon: '🤖', title: 'Advanced AI Tutor', desc: 'Unlimited AI tutoring with personalized learning paths and instant feedback.' },
-  { icon: '🏪', title: 'Exclusive Shop Items', desc: 'Unlock rare avatars, costumes, and power-ups only available to Premium members.' },
-  { icon: '🚫', title: 'Ad-Free Learning', desc: 'Distraction-free environment with zero advertisements across all activities.' },
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+const FEATURES = [
+  { icon: 'school', title: 'Direct Teacher Access', desc: 'Book 1-on-1 sessions with certified teachers anytime, anywhere.' },
+  { icon: 'auto_awesome', title: 'Advanced Spark AI', desc: 'Unlimited AI tutoring with personalized learning paths and instant feedback.' },
+  { icon: 'storefront', title: 'Exclusive Shop Items', desc: 'Unlock rare avatars, costumes, and power-ups only for Premium members.' },
+  { icon: 'block', title: 'Ad-Free Learning', desc: 'Distraction-free environment with zero advertisements.' },
 ]
 
 const PLANS = [
   {
-    name: 'Monthly',
+    name: 'Monthly Explorer',
     price: '$9.99',
     period: '/month',
+    billed: null,
+    badge: null,
     features: ['All Premium Benefits', 'Cancel Anytime', '1 Student Account'],
+    cta: 'Select Monthly',
     highlight: false,
-    cta: 'Start Monthly',
   },
   {
-    name: 'Yearly',
+    name: 'Yearly Champion',
     price: '$5.99',
     period: '/month',
-    billed: 'Billed $71.88/year',
-    badge: '🏆 BEST VALUE — SAVE 40%',
-    features: ['All Premium Benefits', 'Priority Support', 'Up to 3 Student Accounts', 'Exclusive Yearly Badge'],
+    billed: 'Billed at $71.88/yr',
+    badge: 'BEST VALUE — SAVE 40%',
+    features: ['All Premium Benefits', 'Priority Support', 'Golden Avatar Frame', '2 Friend Passes'],
+    cta: 'Select Yearly',
     highlight: true,
-    cta: 'Start Yearly Plan',
   },
 ]
 
 export default function ExplorerPremiumPage() {
+  const router = useRouter()
+
   return (
-    <div className="p-6 space-y-8">
+    <div
+      style={{
+        minHeight: '100vh',
+        fontFamily: '"Nunito", system-ui, sans-serif',
+        background: 'linear-gradient(180deg, #1a0533 0%, #0d1117 100%)',
+        paddingBottom: 48,
+      }}
+    >
+      {/* Top bar */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '16px 20px',
+        }}
+      >
+        <button
+          onClick={() => router.back()}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 36,
+            height: 36,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            border: 'none',
+            cursor: 'pointer',
+            color: '#fff',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#fff' }}>arrow_back</span>
+        </button>
+
+        <button
+          onClick={() => router.push('/explorer/dashboard')}
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            padding: '8px 16px',
+            borderRadius: 20,
+            backgroundColor: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.15)',
+            color: '#fff',
+            fontWeight: 700,
+            fontSize: 12,
+            cursor: 'pointer',
+            fontFamily: '"Nunito", system-ui, sans-serif',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 16 }}>rocket_launch</span>
+          Start Adventure
+        </button>
+      </div>
+
       {/* Hero */}
-      <div className="text-center space-y-4 pt-4">
-        <div className="inline-flex items-center gap-2 bg-xp/10 text-xp px-4 py-2 rounded-full text-sm font-semibold">
-          <Sparkles className="h-4 w-4" />
-          Upgrade Your Learning
+      <div style={{ textAlign: 'center', padding: '24px 24px 0' }}>
+        {/* Rocket mascot area */}
+        <div
+          style={{
+            width: 96,
+            height: 96,
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #7c3aed, #6c63ff)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            margin: '0 auto 20px',
+            boxShadow: '0 0 40px rgba(108,99,255,0.4)',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 48, color: '#fff' }}>rocket_launch</span>
         </div>
-        <h1 className="font-display font-bold text-3xl text-on-surface">
-          Go Premium &
-          <span className="text-primary"> Unlock Everything!</span>
+
+        <h1
+          style={{
+            fontWeight: 800,
+            fontSize: 32,
+            color: '#fff',
+            margin: '0 0 12px',
+            lineHeight: 1.2,
+          }}
+        >
+          Unleash Your
+          <br />
+          <span style={{ color: '#FFD700' }}>Potential</span>
         </h1>
-        <p className="text-on-surface-variant max-w-md mx-auto">Join thousands of Explorer students learning faster, earning more XP, and having more fun with EduWorld Premium.</p>
-        <Button size="lg" className="gap-2 px-8">
-          🚀 Get Premium Now
-        </Button>
+
+        <p style={{ fontWeight: 500, fontSize: 15, color: '#8892a4', margin: '0 0 24px', lineHeight: 1.6 }}>
+          Join thousands of Explorers learning faster and earning more XP with EduWorld Premium.
+        </p>
+
+        <button
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '14px 28px',
+            borderRadius: 50,
+            background: 'linear-gradient(135deg, #FFD700, #f97316)',
+            color: '#1a1a2e',
+            fontWeight: 800,
+            fontSize: 15,
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: '"Nunito", system-ui, sans-serif',
+            boxShadow: '0 4px 20px rgba(255,215,0,0.35)',
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 20 }}>rocket</span>
+          Get Premium Now
+        </button>
       </div>
 
-      {/* Benefits */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {BENEFITS.map(b => (
-          <div key={b.title} className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 flex items-start gap-4">
-            <span className="text-3xl">{b.icon}</span>
-            <div>
-              <p className="font-semibold text-on-surface">{b.title}</p>
-              <p className="text-xs text-on-surface-variant mt-1">{b.desc}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Pricing Plans */}
-      <div>
-        <h2 className="font-display font-bold text-xl text-on-surface text-center mb-6">Choose Your Plan</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
-          {PLANS.map(plan => (
+      {/* Why Go Premium */}
+      <div style={{ padding: '36px 20px 0' }}>
+        <h2 style={{ fontWeight: 800, fontSize: 20, color: '#fff', margin: '0 0 16px', textAlign: 'center' }}>
+          Why Go Premium?
+        </h2>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
+          {FEATURES.map((feat) => (
             <div
-              key={plan.name}
-              className={cn(
-                'rounded-2xl border p-6 space-y-4 relative',
-                plan.highlight ? 'border-2 border-primary bg-primary/5' : 'border-outline-variant bg-surface-lowest'
-              )}
+              key={feat.title}
+              style={{
+                backgroundColor: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 16,
+                padding: '18px 16px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 10,
+              }}
             >
-              {plan.badge && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full whitespace-nowrap">{plan.badge}</span>
-                </div>
-              )}
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  backgroundColor: 'rgba(108,99,255,0.2)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 24, color: '#a78bfa' }}>{feat.icon}</span>
+              </div>
               <div>
-                <p className="text-sm font-semibold text-on-surface-variant">{plan.name}</p>
-                <div className="flex items-baseline gap-1 mt-1">
-                  <span className="font-display font-bold text-3xl text-on-surface">{plan.price}</span>
-                  <span className="text-sm text-on-surface-variant">{plan.period}</span>
-                </div>
-                {plan.billed && <p className="text-xs text-on-surface-variant mt-1">{plan.billed}</p>}
+                <div style={{ fontWeight: 700, fontSize: 13, color: '#fff', marginBottom: 4 }}>{feat.title}</div>
+                <div style={{ fontWeight: 500, fontSize: 12, color: '#6b7280', lineHeight: 1.5 }}>{feat.desc}</div>
               </div>
-              <div className="space-y-2">
-                {plan.features.map(f => (
-                  <div key={f} className="flex items-center gap-2">
-                    <div className="w-4 h-4 rounded-full bg-green-500 flex items-center justify-center shrink-0">
-                      <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />
-                    </div>
-                    <p className="text-xs text-on-surface">{f}</p>
-                  </div>
-                ))}
-              </div>
-              <Button className="w-full" variant={plan.highlight ? 'default' : 'outline'}>{plan.cta}</Button>
             </div>
           ))}
         </div>
       </div>
 
-      <p className="text-center text-xs text-on-surface-variant">Secure payment via Stripe · Cancel anytime · No hidden fees</p>
+      {/* Pricing */}
+      <div style={{ padding: '32px 20px 0' }}>
+        <h2 style={{ fontWeight: 800, fontSize: 20, color: '#fff', margin: '0 0 20px', textAlign: 'center' }}>
+          Choose Your Plan
+        </h2>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {PLANS.map((plan) => (
+            <div
+              key={plan.name}
+              style={{
+                backgroundColor: plan.highlight ? 'rgba(108,99,255,0.12)' : 'rgba(255,255,255,0.04)',
+                border: plan.highlight ? '2px solid rgba(108,99,255,0.5)' : '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 20,
+                padding: '20px',
+                position: 'relative',
+              }}
+            >
+              {plan.badge && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: -12,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: '#6c63ff',
+                    color: '#fff',
+                    fontWeight: 800,
+                    fontSize: 10,
+                    padding: '4px 12px',
+                    borderRadius: 20,
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {plan.badge}
+                </div>
+              )}
+
+              <div style={{ marginBottom: 16 }}>
+                <div style={{ fontWeight: 600, fontSize: 13, color: '#8892a4', marginBottom: 4 }}>{plan.name}</div>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
+                  <span style={{ fontWeight: 800, fontSize: 32, color: '#fff' }}>{plan.price}</span>
+                  <span style={{ fontWeight: 500, fontSize: 14, color: '#6b7280' }}>{plan.period}</span>
+                </div>
+                {plan.billed && (
+                  <div style={{ fontWeight: 500, fontSize: 12, color: '#6b7280', marginTop: 2 }}>{plan.billed}</div>
+                )}
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 16 }}>
+                {plan.features.map((feat) => (
+                  <div key={feat} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: '50%',
+                        backgroundColor: '#22c55e',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                    >
+                      <span className="material-symbols-outlined" style={{ fontSize: 12, color: '#fff' }}>check</span>
+                    </div>
+                    <span style={{ fontWeight: 600, fontSize: 13, color: '#c8cdd8' }}>{feat}</span>
+                  </div>
+                ))}
+              </div>
+
+              <button
+                style={{
+                  width: '100%',
+                  padding: '12px',
+                  borderRadius: 50,
+                  backgroundColor: plan.highlight ? '#6c63ff' : 'transparent',
+                  border: plan.highlight ? 'none' : '1px solid rgba(255,255,255,0.2)',
+                  color: plan.highlight ? '#fff' : '#c8cdd8',
+                  fontWeight: 800,
+                  fontSize: 14,
+                  cursor: 'pointer',
+                  fontFamily: '"Nunito", system-ui, sans-serif',
+                  boxShadow: plan.highlight ? '0 4px 14px rgba(108,99,255,0.35)' : 'none',
+                }}
+              >
+                {plan.cta}
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer note */}
+      <p style={{ textAlign: 'center', fontWeight: 500, fontSize: 12, color: '#4b5563', marginTop: 24, padding: '0 20px' }}>
+        Secure payment via Stripe · Cancel anytime · No hidden fees
+      </p>
+
+      {/* Bottom nav */}
+      <nav
+        style={{
+          position: 'fixed',
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: '#1a1a2e',
+          borderTop: '1px solid rgba(255,255,255,0.08)',
+          display: 'flex',
+          justifyContent: 'space-around',
+          padding: '8px 0 12px',
+          zIndex: 50,
+        }}
+        className="flex md:hidden"
+      >
+        {[
+          { icon: 'home', label: 'Home', href: '/explorer/dashboard' },
+          { icon: 'workspace_premium', label: 'Exams', href: '/explorer/daily-quest' },
+          { icon: 'shopping_bag', label: 'Shop', href: '/explorer/shop' },
+          { icon: 'person', label: 'Profile', href: '/explorer/profile' },
+        ].map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 2,
+              color: '#6b7280',
+              textDecoration: 'none',
+              fontSize: 10,
+              fontWeight: 600,
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 22 }}>{link.icon}</span>
+            {link.label}
+          </Link>
+        ))}
+      </nav>
     </div>
   )
 }

@@ -1,126 +1,168 @@
 'use client'
-import { Download, Share2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+
+import Link from 'next/link'
+
+const sidebarStyle: React.CSSProperties = { width: 260, minWidth: 260, background: '#003f7a', height: '100vh', position: 'fixed', top: 0, left: 0, display: 'flex', flexDirection: 'column', zIndex: 40 }
+const navItemStyle: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, color: 'rgba(255,255,255,0.75)', fontSize: 14, fontWeight: 500, cursor: 'pointer', marginBottom: 2, textDecoration: 'none' }
+const cardStyle: React.CSSProperties = { background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', padding: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.05)', marginBottom: 20 }
+
+const NAV = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/scholar/command-center' },
+  { icon: 'school', label: 'Courses', href: '/scholar/course-registration' },
+  { icon: 'science', label: 'Research', href: '/scholar/research-workspace' },
+  { icon: 'menu_book', label: 'Library', href: '/scholar/library' },
+  { icon: 'work', label: 'Careers', href: '/scholar/careers', active: true },
+  { icon: 'people', label: 'Community', href: '/scholar/networking' },
+]
 
 const SKILLS = [
   { name: 'Machine Learning', pct: 92 },
   { name: 'Data Architecture', pct: 88 },
   { name: 'Neural Topology', pct: 95 },
   { name: 'Bio-Statistics', pct: 78 },
+  { name: 'Quantum Computing', pct: 85 },
+]
+
+const PUBLICATIONS = [
+  { title: 'Topological Data Analysis in Large Language Models', venue: 'Nature AI', date: 'Oct 2024', citations: 142, type: 'Publication' },
+  { title: 'Decoherence Patterns in Quantum Neural Systems', venue: 'Physical Review Letters', date: 'Mar 2024', citations: 67, type: 'Publication' },
 ]
 
 const CREDENTIALS = [
-  { hash: '0x7F...3A2', title: 'Advanced Deep Learning Architectures', issuer: 'Global AI Institute', date: 'Oct 2023' },
-  { hash: '0x4B...9E1', title: 'Quantum Computing Foundations', issuer: 'Tech University Node', date: 'Mar 2023' },
+  { hash: '0x7F...3A2', title: 'Advanced Deep Learning Architectures', issuer: 'Global AI Institute', date: 'Oct 2024' },
+  { hash: '0x4B...9E1', title: 'Quantum Computing Foundations', issuer: 'Tech University Node', date: 'Mar 2024' },
 ]
 
-export default function ScholarPortfolioPage() {
+export default function PortfolioPage() {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">Advanced Research Tier</span>
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">Verified Scholar ID: SCH-2024-8902</span>
-          </div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">Professional Portfolio Hub</h1>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f9f9ff', fontFamily: '"Inter", system-ui, sans-serif' }}>
+      <aside style={sidebarStyle}>
+        <div style={{ padding: '24px 20px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ color: '#fff', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 20 }}>EduWorld</div>
+          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 2 }}>Scholar Portal</div>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-1.5"><Download className="h-3.5 w-3.5" /> Export Dossier</Button>
-          <Button size="sm" className="gap-1.5"><Share2 className="h-3.5 w-3.5" /> Share Profile</Button>
+        <nav style={{ flex: 1, padding: '12px 12px', overflowY: 'auto' }}>
+          {NAV.map(item => (
+            <Link key={item.href} href={item.href} style={{ ...navItemStyle, ...(item.active ? { background: 'rgba(255,255,255,0.15)', borderLeft: '3px solid #fff', paddingLeft: 9, color: '#fff' } : {}) as React.CSSProperties }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div style={{ padding: '12px 12px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <Link href="/settings" style={navItemStyle}><span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>Settings</Link>
         </div>
-      </div>
+      </aside>
 
-      {/* Profile */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 flex items-start gap-5">
-        <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center font-bold text-2xl text-primary shrink-0">ER</div>
-        <div>
-          <h2 className="font-display font-bold text-xl text-on-surface">Elena Rostova, Ph.D. Candidate</h2>
-          <p className="text-sm text-on-surface-variant mt-1">Specializing in computational neuroscience and generative AI research methodologies.</p>
-          <div className="flex items-center gap-2 mt-2">
-            <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">GPA: 3.98</span>
+      <main style={{ marginLeft: 260, flex: 1, padding: 32 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 28 }}>
+          <div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+              <span style={{ background: '#e8f0fe', color: '#003f7a', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 99 }}>Advanced Research Tier</span>
+              <span style={{ background: '#d1fae5', color: '#10B981', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 99 }}>Verified Scholar ID: SCH-2024-8902</span>
+            </div>
+            <h1 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 26, color: '#191c20', margin: 0 }}>Professional Portfolio Hub</h1>
+          </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{ background: '#fff', color: '#003f7a', border: '1px solid #003f7a', borderRadius: 8, padding: '9px 16px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>Export Dossier</button>
+            <button style={{ background: '#003f7a', color: '#fff', border: 'none', borderRadius: 8, padding: '9px 16px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>Share Profile</button>
           </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Competency Matrix */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-          <div className="flex items-center gap-2">
-            <span className="text-lg">📡</span>
-            <div>
-              <h2 className="font-display font-semibold text-on-surface">Competency Matrix</h2>
-              <p className="text-xs text-on-surface-variant">Quantified assessment of core research methodologies.</p>
+        {/* Profile Hero */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20 }}>
+            <div style={{ width: 72, height: 72, borderRadius: '50%', background: '#003f7a', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 700, flexShrink: 0 }}>SR</div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 22, color: '#191c20', marginBottom: 4 }}>Sarah Robertson, Ph.D. Candidate</div>
+              <p style={{ fontSize: 14, color: '#424750', marginBottom: 10, lineHeight: 1.5 }}>Specializing in quantum neural network architectures and decoherence modeling. Department of Physics, Spring 2025.</p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <span style={{ background: '#e8f0fe', color: '#003f7a', fontSize: 12, fontWeight: 700, padding: '3px 10px', borderRadius: 99 }}>GPA: 3.9</span>
+                <span style={{ background: '#d1fae5', color: '#10B981', fontSize: 12, fontWeight: 700, padding: '3px 10px', borderRadius: 99 }}>2 Publications</span>
+                <span style={{ background: '#fef3c7', color: '#d97706', fontSize: 12, fontWeight: 700, padding: '3px 10px', borderRadius: 99 }}>Top 5%</span>
+              </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              <button style={{ background: '#f9f9ff', border: '1px solid #c2c6d2', borderRadius: 8, padding: '7px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', color: '#424750', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>link</span> LinkedIn
+              </button>
+              <button style={{ background: '#f9f9ff', border: '1px solid #c2c6d2', borderRadius: 8, padding: '7px 14px', fontSize: 13, fontWeight: 600, cursor: 'pointer', color: '#424750', display: 'flex', alignItems: 'center', gap: 6 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 18 }}>school</span> Google Scholar
+              </button>
             </div>
           </div>
-          <div className="space-y-3">
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 0 }}>
+          {/* Competency Matrix */}
+          <div style={cardStyle}>
+            <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 16, color: '#191c20', marginBottom: 4 }}>Competency Matrix</div>
+            <div style={{ fontSize: 12, color: '#424750', marginBottom: 16 }}>Quantified assessment of core research methodologies</div>
             {SKILLS.map(s => (
-              <div key={s.name} className="space-y-1">
-                <div className="flex justify-between text-xs">
-                  <span className="text-on-surface-variant">{s.name}</span>
-                  <span className="font-semibold text-on-surface">{s.pct}%</span>
+              <div key={s.name} style={{ marginBottom: 14 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, color: '#424750', marginBottom: 6 }}>
+                  <span>{s.name}</span><span style={{ fontWeight: 700, color: '#191c20' }}>{s.pct}%</span>
                 </div>
-                <div className="h-2 bg-surface-high rounded-full overflow-hidden">
-                  <div className="h-full bg-primary rounded-full" style={{ width: `${s.pct}%` }} />
+                <div style={{ height: 8, borderRadius: 99, background: '#eef0f4', overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${s.pct}%`, borderRadius: 99, background: '#003f7a' }} />
                 </div>
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Verified Credentials */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display font-semibold text-on-surface">Verified Credentials</h2>
-            <span className="text-xs bg-surface-high text-on-surface-variant px-2 py-0.5 rounded-full font-semibold">🔒 Cryptographically Secured</span>
-          </div>
-          <div className="space-y-3">
-            {CREDENTIALS.map(c => (
-              <div key={c.hash} className="flex items-start gap-3 p-3 bg-surface-low rounded-xl">
-                <span className="text-green-500 text-lg">✓</span>
-                <div className="flex-1">
-                  <p className="text-xs font-mono text-on-surface-variant">{c.hash}</p>
-                  <p className="text-sm font-semibold text-on-surface">{c.title}</p>
-                  <p className="text-xs text-on-surface-variant">{c.issuer} · Issued: {c.date}</p>
+          {/* Verified Credentials */}
+          <div style={cardStyle}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 16, color: '#191c20' }}>Verified Credentials</div>
+              <span style={{ background: '#f9f9ff', color: '#424750', fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 99, border: '1px solid #c2c6d2' }}>🔒 Cryptographically Secured</span>
+            </div>
+            {CREDENTIALS.map((c, i) => (
+              <div key={i} style={{ display: 'flex', gap: 12, padding: '14px', borderRadius: 12, background: '#f9f9ff', border: '1px solid #eef0f4', marginBottom: 10 }}>
+                <span style={{ color: '#10B981', fontSize: 20, flexShrink: 0 }}>✓</span>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: '"Courier Prime", monospace', fontSize: 11, color: '#424750', marginBottom: 4 }}>{c.hash}</div>
+                  <div style={{ fontWeight: 700, fontSize: 13, color: '#191c20' }}>{c.title}</div>
+                  <div style={{ fontSize: 12, color: '#424750', marginTop: 2 }}>{c.issuer} · Issued: {c.date}</div>
                 </div>
-                <button className="text-primary text-sm shrink-0">→</button>
+                <span style={{ color: '#003f7a', cursor: 'pointer', fontSize: 16 }}>→</span>
               </div>
             ))}
+            <button style={{ background: '#fff', color: '#003f7a', border: '1px solid #003f7a', borderRadius: 8, padding: '9px', fontWeight: 600, fontSize: 13, cursor: 'pointer', width: '100%', marginTop: 6 }}>
+              Add Certification
+            </button>
           </div>
         </div>
-      </div>
 
-      {/* Research Nodes & Publications */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display font-semibold text-on-surface">Research Nodes &amp; Publications</h2>
-          <button className="text-xs text-primary hover:underline">View Full Archive →</button>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-outline-variant rounded-xl p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold">Publication Nature AI</span>
-            </div>
-            <p className="text-sm font-semibold text-on-surface">Topological Data Analysis in Large Language Models</p>
-            <p className="text-xs text-on-surface-variant">Persistent homology approach achieving 15% reduction in hallucination rates.</p>
-            <div className="flex items-center gap-3 text-xs text-on-surface-variant">
-              <span>📅 Oct 2023</span>
-              <span>💬 142 Citations</span>
+        {/* Publications */}
+        <div style={cardStyle}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
+            <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 16, color: '#191c20' }}>Research Publications</div>
+            <button style={{ color: '#003f7a', fontSize: 13, fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>View Full Archive →</button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            {PUBLICATIONS.map((p, i) => (
+              <div key={i} style={{ border: '1px solid #c2c6d2', borderRadius: 12, padding: 18 }}>
+                <span style={{ background: '#e8f0fe', color: '#003f7a', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99, marginBottom: 10, display: 'inline-block' }}>{p.venue}</span>
+                <div style={{ fontWeight: 700, fontSize: 14, color: '#191c20', marginBottom: 6, lineHeight: 1.4 }}>{p.title}</div>
+                <div style={{ display: 'flex', gap: 16, fontSize: 12, color: '#424750' }}>
+                  <span>📅 {p.date}</span>
+                  <span>💬 {p.citations} Citations</span>
+                </div>
+              </div>
+            ))}
+            {/* DeepMind Project */}
+            <div style={{ border: '1px solid #c2c6d2', borderRadius: 12, padding: 18 }}>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 10 }}>
+                <span style={{ fontSize: 20 }}>🔬</span>
+                <span style={{ background: '#e8f0fe', color: '#003f7a', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 99 }}>Lab Residency · DeepMind</span>
+              </div>
+              <div style={{ fontWeight: 700, fontSize: 14, color: '#191c20', marginBottom: 6 }}>Cognitive Emulation Engine v2</div>
+              <div style={{ fontSize: 12, color: '#424750', lineHeight: 1.5 }}>Sub-team of 4. Developed custom loss functions for neural emulation.</div>
+              <div style={{ fontSize: 12, color: '#424750', marginTop: 6 }}>📅 Jan 2024 – Jun 2024</div>
             </div>
           </div>
-          <div className="border border-outline-variant rounded-xl p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="text-xl">🔬</span>
-              <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">Lab Residency DeepMind Node</span>
-            </div>
-            <p className="text-sm font-semibold text-on-surface">Cognitive Emulation Engine v2</p>
-            <p className="text-xs text-on-surface-variant">Sub-team of 4 researchers. Developed custom loss functions for neural emulation.</p>
-            <div className="flex items-center gap-3 text-xs text-on-surface-variant">
-              <span>📅 Jan 2023 – Jun 2023</span>
-            </div>
-          </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

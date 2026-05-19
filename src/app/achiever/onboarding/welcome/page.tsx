@@ -1,98 +1,175 @@
 'use client'
-import { Sparkles, ChevronRight, BookOpen, CheckCircle } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-
-const COURSES = [
-  { code: 'CALC-BC', name: 'AP Calculus BC', teacher: 'Mr. Henderson', grade: 'Grade 11', color: 'bg-primary/10 text-primary' },
-  { code: 'PHYS-A', name: 'Advanced Physics', teacher: 'Ms. Martinez', grade: 'Grade 11', color: 'bg-blue-100 text-blue-700' },
-  { code: 'LIT-W', name: 'World Literature', teacher: 'Dr. Chen', grade: 'Grade 11', color: 'bg-purple-100 text-purple-700' },
-]
+import Link from 'next/link'
 
 export default function AchieverOnboardingWelcomePage() {
   return (
-    <div className="min-h-screen bg-surface-low flex items-center justify-center p-6">
-      <div className="w-full max-w-md space-y-6">
-        {/* Header */}
-        <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-xs font-semibold">
-            EWD-029 · Tier 1 Invited
-          </div>
-          <h1 className="font-display font-bold text-3xl text-on-surface">
-            Welcome to the<br />
-            <span className="text-primary">Achiever Tier, Alex!</span>
-          </h1>
-          <p className="text-sm text-on-surface-variant">You've been enrolled in the Achiever program at your institution. Your AI-powered learning journey starts now.</p>
+    <div style={{
+      minHeight: '100vh',
+      background: '#0D1137',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontFamily: '"Inter", system-ui, sans-serif',
+      padding: '24px',
+    }}>
+      <div style={{
+        width: '100%',
+        maxWidth: '480px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '24px',
+      }}>
+        {/* Tier Badge */}
+        <div style={{
+          background: 'rgba(124, 58, 237, 0.15)',
+          border: '1px solid rgba(124, 58, 237, 0.4)',
+          borderRadius: '100px',
+          padding: '6px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}>
+          <span style={{ color: '#F59E0B', fontSize: '12px' }}>✦</span>
+          <span style={{ color: '#C4B5FD', fontSize: '13px', fontWeight: 600 }}>Tier 1 Invited</span>
         </div>
 
-        {/* AI Banner */}
-        <div className="bg-ai/5 border border-ai/20 rounded-2xl p-4 flex items-center gap-3">
-          <Sparkles className="h-5 w-5 text-ai shrink-0" />
-          <div>
-            <p className="text-sm font-semibold text-on-surface">EduWorld AI Activated</p>
-            <p className="text-xs text-on-surface-variant">Your personal AI tutor is ready to help you achieve your academic goals.</p>
+        {/* Logo + Label */}
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
+          <div style={{
+            width: '56px',
+            height: '56px',
+            background: 'rgba(6, 182, 212, 0.15)',
+            borderRadius: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <span className="material-symbols-outlined" style={{ color: '#06B6D4', fontSize: '28px' }}>school</span>
           </div>
-          <CheckCircle className="h-5 w-5 text-green-500 shrink-0" />
+          <span style={{ color: '#94A3B8', fontSize: '13px', fontWeight: 500, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Achievers</span>
+        </div>
+
+        {/* Heading */}
+        <div style={{ textAlign: 'center' }}>
+          <h1 style={{
+            fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+            fontSize: '32px',
+            fontWeight: 700,
+            color: '#FFFFFF',
+            margin: 0,
+            lineHeight: 1.25,
+          }}>
+            Welcome to the Achiever Tier, Alex.
+          </h1>
+          <p style={{ color: '#94A3B8', fontSize: '15px', marginTop: '12px', lineHeight: 1.6 }}>
+            You&apos;ve been granted access to EduWorld&apos;s elite learning tier. AI-powered tools,
+            personalized study plans, and real exam preparation — all in one place.
+          </p>
         </div>
 
         {/* Institution Card */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 flex items-center gap-4">
-          <div className="w-14 h-14 rounded-xl bg-primary/10 flex items-center justify-center shrink-0">
-            <span className="font-bold text-xl text-primary">SP</span>
+        <div style={{
+          width: '100%',
+          background: '#161D2F',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: '16px',
+          padding: '16px 20px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '14px',
+        }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            background: 'rgba(6, 182, 212, 0.12)',
+            borderRadius: '10px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+          }}>
+            <span className="material-symbols-outlined" style={{ color: '#06B6D4', fontSize: '22px' }}>account_balance</span>
           </div>
           <div>
-            <p className="font-semibold text-on-surface">St. Peter's Academy</p>
-            <p className="text-xs text-on-surface-variant">Secondary School · Grade 11</p>
-            <p className="text-xs text-primary mt-0.5">Verified Institution ✓</p>
+            <p style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '15px', margin: 0 }}>St. Peter&apos;s Academy</p>
+            <p style={{ color: '#94A3B8', fontSize: '13px', margin: '2px 0 0' }}>Verified Educational Institution</p>
           </div>
+          <span className="material-symbols-outlined" style={{ color: '#22C55E', fontSize: '20px', marginLeft: 'auto' }}>verified</span>
         </div>
 
-        {/* Enrolled Courses */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-          <div className="flex items-center gap-2">
-            <BookOpen className="h-5 w-5 text-primary" />
-            <h2 className="font-display font-semibold text-on-surface">Your Enrolled Courses</h2>
-          </div>
-          <div className="space-y-2">
-            {COURSES.map(c => (
-              <div key={c.code} className="flex items-center gap-3 p-3 bg-surface-low rounded-xl">
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold shrink-0 ${c.color}`}>
-                  {c.code.split('-')[0]}
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-on-surface">{c.name}</p>
-                  <p className="text-xs text-on-surface-variant">{c.teacher} · {c.grade}</p>
-                </div>
-                <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
+        {/* Course Chips */}
+        <div style={{ width: '100%' }}>
+          <p style={{ color: '#94A3B8', fontSize: '13px', marginBottom: '10px' }}>Enrolled Courses</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {[
+              { icon: 'functions', label: 'AP Calculus', color: '#7C3AED' },
+              { icon: 'biotech', label: 'AP Biology', color: '#06B6D4' },
+              { icon: 'menu_book', label: 'English Lit', color: '#3B82F6' },
+            ].map(chip => (
+              <div key={chip.label} style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: '100px',
+                padding: '6px 12px',
+              }}>
+                <span className="material-symbols-outlined" style={{ color: chip.color, fontSize: '16px' }}>{chip.icon}</span>
+                <span style={{ color: '#CBD5E1', fontSize: '13px', fontWeight: 500 }}>{chip.label}</span>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Progress Setup */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-          <h2 className="font-display font-semibold text-on-surface">Setup Progress</h2>
-          {[
-            { step: 'Account Created', done: true },
-            { step: 'Institution Verified', done: true },
-            { step: 'Courses Enrolled', done: true },
-            { step: 'Set Your Learning Goals', done: false },
-          ].map(s => (
-            <div key={s.step} className="flex items-center gap-3">
-              <div className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 ${s.done ? 'bg-green-500' : 'border-2 border-outline-variant'}`}>
-                {s.done && <CheckCircle className="h-3.5 w-3.5 text-white" />}
-              </div>
-              <p className={`text-sm ${s.done ? 'text-on-surface line-through opacity-60' : 'text-on-surface font-semibold'}`}>{s.step}</p>
-            </div>
-          ))}
+        {/* AI Activated Banner */}
+        <div style={{
+          width: '100%',
+          background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.12), rgba(124, 58, 237, 0.12))',
+          border: '1px solid rgba(245, 158, 11, 0.3)',
+          borderRadius: '12px',
+          padding: '12px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+        }}>
+          <span style={{ color: '#F59E0B', fontSize: '16px' }}>✦</span>
+          <span style={{ color: '#FCD34D', fontWeight: 600, fontSize: '14px' }}>EduWorld AI Activated</span>
+          <span style={{ color: '#94A3B8', fontSize: '13px', marginLeft: 'auto' }}>claude-sonnet-4</span>
         </div>
 
-        {/* CTA */}
-        <Button className="w-full gap-2 h-12 text-base">
-          Let's Get Started
-          <ChevronRight className="h-5 w-5" />
-        </Button>
+        {/* CTA Button */}
+        <Link href="/achiever/onboarding/goals" style={{ width: '100%', textDecoration: 'none' }}>
+          <button style={{
+            width: '100%',
+            background: 'linear-gradient(135deg, #7c3aed, #06B6D4)',
+            border: 'none',
+            borderRadius: '12px',
+            padding: '14px 24px',
+            color: '#FFFFFF',
+            fontSize: '15px',
+            fontWeight: 700,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+          }}>
+            Get Started
+            <span className="material-symbols-outlined" style={{ fontSize: '20px' }}>arrow_forward</span>
+          </button>
+        </Link>
 
-        <p className="text-center text-xs text-on-surface-variant">By continuing, you agree to EduWorld's <button className="text-primary hover:underline">Terms of Service</button> and <button className="text-primary hover:underline">Privacy Policy</button>.</p>
+        {/* Footer */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '15px' }}>lock</span>
+          <p style={{ color: '#64748B', fontSize: '12px', margin: 0 }}>Secure login authenticated via Single Sign-On.</p>
+        </div>
+
+        {/* Watermark */}
+        <p style={{ color: '#1E2A40', fontSize: '11px', fontWeight: 600, letterSpacing: '0.1em' }}>EWD-029</p>
       </div>
     </div>
   )

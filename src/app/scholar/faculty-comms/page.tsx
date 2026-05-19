@@ -1,156 +1,203 @@
 'use client'
-import { Sparkles, Search, Archive, Reply, Calendar, CheckCircle2, ChevronDown } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+
+import Link from 'next/link'
+
+const sidebarStyle: React.CSSProperties = { width: 260, minWidth: 260, background: '#003f7a', height: '100vh', position: 'fixed', top: 0, left: 0, display: 'flex', flexDirection: 'column', zIndex: 40 }
+const navItemStyle: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, color: 'rgba(255,255,255,0.75)', fontSize: 14, fontWeight: 500, cursor: 'pointer', marginBottom: 2, textDecoration: 'none' }
+const cardStyle: React.CSSProperties = { background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', padding: 24, boxShadow: '0 1px 4px rgba(0,0,0,0.05)', marginBottom: 20 }
+
+const NAV = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/scholar/command-center' },
+  { icon: 'school', label: 'Courses', href: '/scholar/course-registration' },
+  { icon: 'science', label: 'Research', href: '/scholar/research-workspace' },
+  { icon: 'menu_book', label: 'Library', href: '/scholar/library' },
+  { icon: 'work', label: 'Careers', href: '/scholar/careers' },
+  { icon: 'people', label: 'Community', href: '/scholar/networking', active: true },
+]
 
 const TIERS = [
-  { icon: '🔥', label: 'Priority Auth', badge: 2 },
-  { icon: '🏛️', label: 'Deans & Admin', badge: null },
-  { icon: '🔬', label: 'Faculty / Profs', badge: 14 },
-  { icon: '🔗', label: 'Research Mentors', badge: null },
-  { icon: '👥', label: 'Peer Cohort', badge: null },
+  { label: 'Priority Auth', badge: 2, icon: 'priority_high' },
+  { label: 'Deans & Admin', badge: null, icon: 'account_balance' },
+  { label: 'Faculty / Profs', badge: 14, icon: 'science', active: true },
+  { label: 'Research Mentors', badge: null, icon: 'supervisor_account' },
+  { label: 'Peer Cohort', badge: null, icon: 'people' },
 ]
 
 const MESSAGES = [
-  { initials: 'EV', name: 'Dr. E. Vance', time: '10:42 AM', status: 'Urgent Action Required', active: true },
-  { initials: 'AL', name: 'Prof. A. Liang', time: 'Yesterday', status: 'Cleared', active: false },
-  { initials: 'DO', name: "Dean's Office", time: 'Oct 12', status: 'For Information', active: false },
+  { initials: 'EV', name: 'Dr. E. Vance', time: '10:42 AM', status: 'Urgent Action Required', urgent: true, active: true },
+  { initials: 'AL', name: 'Prof. A. Liang', time: 'Yesterday', status: 'Cleared', urgent: false, active: false },
+  { initials: 'DO', name: "Dean's Office", time: 'May 12', status: 'For Information', urgent: false, active: false },
 ]
 
 const SLOTS = [
-  { day: 'Thu, Oct 14', time: '10:00 AM', duration: '30m' },
-  { day: 'Thu, Oct 14', time: '02:30 PM', duration: '30m' },
-  { day: 'Fri, Oct 15', time: '09:00 AM', duration: '30m' },
+  { day: 'Thu, May 22', time: '10:00 AM', duration: '30m' },
+  { day: 'Thu, May 22', time: '02:30 PM', duration: '30m' },
+  { day: 'Fri, May 23', time: '09:00 AM', duration: '30m' },
 ]
 
-export default function ScholarFacultyCommsPage() {
+export default function FacultyCommsPage() {
   return (
-    <div className="p-6 h-full">
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-full">
-        {/* Left Panel */}
-        <div className="lg:col-span-3 bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-4">
-          <div className="flex items-center gap-2">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-on-surface-variant" />
-              <input className="w-full pl-9 pr-3 py-2 text-sm bg-surface-low rounded-xl border border-outline-variant outline-none focus:border-primary" placeholder="Search..." />
-            </div>
-            <button className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-xs font-bold">+</button>
-          </div>
+    <div style={{ display: 'flex', minHeight: '100vh', background: '#f9f9ff', fontFamily: '"Inter", system-ui, sans-serif' }}>
+      <aside style={sidebarStyle}>
+        <div style={{ padding: '24px 20px 16px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <div style={{ color: '#fff', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 20 }}>EduWorld</div>
+          <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: 12, marginTop: 2 }}>Scholar Portal</div>
+        </div>
+        <nav style={{ flex: 1, padding: '12px 12px', overflowY: 'auto' }}>
+          {NAV.map(item => (
+            <Link key={item.href} href={item.href} style={{ ...navItemStyle, ...(item.active ? { background: 'rgba(255,255,255,0.15)', borderLeft: '3px solid #fff', paddingLeft: 9, color: '#fff' } : {}) as React.CSSProperties }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <div style={{ padding: '12px 12px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+          <Link href="/settings" style={navItemStyle}><span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>Settings</Link>
+        </div>
+      </aside>
 
-          {/* Institutional banner */}
-          <div className="bg-primary/5 border border-primary/20 rounded-xl p-3">
-            <p className="text-xs font-semibold text-primary">📢 Institutional Directives</p>
-            <p className="text-xs text-on-surface-variant mt-1">Grant application deadline — Nov 5. Submit via portal.</p>
-          </div>
-
-          {/* Tiers */}
-          <div className="space-y-1">
-            {TIERS.map(t => (
-              <div key={t.label} className={cn('flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer hover:bg-surface-low transition-colors', t.label === 'Faculty / Profs' && 'bg-surface-low')}>
-                <span className="text-base">{t.icon}</span>
-                <p className="text-sm text-on-surface flex-1">{t.label}</p>
-                {t.badge && <span className="text-xs bg-primary text-white px-1.5 py-0.5 rounded-full font-semibold">{t.badge}</span>}
-              </div>
-            ))}
-          </div>
-
-          {/* Message list */}
-          <div className="space-y-2">
-            {MESSAGES.map(m => (
-              <div key={m.name} className={cn('p-3 rounded-xl cursor-pointer transition-colors', m.active ? 'bg-primary/5 border border-primary/20' : 'hover:bg-surface-low')}>
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">{m.initials}</div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-on-surface truncate">{m.name}</p>
-                    <p className="text-xs text-on-surface-variant">{m.time}</p>
-                  </div>
-                </div>
-                <p className={cn('text-xs', m.status === 'Urgent Action Required' ? 'text-red-600 font-semibold' : 'text-on-surface-variant')}>{m.status}</p>
-              </div>
-            ))}
-          </div>
+      <main style={{ marginLeft: 260, flex: 1, padding: 32, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <div style={{ marginBottom: 20 }}>
+          <h1 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 26, color: '#191c20', margin: 0 }}>Faculty & Dean Communication Hub</h1>
+          <p style={{ color: '#424750', fontSize: 14, marginTop: 6 }}>Hierarchical messaging, office hour bookings, and academic correspondence.</p>
         </div>
 
-        {/* Main Thread Panel */}
-        <div className="lg:col-span-6 bg-surface-lowest rounded-2xl border border-outline-variant overflow-hidden flex flex-col">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-outline-variant">
-            <h2 className="font-display font-semibold text-on-surface">RE: Methodology revision for Chapter 4</h2>
-            <div className="flex gap-2">
-              <button className="text-xs text-on-surface-variant hover:text-on-surface flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-surface-low">
-                <Archive className="h-3.5 w-3.5" /> Archive
-              </button>
-              <button className="text-xs text-primary hover:underline flex items-center gap-1 px-3 py-1.5 rounded-lg hover:bg-primary/5">
-                <Reply className="h-3.5 w-3.5" /> Reply
-              </button>
+        <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr 280px', gap: 20, flex: 1 }}>
+          {/* Left Panel */}
+          <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', padding: 16, display: 'flex', flexDirection: 'column', gap: 14, height: 'fit-content' }}>
+            {/* Search */}
+            <div style={{ position: 'relative' }}>
+              <span className="material-symbols-outlined" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', fontSize: 18, color: '#424750' }}>search</span>
+              <input placeholder="Search..." style={{ width: '100%', padding: '8px 10px 8px 36px', borderRadius: 8, border: '1px solid #c2c6d2', fontSize: 13, outline: 'none', boxSizing: 'border-box' }} />
             </div>
-          </div>
-          <div className="p-5 flex-1 space-y-4">
-            <div className="flex items-start gap-3">
-              <div className="w-10 h-10 rounded-full bg-ai/20 flex items-center justify-center text-sm font-bold text-ai shrink-0">EV</div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <p className="font-semibold text-sm text-on-surface">Dr. Elias Vance</p>
-                  <p className="text-xs text-on-surface-variant">&lt;e.vance@university.edu&gt;</p>
-                  <p className="text-xs text-on-surface-variant ml-auto">Today, 10:42 AM</p>
-                </div>
-                <p className="text-sm text-on-surface-variant">To: You</p>
-                <div className="mt-3 text-sm text-on-surface space-y-2">
-                  <p>The statistical approach in Section 4.2 is misaligned with the thesis parameters. The variance model is too broad for the sample size of n=42.</p>
-                  <p>I recommend revisiting the methodology with a more constrained regression model. Please revise and resubmit by Thursday for review before the faculty panel.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Right Action Panel */}
-        <div className="lg:col-span-3 space-y-4">
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-            <div className="flex items-center gap-2">
-              <Calendar className="h-5 w-5 text-primary" />
-              <h2 className="font-display font-semibold text-on-surface">Schedule Office Hour</h2>
+            {/* Directive Banner */}
+            <div style={{ background: '#e8f0fe', border: '1px solid #bfdbfe', borderRadius: 10, padding: '10px 12px' }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: '#003f7a', marginBottom: 4 }}>📢 Institutional Directives</div>
+              <p style={{ fontSize: 11, color: '#424750' }}>Grant application deadline — Jun 5. Submit via portal.</p>
             </div>
-            <div className="space-y-2">
-              {SLOTS.map(s => (
-                <label key={s.time + s.day} className="flex items-center gap-3 p-3 rounded-xl border border-outline-variant cursor-pointer hover:bg-surface-low">
-                  <input type="radio" name="slot" className="accent-primary" />
-                  <div>
-                    <p className="text-sm font-semibold text-on-surface">{s.day}</p>
-                    <p className="text-xs text-on-surface-variant">{s.time} ({s.duration})</p>
-                  </div>
-                </label>
+
+            {/* Tiers */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {TIERS.map((t, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 10px', borderRadius: 8, cursor: 'pointer', background: t.active ? '#f0f4ff' : 'transparent' }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#424750' }}>{t.icon}</span>
+                  <span style={{ fontSize: 13, color: '#191c20', flex: 1 }}>{t.label}</span>
+                  {t.badge && <span style={{ background: '#003f7a', color: '#fff', fontSize: 10, fontWeight: 700, padding: '1px 6px', borderRadius: 99 }}>{t.badge}</span>}
+                </div>
               ))}
             </div>
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-on-surface-variant">Meeting Intent</p>
-              <div className="relative">
-                <select className="w-full appearance-none px-3 py-2 text-sm bg-surface-low border border-outline-variant rounded-xl text-on-surface outline-none pr-8">
+
+            {/* Message List */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {MESSAGES.map((m, i) => (
+                <div key={i} style={{ padding: '10px 12px', borderRadius: 10, cursor: 'pointer', background: m.active ? '#f0f4ff' : '#f9f9ff', border: `1px solid ${m.active ? '#bfdbfe' : '#eef0f4'}` }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                    <div style={{ width: 30, height: 30, borderRadius: '50%', background: '#e8f0fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 11, fontWeight: 700, color: '#003f7a', flexShrink: 0 }}>{m.initials}</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, fontSize: 12, color: '#191c20', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{m.name}</div>
+                      <div style={{ fontSize: 10, color: '#424750' }}>{m.time}</div>
+                    </div>
+                  </div>
+                  <div style={{ fontSize: 11, fontWeight: m.urgent ? 700 : 400, color: m.urgent ? '#dc2626' : '#424750' }}>{m.status}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Main Thread */}
+          <div style={{ background: '#fff', borderRadius: 14, border: '1px solid #c2c6d2', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', borderBottom: '1px solid #eef0f4' }}>
+              <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 15, color: '#191c20' }}>RE: Methodology revision for Chapter 4</div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: '#424750', display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>archive</span> Archive
+                </button>
+                <button style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: '#003f7a', display: 'flex', alignItems: 'center', gap: 4, fontWeight: 600 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>reply</span> Reply
+                </button>
+              </div>
+            </div>
+            <div style={{ flex: 1, padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+                <div style={{ width: 40, height: 40, borderRadius: '50%', background: '#e8f0fe', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: '#003f7a', flexShrink: 0 }}>EV</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
+                    <span style={{ fontWeight: 700, fontSize: 14, color: '#191c20' }}>Dr. Elias Vance</span>
+                    <span style={{ fontSize: 12, color: '#424750' }}>&lt;e.vance@university.edu&gt;</span>
+                    <span style={{ fontSize: 12, color: '#424750', marginLeft: 'auto' }}>Today, 10:42 AM</span>
+                  </div>
+                  <div style={{ fontSize: 13, color: '#424750', marginBottom: 4 }}>To: You</div>
+                  <div style={{ fontSize: 14, color: '#191c20', lineHeight: 1.7, marginTop: 12 }}>
+                    <p style={{ marginBottom: 12 }}>The statistical approach in Section 4.2 is misaligned with the thesis parameters. The variance model is too broad for the sample size of n=42.</p>
+                    <p>I recommend revisiting the methodology with a more constrained regression model. Please revise and resubmit by Thursday for review before the faculty panel.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* Reply box */}
+            <div style={{ borderTop: '1px solid #eef0f4', padding: '14px 20px' }}>
+              <textarea
+                placeholder="Type your reply to Dr. Vance..."
+                style={{ width: '100%', height: 80, padding: '10px 12px', borderRadius: 10, border: '1px solid #c2c6d2', fontSize: 13, outline: 'none', resize: 'none', fontFamily: '"Inter", system-ui, sans-serif', boxSizing: 'border-box', marginBottom: 10 }}
+              />
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                <button style={{ background: '#f9f9ff', color: '#424750', border: '1px solid #c2c6d2', borderRadius: 8, padding: '8px 16px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>Discard</button>
+                <button style={{ background: '#003f7a', color: '#fff', border: 'none', borderRadius: 8, padding: '8px 16px', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>Send Reply</button>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Action Panel */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* Office Hour Booking */}
+            <div style={cardStyle}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#003f7a' }}>calendar_today</span>
+                <div style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 600, fontSize: 15, color: '#191c20' }}>Schedule Office Hour</div>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 14 }}>
+                {SLOTS.map((s, i) => (
+                  <label key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', borderRadius: 10, border: '1px solid #c2c6d2', cursor: 'pointer' }}>
+                    <input type="radio" name="slot" style={{ accentColor: '#003f7a' }} />
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 13, color: '#191c20' }}>{s.day}</div>
+                      <div style={{ fontSize: 11, color: '#424750' }}>{s.time} ({s.duration})</div>
+                    </div>
+                  </label>
+                ))}
+              </div>
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#424750', marginBottom: 6 }}>Meeting Intent</div>
+                <select style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid #c2c6d2', fontSize: 13, outline: 'none', background: '#fff' }}>
                   <option>Methodology Review</option>
                   <option>Thesis Defense Prep</option>
                   <option>General Advising</option>
                 </select>
-                <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-on-surface-variant pointer-events-none" />
+              </div>
+              <button style={{ background: '#003f7a', color: '#fff', border: 'none', borderRadius: 8, padding: '10px', fontWeight: 600, fontSize: 13, cursor: 'pointer', width: '100%', marginBottom: 12 }}>
+                Confirm Booking
+              </button>
+              <div style={{ borderTop: '1px solid #eef0f4', paddingTop: 12 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#003f7a' }}>check_circle</span>
+                  <span style={{ fontSize: 12, color: '#424750' }}>Tagged: <strong style={{ color: '#191c20' }}>Thesis Ch. 4</strong></span>
+                </div>
+                <div style={{ fontSize: 11, color: '#424750' }}>Primary Advisor · Hierarchy Line</div>
               </div>
             </div>
-            <Button className="w-full">Confirm Booking</Button>
-            <div className="pt-2 border-t border-outline-variant space-y-2">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-primary" />
-                <p className="text-xs text-on-surface-variant">Tagged: <span className="font-semibold text-on-surface">Thesis Ch. 4</span></p>
-              </div>
-              <p className="text-xs text-on-surface-variant">Primary Advisor · Hierarchy Line</p>
-            </div>
-          </div>
 
-          <div className="bg-ai/5 border border-ai/20 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-ai" />
-              <p className="text-sm font-semibold text-on-surface">AI Insight</p>
+            {/* AI Insight */}
+            <div style={{ background: '#f0fdf4', border: '1px solid #a7f3d0', borderRadius: 14, padding: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
+                <span style={{ color: '#10B981', fontSize: 16, fontWeight: 700 }}>✦</span>
+                <span style={{ fontWeight: 600, fontSize: 14, color: '#191c20' }}>AI Insight</span>
+              </div>
+              <p style={{ fontSize: 12, color: '#424750', lineHeight: 1.6 }}>Dr. Vance typically responds to methodology queries within 2 hours during office hours. His feedback patterns suggest a preference for constrained statistical models.</p>
             </div>
-            <p className="text-xs text-on-surface-variant">Dr. Vance typically responds to methodology queries within 2 hours during office hours.</p>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

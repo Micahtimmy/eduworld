@@ -1,143 +1,170 @@
 'use client'
-import { Sparkles, CloudUpload, Filter, Play, MoreVertical, Plus } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
-const SESSIONS = [
-  { title: 'Intro to Astrophysics', duration: '45:12', date: 'Jan 12, 2024 · Section B', badges: ['REVISION', 'VIDEO'] },
-  { title: 'Literature & Society', duration: '58:04', date: 'Jan 10, 2024 · Section A', badges: ['CORE CONTENT'] },
-  { title: 'Organic Chemistry Lab', duration: '32:50', date: 'Jan 08, 2024 · Lab 3', badges: ['MANDATORY'] },
-]
-
-const BADGE_COLORS: Record<string, string> = {
-  'REVISION': 'bg-blue-100 text-blue-700',
-  'VIDEO': 'bg-purple-100 text-purple-700',
-  'CORE CONTENT': 'bg-green-100 text-green-700',
-  'MANDATORY': 'bg-red-100 text-red-700',
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
 }
 
-const COLLECTIONS = [
-  { title: 'Midterm Prep: Calculus I', desc: 'Lessons from Weeks 1 through 6', count: '+8', members: '+24', badge: 'High Activity' },
-  { title: 'Advanced Genetics Lab', desc: 'PCR and Electrophoresis demos', count: '+3', members: '+12', badge: 'Internal Only' },
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard' },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox' },
 ]
+
+const SESSIONS = [
+  { title: 'Intro to Astrophysics', duration: '45:12', date: 'Jan 12, 2025 · Section B', tags: ['REVISION', 'VIDEO'], color: '#7c3aed' },
+  { title: 'Literature & Society', duration: '58:04', date: 'Jan 10, 2025 · Section A', tags: ['CORE CONTENT'], color: T.ai },
+  { title: 'Organic Chemistry Lab', duration: '32:50', date: 'Jan 08, 2025 · Lab 3', tags: ['MANDATORY'], color: T.error },
+  { title: 'Quantum Mechanics III', duration: '51:30', date: 'Jan 05, 2025 · Section A', tags: ['REVISION'], color: T.primary },
+]
+
+const COLLECTIONS = [
+  { title: 'Midterm Prep: Calculus I', desc: 'Lessons from Weeks 1 through 6', count: 8, members: 24 },
+  { title: 'Advanced Genetics Lab', desc: 'PCR and Electrophoresis demos', count: 3, members: 12 },
+]
+
+const TAG_COLORS: Record<string, string> = {
+  'REVISION': '#0891b2',
+  'VIDEO': '#7c3aed',
+  'CORE CONTENT': T.ai,
+  'MANDATORY': T.error,
+}
+
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Teacher</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: 'transparent', borderLeft: '3px solid transparent', color: T.textMuted, fontFamily: T.fontBody, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
+}
 
 export default function TeacherLessonArchivePage() {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-xs text-on-surface-variant">Lesson Plans / Archive & Recordings</p>
-          <h1 className="font-display font-bold text-2xl text-on-surface mt-1">Curated Lesson Archive</h1>
-          <p className="text-sm text-on-surface-variant mt-1">Revisit, edit, and re-release past lessons to your classes.</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-2"><Filter className="h-4 w-4" /> Filter Library</Button>
-          <Button size="sm" className="gap-2"><CloudUpload className="h-4 w-4" /> Upload Recording</Button>
-        </div>
-      </div>
-
-      {/* AI Featured */}
-      <div className="bg-ai/5 border border-ai/20 rounded-2xl p-5">
-        <div className="flex items-center gap-2 mb-3">
-          <Sparkles className="h-4 w-4 text-ai" />
-          <span className="text-xs font-semibold text-ai">AI Recommendation</span>
-          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-semibold ml-auto">Recommended for Semester 2 Revision</span>
-        </div>
-        <div className="flex gap-4">
-          <div className="w-32 h-20 bg-surface-high rounded-xl flex items-center justify-center shrink-0 relative">
-            <Play className="h-8 w-8 text-on-surface-variant" />
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: 'auto', padding: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+          <div>
+            <p style={{ fontSize: 12, color: T.textMuted }}>Lesson Plans / Archive & Recordings</p>
+            <h1 style={{ fontFamily: T.fontHead, fontSize: 24, fontWeight: 800, color: T.textPrimary, margin: '4px 0' }}>Curated Lesson Archive</h1>
+            <p style={{ fontSize: 14, color: T.textMuted }}>Revisit, edit, and re-release past lessons to your classes.</p>
           </div>
-          <div className="flex-1 space-y-2">
-            <h3 className="font-display font-semibold text-on-surface">Mastering Quantum Mechanics III</h3>
-            <p className="text-xs text-on-surface-variant">98% student engagement rate · Probability Distribution segment highlighted</p>
-            <div className="flex gap-2">
-              <Button size="sm" className="h-7 text-xs">Re-release to Class</Button>
-              <Button size="sm" variant="outline" className="h-7 text-xs">Edit Snippet</Button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 16px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10, fontSize: 13, color: T.textPrimary, cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>filter_list</span>Filter Library
+            </button>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 18px', background: T.primary, border: 'none', borderRadius: 10, fontSize: 13, color: '#fff', cursor: 'pointer', fontWeight: 600 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>cloud_upload</span>Upload Recording
+            </button>
+          </div>
+        </div>
+
+        {/* AI Featured */}
+        <div style={{ background: T.ai + '10', border: `1px solid ${T.ai}30`, borderRadius: 16, padding: 24, marginBottom: 24 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+            <span style={{ fontSize: 16, color: T.ai }}>✦</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: T.ai }}>AI Recommendation</span>
+            <span style={{ marginLeft: 'auto', fontSize: 11, fontWeight: 700, color: '#0891b2', background: '#e0f2fe', padding: '2px 10px', borderRadius: 20 }}>Recommended for Semester 2 Revision</span>
+          </div>
+          <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+            <div style={{ width: 128, height: 80, background: T.primary + '20', borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 32, color: T.primary }}>play_circle</span>
+            </div>
+            <div>
+              <h3 style={{ fontFamily: T.fontHead, fontWeight: 700, fontSize: 17, color: T.textPrimary, marginBottom: 6 }}>Mastering Quantum Mechanics III</h3>
+              <p style={{ fontSize: 13, color: T.textMuted, marginBottom: 12 }}>98% student engagement rate · Probability Distribution segment highlighted</p>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button style={{ padding: '8px 16px', background: T.primary, color: '#fff', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Re-release to Class</button>
+                <button style={{ padding: '8px 16px', background: T.surface, color: T.primary, border: `1px solid ${T.primary}`, borderRadius: 8, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Edit Snippet</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Library Health */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4">
-        <div className="flex items-center justify-between mb-2">
-          <p className="font-semibold text-sm text-on-surface">Library Health</p>
-          <p className="font-display font-bold text-on-surface">124 Lessons</p>
+        {/* Library Health */}
+        <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 14, padding: '18px 22px', marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <span style={{ fontWeight: 600, fontSize: 14, color: T.textPrimary }}>Library Health</span>
+            <span style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 16, color: T.textPrimary }}>124 Lessons</span>
+          </div>
+          <div style={{ height: 8, background: T.border + '60', borderRadius: 4, overflow: 'hidden', marginBottom: 6 }}>
+            <div style={{ height: '100%', width: '84%', background: T.xp, borderRadius: 4 }} />
+          </div>
+          <span style={{ fontSize: 12, color: T.textMuted }}>Storage Used (84%) — 42 GB / 50 GB</span>
         </div>
-        <div className="h-2 bg-surface-high rounded-full overflow-hidden">
-          <div className="h-full bg-amber-500 rounded-full" style={{ width: '84%' }} />
-        </div>
-        <p className="text-xs text-on-surface-variant mt-1">Storage Used (84%) — 42GB / 50GB</p>
-      </div>
 
-      {/* Recent Sessions */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display font-semibold text-on-surface">Recent Sessions</h2>
-          <button className="text-xs text-primary hover:underline flex items-center gap-1">View all library →</button>
-        </div>
-        <div className="space-y-3">
-          {SESSIONS.map(s => (
-            <div key={s.title} className="flex items-center gap-4 p-3 bg-surface-low rounded-xl">
-              <div className="w-20 h-14 bg-surface-high rounded-lg flex items-center justify-center shrink-0 relative">
-                <Play className="h-5 w-5 text-on-surface-variant" />
-                <span className="absolute bottom-1 right-1 text-xs bg-black/60 text-white px-1 rounded">{s.duration}</span>
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-on-surface truncate">{s.title}</p>
-                <p className="text-xs text-on-surface-variant">{s.date}</p>
-                <div className="flex gap-1 mt-1">
-                  {s.badges.map(b => (
-                    <span key={b} className={cn('text-xs px-1.5 py-0.5 rounded-full font-semibold', BADGE_COLORS[b] || 'bg-surface-high text-on-surface-variant')}>{b}</span>
-                  ))}
+        {/* Sessions */}
+        <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24, marginBottom: 24 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+            <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary }}>Recent Sessions</h2>
+            <button style={{ fontSize: 13, color: T.primary, fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>View all →</button>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {SESSIONS.map(s => (
+              <div key={s.title} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '12px 14px', background: T.bg, borderRadius: 12 }}>
+                <div style={{ width: 80, height: 56, background: s.color + '20', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', flexShrink: 0 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 22, color: s.color }}>play_circle</span>
+                  <span style={{ position: 'absolute', bottom: 3, right: 3, fontSize: 10, background: 'rgba(0,0,0,0.5)', color: '#fff', padding: '1px 5px', borderRadius: 4 }}>{s.duration}</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontWeight: 700, fontSize: 14, color: T.textPrimary }}>{s.title}</div>
+                  <div style={{ fontSize: 12, color: T.textMuted, marginTop: 2 }}>{s.date}</div>
+                  <div style={{ display: 'flex', gap: 6, marginTop: 6 }}>
+                    {s.tags.map(tag => (
+                      <span key={tag} style={{ fontSize: 10, fontWeight: 700, padding: '2px 8px', borderRadius: 10, background: TAG_COLORS[tag] + '20', color: TAG_COLORS[tag] }}>{tag}</span>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button style={{ padding: '7px 14px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 12, color: T.primary, fontWeight: 600, cursor: 'pointer' }}>Re-use</button>
+                  <button style={{ padding: '7px 14px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 12, color: T.textMuted, cursor: 'pointer' }}>Edit</button>
                 </div>
               </div>
-              <button className="text-on-surface-variant hover:text-on-surface"><MoreVertical className="h-4 w-4" /></button>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        <button className="flex items-center gap-2 text-sm text-on-surface-variant hover:text-on-surface p-3 rounded-xl border border-dashed border-outline-variant w-full justify-center">
-          <Plus className="h-4 w-4" /> Import External Archive (Dropbox / Drive)
-        </button>
-      </div>
 
-      {/* Revision Collections */}
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="font-display font-semibold text-on-surface">Revision Collections</h2>
-          <Button size="sm" variant="outline" className="gap-1 text-xs h-8">+ New Collection</Button>
-        </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {COLLECTIONS.map(c => (
-            <div key={c.title} className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-              <div className="flex gap-2">
-                <div className="w-16 h-12 bg-surface-high rounded-lg flex items-center justify-center text-xs text-on-surface-variant">{c.count}</div>
+        {/* Collections */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary }}>Revision Collections</h2>
+            <button style={{ padding: '7px 16px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 12, color: T.primary, fontWeight: 600, cursor: 'pointer' }}>+ New Collection</button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+            {COLLECTIONS.map(c => (
+              <div key={c.title} style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 22 }}>
+                <div style={{ fontFamily: T.fontHead, fontWeight: 700, fontSize: 15, color: T.textPrimary, marginBottom: 6 }}>{c.title}</div>
+                <div style={{ fontSize: 13, color: T.textMuted, marginBottom: 14 }}>{c.desc}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: 12, color: T.textMuted }}>{c.count} lessons · {c.members} students</span>
+                  <button style={{ padding: '7px 14px', background: T.primary, color: '#fff', border: 'none', borderRadius: 8, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Deploy</button>
+                </div>
               </div>
-              <div>
-                <p className="font-semibold text-on-surface">{c.title}</p>
-                <p className="text-xs text-on-surface-variant">{c.desc}</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-xs text-on-surface-variant">{c.members} students</span>
-                <span className={cn('text-xs px-2 py-0.5 rounded-full font-semibold', c.badge === 'High Activity' ? 'bg-amber-100 text-amber-700' : 'bg-surface-high text-on-surface-variant')}>
-                  {c.badge === 'High Activity' ? '⚡' : '🔒'} {c.badge}
-                </span>
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* AI Revision */}
-      <div className="bg-ai/5 border border-ai/20 rounded-2xl p-5 space-y-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-ai" />
-          <h2 className="font-display font-semibold text-on-surface">AI-Generated Revision</h2>
-        </div>
-        <p className="text-sm font-semibold text-on-surface">Personalised Study Path</p>
-        <p className="text-sm text-on-surface-variant">AI curated snippets from 15 lessons based on frequent student questions and weak areas.</p>
-        <Button className="gap-2"><Sparkles className="h-4 w-4" /> Deploy to Student Hub</Button>
-      </div>
+      </main>
     </div>
   )
 }

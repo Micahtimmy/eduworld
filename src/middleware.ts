@@ -8,7 +8,6 @@ const ROLE_HOME: Record<string, string> = {
   teacher: '/teacher',
   parent: '/parent',
   admin: '/admin',
-  government: '/government',
   enterprise_manager: '/enterprise',
   enterprise: '/enterprise',
 }

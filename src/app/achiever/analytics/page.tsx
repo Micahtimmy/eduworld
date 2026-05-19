@@ -1,111 +1,193 @@
 'use client'
-import { Sparkles, TrendingUp, AlertTriangle } from 'lucide-react'
-import { LineChart } from '@/components/shared/charts/LineChart'
-import { RadarChart } from '@/components/shared/charts/RadarChart'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
-const TRAJECTORY = [
-  { name: 'Week 1', value: 55 },
-  { name: 'Week 4', value: 68 },
-  { name: 'Week 8', value: 74 },
-  { name: 'Midterms', value: 82 },
+const LINKS = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/achiever/dashboard' },
+  { icon: 'analytics', label: 'Exam Tracker', href: '/achiever/exam-tracker' },
+  { icon: 'storm', label: 'AI Lab', href: '/achiever/ai-study-partner' },
+  { icon: 'shopping_cart', label: 'Shop', href: '/achiever/shop' },
+  { icon: 'group', label: 'Community', href: '/achiever/leaderboard' },
 ]
 
-const RADAR_DATA = [
-  { subject: 'Physics', value: 82 },
-  { subject: 'Calculus', value: 58 },
-  { subject: 'History', value: 75 },
-  { subject: 'Literature', value: 80 },
-  { subject: 'Chemistry', value: 71 },
-  { subject: 'Biology', value: 65 },
+const STATS = [
+  { label: 'Overall GPA', value: '3.8', icon: 'school', color: '#22C55E', trend: '+0.2 this term' },
+  { label: 'Study Hours', value: '142h', icon: 'schedule', color: '#06B6D4', trend: '28h this week' },
+  { label: 'XP Earned', value: '8,450', icon: 'bolt', color: '#F59E0B', trend: '+640 today' },
+  { label: 'Day Streak', value: '21', icon: 'local_fire_department', color: '#EF4444', trend: 'Personal best!' },
 ]
 
-const FEED = [
-  { icon: '📝', event: 'Physics Lab Report', detail: 'Graded: A-', time: '2h ago' },
-  { icon: '📚', event: 'Prof. Davis posted a resource', detail: 'Calculus III', time: '5h ago' },
-  { icon: '📅', event: 'Midterm Scheduled', detail: 'Literature', time: '1d ago' },
+const SUBJECTS = [
+  { name: 'AP Calculus BC', score: 94, color: '#7C3AED' },
+  { name: 'AP Physics C', score: 78, color: '#F59E0B' },
+  { name: 'AP Biology', score: 88, color: '#10B981' },
+  { name: 'English Lit', score: 92, color: '#06B6D4' },
+  { name: 'Chemistry', score: 71, color: '#EF4444' },
 ]
+
+const AI_INSIGHTS = [
+  'Your Calculus score improved 8% after focusing on integration techniques — keep going.',
+  'Physics weak spot: Electromagnetic Induction. AI suggests 2 targeted sessions this week.',
+  'You\'re on track for a top 5% finish in your school cohort this semester.',
+]
+
+function Sidebar() {
+  return (
+    <aside style={{ width: '260px', minWidth: '260px', background: '#0A0E1A', height: '100vh', position: 'fixed' as const, left: 0, top: 0, display: 'flex', flexDirection: 'column' as const, borderRight: '1px solid rgba(255,255,255,0.06)', zIndex: 40 }}>
+      <div style={{ padding: '24px 20px 20px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #7c3aed, #06B6D4)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 800, color: '#FFFFFF', fontSize: '16px' }}>A</div>
+          <div>
+            <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '15px', margin: 0, fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>Achievers</p>
+            <p style={{ color: '#94A3B8', fontSize: '11px', margin: 0 }}>Study Smarter</p>
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: '0 16px 20px' }}>
+        <Link href="/achiever/ai-study-partner" style={{ textDecoration: 'none' }}>
+          <button style={{ width: '100%', background: 'linear-gradient(135deg, #7c3aed, #06B6D4)', border: 'none', borderRadius: '10px', padding: '10px 14px', color: '#FFFFFF', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '7px', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storm</span>Start AI Session
+          </button>
+        </Link>
+      </div>
+      <nav style={{ flex: 1, padding: '0 12px', display: 'flex', flexDirection: 'column' as const, gap: '2px' }}>
+        {LINKS.map(l => (
+          <Link key={l.href} href={l.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '10px', background: 'transparent', cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '20px' }}>{l.icon}</span>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>{l.label}</span>
+            </div>
+          </Link>
+        ))}
+      </nav>
+      <div style={{ padding: '12px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        {[{ icon: 'settings', label: 'Settings', href: '/settings' }, { icon: 'help', label: 'Help', href: '#' }].map(l => (
+          <Link key={l.href} href={l.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '10px', cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '20px' }}>{l.icon}</span>
+              <span style={{ color: '#94A3B8', fontSize: '14px' }}>{l.label}</span>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </aside>
+  )
+}
 
 export default function AchieverAnalyticsPage() {
   return (
-    <div className="p-4 space-y-5">
-      <div>
-        <h1 className="font-display font-bold text-2xl text-on-surface">Performance Analytics</h1>
-        <p className="text-sm text-on-surface-variant mt-1">Academic trajectory and active insights.</p>
-      </div>
-
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-1">
-          <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4 text-green-500" />
-            <p className="text-xs text-on-surface-variant">Global Mastery Score</p>
+    <div style={{ background: '#0D1117', minHeight: '100vh', fontFamily: '"Inter", system-ui, sans-serif' }}>
+      <style>{`@media(min-width:1024px){.ach-sb{display:flex!important}.ach-main{margin-left:260px!important}.ach-mnav{display:none!important}}`}</style>
+      <div className="ach-sb" style={{ display: 'none' }}><Sidebar /></div>
+      <div className="ach-main" style={{ marginLeft: 0 }}>
+        {/* Topbar */}
+        <div style={{ height: '60px', background: '#0D1117', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 28px', position: 'sticky' as const, top: 0, zIndex: 30 }}>
+          <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '18px', margin: 0, fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>Welcome back, Alex</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '22px', cursor: 'pointer' }}>notifications</span>
+            <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '22px', cursor: 'pointer' }}>bolt</span>
+            <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #7c3aed, #06B6D4)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#FFFFFF', fontSize: '14px', cursor: 'pointer', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>A</div>
           </div>
-          <p className="font-display font-bold text-3xl text-on-surface">84.2</p>
-          <p className="text-xs text-green-600">↑ +12% this term</p>
         </div>
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-1">
-          <p className="text-xs text-on-surface-variant">Completion Rate</p>
-          <p className="font-display font-bold text-3xl text-on-surface">96%</p>
-          <p className="text-xs text-amber-600">2 assignments due</p>
-        </div>
-        <div className="bg-red-50 dark:bg-red-950/20 rounded-2xl border border-red-200 p-4 space-y-1">
-          <div className="flex items-center gap-2">
-            <AlertTriangle className="h-4 w-4 text-red-500" />
-            <p className="text-xs text-red-700 font-semibold">Weak Points Identified</p>
+
+        <div style={{ padding: '28px' }}>
+          <div style={{ marginBottom: '28px' }}>
+            <h1 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', color: '#FFFFFF', fontWeight: 700, fontSize: '28px', margin: '0 0 6px' }}>Performance & Analytics</h1>
+            <p style={{ color: '#94A3B8', fontSize: '15px', margin: 0 }}>Your academic performance overview and AI-driven insights.</p>
           </div>
-          <p className="font-display font-bold text-3xl text-on-surface">3</p>
-          <p className="text-xs text-red-600">Advanced Calculus, Thermodynamics...</p>
-        </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Trajectory Chart */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-          <h2 className="font-display font-semibold text-on-surface">Trajectory Analysis</h2>
-          <div className="flex gap-3 text-xs">
-            <div className="flex items-center gap-1"><div className="w-3 h-1.5 rounded bg-primary" /><span className="text-on-surface-variant">Exams</span></div>
-            <div className="flex items-center gap-1"><div className="w-3 h-1.5 rounded bg-green-500" /><span className="text-on-surface-variant">Assignments</span></div>
+          {/* Stat Cards */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+            {STATS.map(stat => (
+              <div key={stat.label} style={{ background: '#161D2F', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '20px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
+                  <span className="material-symbols-outlined" style={{ color: stat.color, fontSize: '18px' }}>{stat.icon}</span>
+                  <p style={{ color: '#94A3B8', fontSize: '12px', margin: 0 }}>{stat.label}</p>
+                </div>
+                <p style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', color: '#FFFFFF', fontWeight: 700, fontSize: '28px', margin: '0 0 5px' }}>{stat.value}</p>
+                <p style={{ color: stat.color, fontSize: '12px', margin: 0 }}>{stat.trend}</p>
+              </div>
+            ))}
           </div>
-          <LineChart data={TRAJECTORY} height={160} />
-        </div>
 
-        {/* Radar Chart */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-          <h2 className="font-display font-semibold text-on-surface">Subject Weak Points</h2>
-          <p className="text-xs text-amber-600">15% deviation below running average flagged for Biology</p>
-          <RadarChart data={RADAR_DATA} height={200} />
-        </div>
-      </div>
-
-      {/* AI Insights */}
-      <div className="bg-ai/5 border border-ai/20 rounded-2xl p-5 space-y-3">
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-4 w-4 text-ai" />
-          <h2 className="font-display font-semibold text-on-surface">AI Insights</h2>
-        </div>
-        <p className="text-sm text-on-surface-variant">Focus on <strong className="text-on-surface">Cellular Respiration</strong> in Biology this week. Projected mastery score increase: <strong className="text-green-600">+4.2 points</strong></p>
-        <div className="flex gap-3">
-          <Button size="sm" className="bg-ai hover:bg-ai/90">Generate Study Guide</Button>
-          <Button size="sm" variant="outline">View Past Mistakes</Button>
-        </div>
-      </div>
-
-      {/* Activity Feed */}
-      <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-        <h2 className="font-display font-semibold text-on-surface">Class Activities</h2>
-        {FEED.map(f => (
-          <div key={f.event} className="flex items-start gap-3 py-2 border-b border-outline-variant last:border-0">
-            <span className="text-xl">{f.icon}</span>
-            <div className="flex-1">
-              <p className="text-sm font-semibold text-on-surface">{f.event}</p>
-              <p className="text-xs text-on-surface-variant">{f.detail}</p>
+          {/* Study Time Chart + Subject Breakdown */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '20px', marginBottom: '20px' }}>
+            {/* Line Chart */}
+            <div style={{ background: '#161D2F', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '20px' }}>
+              <h2 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', color: '#FFFFFF', fontWeight: 700, fontSize: '16px', margin: '0 0 20px' }}>Study Time Trend</h2>
+              <div style={{ position: 'relative', height: '120px' }}>
+                <svg viewBox="0 0 600 120" style={{ width: '100%', height: '100%' }} preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#06B6D4" stopOpacity="0.25" />
+                      <stop offset="100%" stopColor="#06B6D4" stopOpacity="0" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M0 100 L100 80 L200 85 L300 55 L400 40 L500 30 L600 20" stroke="#06B6D4" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                  <path d="M0 100 L100 80 L200 85 L300 55 L400 40 L500 30 L600 20 L600 120 L0 120Z" fill="url(#lineGrad)" />
+                  {[[0, 100], [200, 85], [300, 55], [500, 30], [600, 20]].map(([x, y], i) => (
+                    <circle key={i} cx={x} cy={y} r="4" fill="#06B6D4" />
+                  ))}
+                </svg>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '8px' }}>
+                {['W1', 'W2', 'W3', 'W4', 'W5', 'W6'].map(w => (
+                  <span key={w} style={{ color: '#64748B', fontSize: '11px' }}>{w}</span>
+                ))}
+              </div>
             </div>
-            <span className="text-xs text-on-surface-variant">{f.time}</span>
+
+            {/* Subject Bars */}
+            <div style={{ background: '#161D2F', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '20px' }}>
+              <h2 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', color: '#FFFFFF', fontWeight: 700, fontSize: '16px', margin: '0 0 20px' }}>Subject Breakdown</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {SUBJECTS.map(sub => (
+                  <div key={sub.name}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                      <span style={{ color: '#CBD5E1', fontSize: '13px', fontWeight: 500 }}>{sub.name}</span>
+                      <span style={{ color: sub.color, fontSize: '13px', fontWeight: 700 }}>{sub.score}%</span>
+                    </div>
+                    <div style={{ height: '5px', background: 'rgba(255,255,255,0.08)', borderRadius: '100px', overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${sub.score}%`, background: sub.color, borderRadius: '100px' }} />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
+
+          {/* AI Insights */}
+          <div style={{ background: 'rgba(16,185,129,0.05)', border: '1px solid rgba(16,185,129,0.2)', borderRadius: '16px', padding: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
+              <span className="material-symbols-outlined" style={{ color: '#10B981', fontSize: '20px' }}>auto_awesome</span>
+              <h2 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', color: '#10B981', fontWeight: 700, fontSize: '16px', margin: 0 }}>AI Insights</h2>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {AI_INSIGHTS.map((insight, i) => (
+                <div key={i} style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
+                  <div style={{ width: '20px', height: '20px', background: 'rgba(16,185,129,0.15)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px' }}>
+                    <span style={{ color: '#10B981', fontSize: '12px' }}>✦</span>
+                  </div>
+                  <p style={{ color: '#CBD5E1', fontSize: '14px', margin: 0, lineHeight: 1.5 }}>{insight}</p>
+                </div>
+              ))}
+            </div>
+            <Link href="/achiever/ai-study-partner" style={{ textDecoration: 'none' }}>
+              <button style={{ marginTop: '16px', background: '#10B981', border: 'none', borderRadius: '10px', padding: '10px 18px', color: '#FFFFFF', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>
+                <span className="material-symbols-outlined" style={{ fontSize: '16px' }}>auto_awesome</span>
+                Generate Study Guide
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="ach-mnav" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#0A0E1A', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', zIndex: 50, padding: '8px 0 12px' }}>
+        {[{ icon: 'dashboard', label: 'Home', href: '/achiever/dashboard' }, { icon: 'analytics', label: 'Exams', href: '/achiever/exam-tracker' }, { icon: 'storm', label: 'AI', href: '/achiever/ai-study-partner' }, { icon: 'group', label: 'Community', href: '/achiever/leaderboard' }].map(item => (
+          <Link key={item.href} href={item.href} style={{ flex: 1, textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px' }}>
+            <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '22px' }}>{item.icon}</span>
+            <span style={{ color: '#94A3B8', fontSize: '10px' }}>{item.label}</span>
+          </Link>
         ))}
-        <button className="text-xs text-primary hover:underline">View all activity →</button>
       </div>
     </div>
   )

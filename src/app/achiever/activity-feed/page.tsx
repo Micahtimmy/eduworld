@@ -1,151 +1,130 @@
 'use client'
-import { Sparkles, ThumbsUp, MessageCircle, Users, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
-const LEADERBOARD = [
-  { rank: 1, name: 'James Wilson', score: '4,250', star: true },
-  { rank: 2, name: 'Aisha Patel', score: '3,980 pts', star: false },
-  { rank: 3, name: 'David Kim', score: '3,850 pts', star: false },
-  { rank: 14, name: 'You', score: '2,100 pts', star: false, isMe: true },
-]
-
-const GROUPS = [
-  { icon: '🔬', name: 'Physics 201 Prep', members: '12 members', activity: 'Very Active' },
-  { icon: '💻', name: 'Python Masters', members: '8 members', activity: 'Active' },
+const FEED_ITEMS = [
+  { icon: 'assignment', iconColor: '#06B6D4', bg: 'rgba(6,182,212,0.12)', author: 'Mr. Henderson', role: 'Teacher', action: 'posted a new assignment', detail: 'Problem Set 9: Series & Sequences — Due Friday', time: '5 min ago', hasAction: true, actionLabel: 'View Assignment' },
+  { icon: 'emoji_events', iconColor: '#F59E0B', bg: 'rgba(245,158,11,0.12)', author: 'Sarah M.', role: 'Classmate', action: 'scored 98% on AP Physics C Quiz', detail: 'Kinematics — Chapter 4', time: '20 min ago', hasAction: false, actionLabel: '' },
+  { icon: 'auto_awesome', iconColor: '#10B981', bg: 'rgba(16,185,129,0.12)', author: 'Achiever AI', role: 'AI Tutor', action: 'suggests a study session', detail: 'Applications of Integration — identified as your weakest area before the exam', time: '1 hour ago', hasAction: true, actionLabel: 'Start Session' },
+  { icon: 'grade', iconColor: '#22C55E', bg: 'rgba(34,197,94,0.12)', author: 'Dr. Chen', role: 'Teacher', action: 'graded your essay', detail: 'French Revolution DBQ — Score: 88/100 (A-)', time: '2 hours ago', hasAction: true, actionLabel: 'View Feedback' },
+  { icon: 'group', iconColor: '#7C3AED', bg: 'rgba(124,58,237,0.12)', author: 'James L.', role: 'Classmate', action: 'invited you to a study group', detail: 'AP Calculus BC Prep — Saturday 2PM', time: '3 hours ago', hasAction: true, actionLabel: 'Join Group' },
+  { icon: 'local_fire_department', iconColor: '#F97316', bg: 'rgba(249,115,22,0.12)', author: 'EduWorld', role: 'Platform', action: 'Priya R. hit a 30-day streak!', detail: 'She earned the "Iron Will" badge', time: '4 hours ago', hasAction: false, actionLabel: '' },
+  { icon: 'announcement', iconColor: '#3B82F6', bg: 'rgba(59,130,246,0.12)', author: 'Ms. Martinez', role: 'Teacher', action: 'posted a class announcement', detail: 'Physics midterm rescheduled to May 22 — additional prep time granted.', time: '5 hours ago', hasAction: false, actionLabel: '' },
 ]
 
 export default function AchieverActivityFeedPage() {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">Community Pulse</h1>
-          <p className="text-sm text-on-surface-variant mt-1">See what your peers are accomplishing today.</p>
+    <div style={{ background: '#0D1117', minHeight: '100vh', fontFamily: '"Inter", system-ui, sans-serif' }}>
+      <style>{`@media(min-width:1024px){.ach-sb{display:flex!important}.ach-main{margin-left:260px!important}.ach-mnav{display:none!important}}`}</style>
+
+      <aside className="ach-sb" style={{ display: 'none', width: '260px', minWidth: '260px', background: '#0A0E1A', height: '100vh', position: 'fixed' as const, left: 0, top: 0, flexDirection: 'column' as const, borderRight: '1px solid rgba(255,255,255,0.06)', zIndex: 40 }}>
+        <div style={{ padding: '24px 20px 20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #7c3aed, #06B6D4)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 800, color: '#FFFFFF', fontSize: '16px' }}>A</div>
+            <div>
+              <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '15px', margin: 0, fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>Achievers</p>
+              <p style={{ color: '#94A3B8', fontSize: '11px', margin: 0 }}>Study Smarter</p>
+            </div>
+          </div>
+        </div>
+        <div style={{ padding: '0 16px 20px' }}>
+          <Link href="/achiever/ai-study-partner" style={{ textDecoration: 'none' }}>
+            <button style={{ width: '100%', background: 'linear-gradient(135deg, #7c3aed, #06B6D4)', border: 'none', borderRadius: '10px', padding: '10px 14px', color: '#FFFFFF', fontSize: '13px', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '7px', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>storm</span>Start AI Session
+            </button>
+          </Link>
+        </div>
+        <nav style={{ flex: 1, padding: '0 12px', display: 'flex', flexDirection: 'column' as const, gap: '2px' }}>
+          {[
+            { icon: 'dashboard', label: 'Dashboard', href: '/achiever/dashboard' },
+            { icon: 'analytics', label: 'Exam Tracker', href: '/achiever/exam-tracker' },
+            { icon: 'storm', label: 'AI Lab', href: '/achiever/ai-study-partner' },
+            { icon: 'shopping_cart', label: 'Shop', href: '/achiever/shop' },
+            { icon: 'group', label: 'Community', href: '/achiever/leaderboard' },
+          ].map(l => (
+            <Link key={l.href} href={l.href} style={{ textDecoration: 'none' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 12px', borderRadius: '10px', background: 'transparent', cursor: 'pointer' }}>
+                <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '20px' }}>{l.icon}</span>
+                <span style={{ color: '#94A3B8', fontSize: '14px' }}>{l.label}</span>
+              </div>
+            </Link>
+          ))}
+        </nav>
+        <div style={{ padding: '12px', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+          {[{ icon: 'settings', label: 'Settings', href: '/settings' }, { icon: 'help', label: 'Help', href: '#' }].map(l => (
+            <Link key={l.href} href={l.href} style={{ textDecoration: 'none' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '9px 12px', borderRadius: '10px', cursor: 'pointer' }}>
+                <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '20px' }}>{l.icon}</span>
+                <span style={{ color: '#94A3B8', fontSize: '14px' }}>{l.label}</span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </aside>
+
+      <div className="ach-main" style={{ marginLeft: 0 }}>
+        <div style={{ height: '60px', background: '#0D1117', borderBottom: '1px solid rgba(255,255,255,0.06)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 28px', position: 'sticky' as const, top: 0, zIndex: 30 }}>
+          <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '18px', margin: 0, fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>Welcome back, Alex</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '22px', cursor: 'pointer' }}>notifications</span>
+            <div style={{ width: '36px', height: '36px', background: 'linear-gradient(135deg, #7c3aed, #06B6D4)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, color: '#FFFFFF', fontSize: '14px', cursor: 'pointer', fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif' }}>A</div>
+          </div>
+        </div>
+
+        <div style={{ padding: '28px', maxWidth: '720px' }}>
+          <div style={{ marginBottom: '24px' }}>
+            <h1 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', color: '#FFFFFF', fontWeight: 700, fontSize: '28px', margin: '0 0 6px' }}>Class Activity Feed</h1>
+            <p style={{ color: '#94A3B8', fontSize: '14px', margin: 0 }}>EWD-027 · Live updates from your classes, teachers, and peers.</p>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {FEED_ITEMS.map((item, i) => (
+              <div key={i} style={{ background: '#161D2F', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '14px', padding: '16px 18px', display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                <div style={{ width: '40px', height: '40px', background: item.bg, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span className="material-symbols-outlined" style={{ color: item.iconColor, fontSize: '20px', fontVariationSettings: '"FILL" 1' }}>{item.icon}</span>
+                </div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px', flexWrap: 'wrap' }}>
+                    <span style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '14px' }}>{item.author}</span>
+                    <span style={{ color: '#64748B', fontSize: '12px', background: 'rgba(255,255,255,0.05)', borderRadius: '4px', padding: '1px 6px' }}>{item.role}</span>
+                    <span style={{ color: '#94A3B8', fontSize: '13px' }}>{item.action}</span>
+                  </div>
+                  <p style={{ color: '#94A3B8', fontSize: '13px', margin: '0 0 10px', lineHeight: 1.4 }}>{item.detail}</p>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <span style={{ color: '#475569', fontSize: '11px' }}>{item.time}</span>
+                    {item.hasAction && (
+                      <button style={{
+                        background: 'rgba(6,182,212,0.1)',
+                        border: '1px solid rgba(6,182,212,0.2)',
+                        borderRadius: '8px',
+                        padding: '5px 12px',
+                        color: '#06B6D4',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                        fontFamily: '"Inter", system-ui, sans-serif',
+                      }}>{item.actionLabel}</button>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <button style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '10px', padding: '11px 24px', color: '#94A3B8', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>
+              Load More Activity
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1">
-        {['All Activity', 'My Cohort'].map((t, i) => (
-          <button key={t} className={cn('px-4 py-2 rounded-xl text-sm font-medium transition-colors', i === 0 ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-low')}>{t}</button>
+      <div className="ach-mnav" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#0A0E1A', borderTop: '1px solid rgba(255,255,255,0.08)', display: 'flex', zIndex: 50, padding: '8px 0 12px' }}>
+        {[{ icon: 'dashboard', label: 'Home', href: '/achiever/dashboard' }, { icon: 'analytics', label: 'Exams', href: '/achiever/exam-tracker' }, { icon: 'storm', label: 'AI', href: '/achiever/ai-study-partner' }, { icon: 'group', label: 'Community', href: '/achiever/leaderboard' }].map(item => (
+          <Link key={item.href} href={item.href} style={{ flex: 1, textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px' }}>
+            <span className="material-symbols-outlined" style={{ color: '#94A3B8', fontSize: '22px' }}>{item.icon}</span>
+            <span style={{ color: '#94A3B8', fontSize: '10px' }}>{item.label}</span>
+          </Link>
         ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Feed */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* Card 1 */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-sm font-bold text-blue-600">MT</div>
-              <div>
-                <p className="text-sm font-semibold text-on-surface">Marcus T. completed a Mock Exam</p>
-                <p className="text-xs text-on-surface-variant">2h ago</p>
-              </div>
-            </div>
-            <div className="bg-surface-low rounded-xl p-3">
-              <p className="text-sm font-semibold text-on-surface">Advanced Calculus Part II: Integration Techniques</p>
-              <p className="text-xs text-green-600 font-semibold mt-1">✓ Score: 92%</p>
-            </div>
-            <div className="flex items-center justify-between">
-              <div className="flex gap-4 text-xs text-on-surface-variant">
-                <button className="flex items-center gap-1 hover:text-primary"><ThumbsUp className="h-3.5 w-3.5" /> 12</button>
-                <button className="flex items-center gap-1 hover:text-primary"><MessageCircle className="h-3.5 w-3.5" /> 3</button>
-              </div>
-              <Button size="sm" variant="outline" className="h-7 text-xs">View Details</Button>
-            </div>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-sm font-bold text-purple-600">ER</div>
-              <div>
-                <p className="text-sm font-semibold text-on-surface">Elena R. earned a new badge</p>
-                <p className="text-xs text-on-surface-variant">4h ago</p>
-              </div>
-            </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 flex items-center gap-3">
-              <span className="text-2xl">🔥</span>
-              <div>
-                <p className="text-sm font-semibold text-amber-700">7-Day Study Streak</p>
-                <p className="text-xs text-on-surface-variant">Consistent dedication! Elena has logged study hours every day for a week.</p>
-              </div>
-            </div>
-            <button className="text-sm text-primary hover:underline flex items-center gap-1">🎉 Congratulate</button>
-          </div>
-
-          {/* Card 3 — AI Insight */}
-          <div className="bg-ai/5 border border-ai/20 rounded-2xl p-5 space-y-3">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-ai" />
-              <p className="text-sm font-semibold text-on-surface">EduWorld AI Insight</p>
-              <span className="text-xs text-on-surface-variant ml-auto">Just now</span>
-            </div>
-            <p className="text-sm text-on-surface-variant">Your cohort is trending in <strong className="text-on-surface">Organic Chemistry</strong> — 45% of students just hit a mastery milestone.</p>
-            <button className="text-sm text-ai hover:underline flex items-center gap-1">View Cohort Stats <ArrowRight className="h-3.5 w-3.5" /></button>
-          </div>
-
-          {/* Card 4 */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                <Users className="h-5 w-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-sm font-semibold text-on-surface">Study Group &apos;Data Structs &amp; Algo&apos;</p>
-                <p className="text-xs text-on-surface-variant">Yesterday</p>
-              </div>
-            </div>
-            <p className="text-sm text-on-surface-variant">Milestone: <strong className="text-on-surface">100 practice problems solved</strong> this week!</p>
-            <div className="flex items-center gap-1">
-              {['A', 'B', 'C'].map(l => (
-                <div key={l} className="w-7 h-7 rounded-full bg-primary/20 border-2 border-white flex items-center justify-center text-xs font-bold text-primary -ml-1 first:ml-0">{l}</div>
-              ))}
-              <span className="text-xs text-on-surface-variant ml-2">+4 members</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="space-y-4">
-          {/* Leaderboard */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <h2 className="font-display font-semibold text-on-surface">Class Leaderboard</h2>
-            <div className="space-y-2">
-              {LEADERBOARD.map(l => (
-                <div key={l.rank} className={cn('flex items-center gap-3 p-2 rounded-xl', l.isMe ? 'bg-primary/5 border border-primary/20' : '')}>
-                  <span className="text-xs font-bold text-on-surface-variant w-4">{l.rank}</span>
-                  <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary">
-                    {l.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
-                  </div>
-                  <p className="text-sm text-on-surface flex-1">{l.name}</p>
-                  <p className="text-xs font-semibold text-on-surface">{l.score} {l.star && '⭐'}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Study Groups */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <h2 className="font-display font-semibold text-on-surface">Suggested Study Groups</h2>
-            <p className="text-xs text-on-surface-variant">Based on your recent activity.</p>
-            <div className="space-y-2">
-              {GROUPS.map(g => (
-                <div key={g.name} className="flex items-center gap-3 p-3 bg-surface-low rounded-xl">
-                  <span className="text-lg">{g.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-on-surface truncate">{g.name}</p>
-                    <p className="text-xs text-on-surface-variant">{g.members} · {g.activity}</p>
-                  </div>
-                  <Button size="sm" className="h-7 text-xs">Join</Button>
-                </div>
-              ))}
-            </div>
-            <button className="text-xs text-primary hover:underline">Explore All Groups</button>
-          </div>
-        </div>
       </div>
     </div>
   )

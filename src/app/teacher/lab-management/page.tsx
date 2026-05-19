@@ -1,110 +1,151 @@
 'use client'
-import { Plus, Download, AlertTriangle, CheckCircle, Clock } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
+
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard' },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox' },
+]
 
 const EQUIPMENT = [
-  { name: 'Electron Microscope EM-400', code: 'LAB-001', status: 'available', condition: 'Excellent', lastChecked: 'Nov 12' },
-  { name: 'Spectrometer Array Set', code: 'LAB-002', status: 'in-use', condition: 'Good', lastChecked: 'Nov 14' },
-  { name: 'High-Voltage PSU (×4)', code: 'LAB-003', status: 'maintenance', condition: 'Needs Calibration', lastChecked: 'Nov 10' },
-  { name: 'Oscilloscope Bank (×6)', code: 'LAB-004', status: 'available', condition: 'Excellent', lastChecked: 'Nov 13' },
-  { name: 'Bunsen Burner Set (×12)', code: 'LAB-005', status: 'available', condition: 'Good', lastChecked: 'Nov 11' },
+  { name: 'Electron Microscope EM-400', code: 'LAB-001', status: 'available', condition: 'Excellent', checked: 'Nov 12' },
+  { name: 'Spectrometer Array Set', code: 'LAB-002', status: 'in-use', condition: 'Good', checked: 'Nov 14' },
+  { name: 'High-Voltage PSU (×4)', code: 'LAB-003', status: 'maintenance', condition: 'Needs Calibration', checked: 'Nov 10' },
+  { name: 'Oscilloscope Bank (×6)', code: 'LAB-004', status: 'available', condition: 'Excellent', checked: 'Nov 13' },
+  { name: 'Bunsen Burner Set (×12)', code: 'LAB-005', status: 'available', condition: 'Good', checked: 'Nov 11' },
 ]
 
 const SESSIONS = [
-  { title: 'Quantum Interference Lab', date: 'Nov 18, 9:00 AM', students: 24, room: 'Lab 3A', status: 'confirmed' },
-  { title: 'Spectrometry Practical', date: 'Nov 20, 11:00 AM', students: 18, room: 'Lab 2B', status: 'pending' },
-  { title: 'Electromagnetic Induction Demo', date: 'Nov 22, 9:00 AM', students: 26, room: 'Lab 3A', status: 'confirmed' },
+  { title: 'Quantum Interference Lab', date: 'Nov 18, 9:00 AM', students: 24, room: 'Lab 3A', confirmed: true },
+  { title: 'Spectrometry Practical', date: 'Nov 20, 11:00 AM', students: 18, room: 'Lab 2B', confirmed: false },
+  { title: 'Electromagnetic Induction Demo', date: 'Nov 22, 9:00 AM', students: 26, room: 'Lab 3A', confirmed: true },
 ]
 
-const STATUS_STYLES: Record<string, string> = {
-  available: 'bg-green-100 text-green-700',
-  'in-use': 'bg-blue-100 text-blue-700',
-  maintenance: 'bg-amber-100 text-amber-700',
+const statusColor: Record<string, string> = { available: T.ai, 'in-use': '#0891b2', maintenance: T.xp }
+
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Teacher</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: 'transparent', borderLeft: '3px solid transparent', color: T.textMuted, fontFamily: T.fontBody, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
 }
 
 export default function TeacherLabManagementPage() {
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">Practical & Lab Management Hub</h1>
-          <p className="text-sm text-on-surface-variant mt-1">AP Physics · Room 3A · Fall 2024</p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-1.5"><Download className="h-3.5 w-3.5" /> Safety Report</Button>
-          <Button size="sm" className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Book Session</Button>
-        </div>
-      </div>
-
-      {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {[
-          { label: 'Equipment Items', value: '42' },
-          { label: 'Available', value: '38', color: 'text-green-600' },
-          { label: 'In Maintenance', value: '3', color: 'text-amber-600' },
-          { label: 'Sessions This Month', value: '12' },
-        ].map(s => (
-          <div key={s.label} className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 text-center">
-            <p className={`font-display font-bold text-2xl ${s.color ?? 'text-on-surface'}`}>{s.value}</p>
-            <p className="text-xs text-on-surface-variant mt-1">{s.label}</p>
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: 'auto', padding: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 }}>
+          <div>
+            <h1 style={{ fontFamily: T.fontHead, fontSize: 24, fontWeight: 800, color: T.textPrimary, margin: 0 }}>Practical & Lab Management</h1>
+            <p style={{ fontSize: 14, color: T.textMuted, marginTop: 4 }}>AP Physics · Room 3A · Fall 2025</p>
           </div>
-        ))}
-      </div>
-
-      {/* Alert */}
-      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
-        <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />
-        <div className="flex-1">
-          <p className="text-sm font-semibold text-on-surface">High-Voltage PSU requires calibration before next practical session.</p>
-          <p className="text-xs text-on-surface-variant mt-1">Schedule calibration with technician — next lab session is Nov 18. Allow 48h for service.</p>
-        </div>
-        <Button size="sm" variant="outline" className="h-7 text-xs shrink-0">Schedule</Button>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Equipment Inventory */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-display font-semibold text-on-surface">Equipment Inventory</h2>
-            <button className="text-xs text-primary hover:underline">View All</button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 16px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 10, fontSize: 13, color: T.textPrimary, cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>download</span>Safety Report
+            </button>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '9px 18px', background: T.primary, border: 'none', borderRadius: 10, fontSize: 13, color: '#fff', cursor: 'pointer', fontWeight: 600 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>add</span>Book Session
+            </button>
           </div>
-          <div className="space-y-2">
-            {EQUIPMENT.map(e => (
-              <div key={e.code} className="flex items-center gap-3 p-3 bg-surface-low rounded-xl">
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-on-surface">{e.name}</p>
-                  <p className="text-xs text-on-surface-variant">{e.code} · {e.condition} · Checked {e.lastChecked}</p>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+          {[
+            { label: 'Equipment Items', value: '42', color: T.primary },
+            { label: 'Available', value: '38', color: T.ai },
+            { label: 'In Maintenance', value: '3', color: T.xp },
+            { label: 'Sessions This Month', value: '12', color: '#7c3aed' },
+          ].map(s => (
+            <div key={s.label} style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 14, padding: '18px 16px', textAlign: 'center' }}>
+              <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 26, color: s.color }}>{s.value}</div>
+              <div style={{ fontSize: 12, color: T.textMuted, marginTop: 4 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+
+        {/* Alert */}
+        <div style={{ background: T.xp + '10', border: `1px solid ${T.xp}30`, borderRadius: 14, padding: '14px 18px', marginBottom: 24, display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: T.xp, marginTop: 1 }}>warning</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: 14, color: T.textPrimary }}>High-Voltage PSU requires calibration before next practical session.</div>
+            <div style={{ fontSize: 12, color: T.textMuted, marginTop: 3 }}>Schedule calibration with technician — next lab session is Nov 18. Allow 48h for service.</div>
+          </div>
+          <button style={{ padding: '7px 14px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, fontSize: 12, color: T.primary, fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}>Schedule</button>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          {/* Equipment */}
+          <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+              <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary }}>Equipment Inventory</h2>
+              <button style={{ fontSize: 13, color: T.primary, fontWeight: 600, background: 'none', border: 'none', cursor: 'pointer' }}>View All</button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {EQUIPMENT.map(e => (
+                <div key={e.code} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', background: T.bg, borderRadius: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 600, fontSize: 13, color: T.textPrimary }}>{e.name}</div>
+                    <div style={{ fontSize: 11, color: T.textMuted }}>{e.code} · {e.condition} · Checked {e.checked}</div>
+                  </div>
+                  <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 20, background: statusColor[e.status] + '20', color: statusColor[e.status], whiteSpace: 'nowrap' }}>
+                    {e.status === 'in-use' ? 'In Use' : e.status.charAt(0).toUpperCase() + e.status.slice(1)}
+                  </span>
                 </div>
-                <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${STATUS_STYLES[e.status]}`}>
-                  {e.status.charAt(0).toUpperCase() + e.status.slice(1).replace('-', ' ')}
-                </span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Upcoming Sessions */}
-        <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-          <h2 className="font-display font-semibold text-on-surface">Upcoming Lab Sessions</h2>
-          <div className="space-y-3">
-            {SESSIONS.map(s => (
-              <div key={s.title} className="border border-outline-variant rounded-xl p-3 space-y-2">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-on-surface">{s.title}</p>
-                  {s.status === 'confirmed'
-                    ? <CheckCircle className="h-4 w-4 text-green-500 shrink-0" />
-                    : <Clock className="h-4 w-4 text-amber-500 shrink-0" />}
+          {/* Sessions */}
+          <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, padding: 24 }}>
+            <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary, marginBottom: 16 }}>Upcoming Lab Sessions</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {SESSIONS.map(s => (
+                <div key={s.title} style={{ border: `1px solid ${T.border}`, borderRadius: 12, padding: '14px 16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: T.textPrimary }}>{s.title}</div>
+                    <span className="material-symbols-outlined" style={{ fontSize: 18, color: s.confirmed ? T.ai : T.xp }}>
+                      {s.confirmed ? 'check_circle' : 'schedule'}
+                    </span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 12, fontSize: 12, color: T.textMuted, flexWrap: 'wrap' }}>
+                    <span>📅 {s.date}</span>
+                    <span>👥 {s.students} students</span>
+                    <span>📍 {s.room}</span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-3 text-xs text-on-surface-variant">
-                  <span>📅 {s.date}</span>
-                  <span>👥 {s.students} students</span>
-                  <span>📍 {s.room}</span>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
+            <button style={{ width: '100%', marginTop: 14, padding: '10px 0', background: T.primary, color: '#fff', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>+ Book New Session</button>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

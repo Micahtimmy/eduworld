@@ -1,136 +1,172 @@
 'use client'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
-const EVENTS: Record<number, { label: string; color: string }[]> = {
-  1: [{ label: 'Public Holiday', color: 'bg-slate-400' }],
-  6: [{ label: 'Term 3 Starts', color: 'bg-green-500' }],
-  8: [{ label: 'Staff In-Service', color: 'bg-blue-500' }],
-  14: [{ label: 'Exam Period: Yr 12', color: 'bg-red-500' }, { label: 'PTC: Humanities', color: 'bg-purple-500' }],
-  15: [{ label: 'Exam Period: Yr 12', color: 'bg-red-500' }],
-  16: [{ label: 'Exam Period: Yr 12', color: 'bg-red-500' }, { label: 'Sports Day Gala', color: 'bg-amber-500' }],
+const T = {
+  bg: '#f0f2f8', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+  sidebarBg: '#0d1b4b', sidebarText: '#c8d0e8', sidebarActive: '#1e3372',
 }
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/admin/dashboard' },
+  { icon: 'person_add', label: 'Student Intake', href: '/admin/student-intake' },
+  { icon: 'groups', label: 'Students', href: '/admin/students' },
+  { icon: 'school', label: 'Teachers', href: '/admin/teacher-roster' },
+  { icon: 'analytics', label: 'Analytics', href: '/admin/analytics' },
+  { icon: 'calendar_month', label: 'Events', href: '/admin/events', active: true },
+  { icon: 'payments', label: 'Finance', href: '/admin/finance' },
+  { icon: 'policy', label: 'Roles & Permissions', href: '/admin/roles' },
+  { icon: 'menu_book', label: 'Curriculum', href: '/admin/curriculum' },
+  { icon: 'monitor_heart', label: 'System Health', href: '/admin/health-monitor' },
+]
 
 const DAYS = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
-const SYNC = [
-  { label: 'Teacher Portal', status: 'LIVE', color: 'text-green-600', dot: 'bg-green-500' },
-  { label: 'Student App', status: 'PENDING', color: 'text-amber-600', dot: 'bg-amber-500' },
-  { label: 'Parent Connect', status: 'PENDING', color: 'text-amber-600', dot: 'bg-amber-500' },
-]
+type CalEvent = { label: string; color: string }
+const EVENTS: Record<number, CalEvent[]> = {
+  1: [{ label: 'Public Holiday', color: '#64748b' }],
+  6: [{ label: 'Term 3 Starts', color: T.ai }],
+  8: [{ label: 'Staff In-Service', color: '#0891b2' }],
+  14: [{ label: 'Exam Period: Yr 12', color: T.error }, { label: 'PTC: Humanities', color: '#7c3aed' }],
+  15: [{ label: 'Exam Period: Yr 12', color: T.error }],
+  16: [{ label: 'Exam Period: Yr 12', color: T.error }, { label: 'Sports Day Gala', color: T.xp }],
+}
 
 const CLASHES = [
-  {
-    icon: '⚠',
-    title: 'Double Booking Detected',
-    detail: 'May 14: Yr 12 Final Exams overlaps with Humanities Parent-Teacher Conference in West Wing.',
-    actions: ['Reschedule', 'Ignore'],
-  },
-  {
-    icon: '📅',
-    title: 'Resource Conflict',
-    detail: 'May 16: Sports Day requires the Athletics Ground, currently booked for Science Fieldwork.',
-    actions: ['Fix Booking'],
-  },
+  { title: 'Double Booking Detected', detail: 'May 14: Yr 12 Final Exams overlaps with Humanities Parent-Teacher Conference in West Wing.', actions: ['Reschedule', 'Ignore'] },
+  { title: 'Resource Conflict', detail: 'May 16: Sports Day requires the Athletics Ground, currently booked for Science Fieldwork.', actions: ['Fix Booking'] },
 ]
+
+const SYNC = [
+  { label: 'Teacher Portal', status: 'LIVE', color: T.ai },
+  { label: 'Student App', status: 'PENDING', color: T.xp },
+  { label: 'Parent Connect', status: 'PENDING', color: T.xp },
+]
+
+function Sidebar() {
+  return (
+    <aside style={{ width: 240, minHeight: '100vh', background: T.sidebarBg, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: '#ffffff' }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: '#93c5fd', background: 'rgba(147,197,253,0.15)', borderRadius: 6, padding: '2px 8px' }}>Admin</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 10px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '9px 12px', borderRadius: 8, marginBottom: 2, background: item.active ? T.sidebarActive : 'transparent', color: item.active ? '#ffffff' : T.sidebarText, fontFamily: T.fontBody, fontWeight: item.active ? 600 : 400, fontSize: 13 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
+}
 
 export default function AdminEventsPage() {
   const dates = Array.from({ length: 31 }, (_, i) => i + 1)
 
   return (
-    <div className="p-4 md:p-6 space-y-6 max-w-6xl mx-auto">
-      <div className="flex items-start justify-between">
-        <div>
-          <h1 className="font-display font-bold text-2xl text-on-surface">Master Institutional Calendar</h1>
-          <p className="text-sm text-on-surface-variant mt-1">Academic Year 2024/25 · Session A</p>
-        </div>
-        <div className="flex gap-2 shrink-0">
-          <div className="flex border border-outline-variant rounded-xl overflow-hidden text-xs">
-            {['Month', 'Week', 'Day'].map((v, i) => (
-              <button key={v} className={`px-3 py-1.5 font-semibold ${i === 0 ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-low'}`}>{v}</button>
-            ))}
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      <main style={{ flex: 1, overflowY: 'auto', padding: 32 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
+          <div>
+            <h1 style={{ fontFamily: T.fontHead, fontSize: 24, fontWeight: 800, color: T.textPrimary, margin: 0 }}>Master Institutional Calendar</h1>
+            <p style={{ fontSize: 14, color: T.textMuted, marginTop: 4 }}>Academic Year 2025/26 · Session A</p>
           </div>
-          <Button size="sm" className="gap-1">📢 Publish to All Tiers</Button>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <div style={{ display: 'flex', border: `1px solid ${T.border}`, borderRadius: 10, overflow: 'hidden' }}>
+              {['Month', 'Week', 'Day'].map((v, i) => (
+                <button key={v} style={{ padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer', background: i === 0 ? T.primary : T.surface, color: i === 0 ? '#fff' : T.textMuted, border: 'none', borderRight: i < 2 ? `1px solid ${T.border}` : 'none' }}>{v}</button>
+              ))}
+            </div>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 16px', background: T.primary, border: 'none', borderRadius: 10, fontSize: 13, color: '#fff', fontWeight: 600, cursor: 'pointer' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16 }}>campaign</span>Publish to All Tiers
+            </button>
+          </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Calendar */}
-        <div className="lg:col-span-2 bg-surface-lowest rounded-2xl border border-outline-variant overflow-hidden">
-          <div className="flex items-center justify-between p-4 border-b border-outline-variant">
-            <button className="text-on-surface-variant">‹</button>
-            <h2 className="font-display font-semibold text-on-surface">May 2025</h2>
-            <button className="text-on-surface-variant">›</button>
-          </div>
-          <div className="grid grid-cols-7 border-b border-outline-variant">
-            {DAYS.map(d => (
-              <div key={d} className="text-center text-[10px] font-semibold text-on-surface-variant py-2">{d}</div>
-            ))}
-          </div>
-          <div className="grid grid-cols-7">
-            {/* May 1 = Thursday, offset 3 */}
-            {Array.from({ length: 3 }).map((_, i) => (
-              <div key={`e${i}`} className="min-h-[72px] border-b border-r border-outline-variant p-1" />
-            ))}
-            {dates.map(d => (
-              <div key={d} className="min-h-[72px] border-b border-r border-outline-variant p-1">
-                <p className="text-[10px] font-semibold text-on-surface mb-0.5">{d}</p>
-                <div className="space-y-0.5">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 20 }}>
+          {/* Calendar */}
+          <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 16, overflow: 'hidden' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 20px', borderBottom: `1px solid ${T.border}` }}>
+              <button style={{ fontSize: 18, color: T.textMuted, background: 'none', border: 'none', cursor: 'pointer' }}>‹</button>
+              <h2 style={{ fontFamily: T.fontHead, fontWeight: 700, fontSize: 16, color: T.textPrimary }}>May 2025</h2>
+              <button style={{ fontSize: 18, color: T.textMuted, background: 'none', border: 'none', cursor: 'pointer' }}>›</button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', borderBottom: `1px solid ${T.border}` }}>
+              {DAYS.map(d => (
+                <div key={d} style={{ textAlign: 'center', fontSize: 10, fontWeight: 700, color: T.textMuted, padding: '8px 0', background: T.bg }}>{d}</div>
+              ))}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={`e${i}`} style={{ minHeight: 72, borderBottom: `1px solid ${T.border}`, borderRight: `1px solid ${T.border}`, padding: 4 }} />
+              ))}
+              {dates.map(d => (
+                <div key={d} style={{ minHeight: 72, borderBottom: `1px solid ${T.border}`, borderRight: `1px solid ${T.border}`, padding: 4 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, color: T.textPrimary, marginBottom: 2 }}>{d}</div>
                   {(EVENTS[d] || []).map(ev => (
-                    <div key={ev.label} className={`${ev.color} rounded px-0.5`}>
-                      <p className="text-white text-[8px] font-semibold truncate leading-tight">{ev.label}</p>
+                    <div key={ev.label} style={{ background: ev.color, borderRadius: 3, padding: '1px 4px', marginBottom: 2 }}>
+                      <div style={{ color: '#fff', fontSize: 8, fontWeight: 700, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{ev.label}</div>
                     </div>
                   ))}
                 </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right panels */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {/* Clash Detection */}
+            <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 14 }}>
+                <h2 style={{ fontFamily: T.fontHead, fontSize: 15, fontWeight: 700, color: T.textPrimary }}>Clash Detection</h2>
+                <span style={{ fontSize: 10, fontWeight: 700, background: T.ai + '15', color: T.ai, padding: '2px 8px', borderRadius: 20 }}>AI AUDIT</span>
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right Panels */}
-        <div className="space-y-4">
-          {/* Clash Detection */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <h2 className="font-display font-semibold text-on-surface">Clash Detection</h2>
-              <span className="text-[10px] bg-ai/10 text-ai px-2 py-0.5 rounded-full font-bold">AI AUDIT</span>
-            </div>
-            <div className="space-y-3">
-              {CLASHES.map(c => (
-                <div key={c.title} className="bg-amber-50 border border-amber-200 rounded-xl p-3 space-y-2">
-                  <p className="text-xs font-semibold text-on-surface">{c.icon} {c.title}</p>
-                  <p className="text-[10px] text-on-surface-variant">{c.detail}</p>
-                  <div className="flex gap-2">
-                    {c.actions.map(a => (
-                      <Button key={a} size="sm" variant="outline" className="h-6 text-[10px]">{a}</Button>
-                    ))}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                {CLASHES.map(c => (
+                  <div key={c.title} style={{ background: T.xp + '08', border: `1px solid ${T.xp}40`, borderRadius: 10, padding: '12px 14px' }}>
+                    <div style={{ fontWeight: 700, fontSize: 13, color: T.textPrimary, marginBottom: 4 }}>⚠ {c.title}</div>
+                    <div style={{ fontSize: 11, color: T.textMuted, marginBottom: 8 }}>{c.detail}</div>
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      {c.actions.map(a => (
+                        <button key={a} style={{ padding: '4px 12px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 6, fontSize: 11, fontWeight: 600, color: T.primary, cursor: 'pointer' }}>{a}</button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Sync Status */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <h2 className="font-display font-semibold text-on-surface">Sync Status</h2>
-            <div className="space-y-2">
-              {SYNC.map(s => (
-                <div key={s.label} className="flex items-center gap-3 p-2.5 bg-surface-low rounded-xl">
-                  <div className={`w-2 h-2 rounded-full ${s.dot} shrink-0`} />
-                  <span className="text-xs text-on-surface flex-1">{s.label}</span>
-                  <span className={`text-xs font-bold ${s.color}`}>{s.status}</span>
-                </div>
-              ))}
+            {/* Sync Status */}
+            <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: 14, padding: 20 }}>
+              <h2 style={{ fontFamily: T.fontHead, fontSize: 15, fontWeight: 700, color: T.textPrimary, marginBottom: 12 }}>Sync Status</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                {SYNC.map(s => (
+                  <div key={s.label} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 12px', background: T.bg, borderRadius: 10 }}>
+                    <div style={{ width: 8, height: 8, borderRadius: '50%', background: s.color, flexShrink: 0 }} />
+                    <span style={{ flex: 1, fontSize: 13, color: T.textPrimary }}>{s.label}</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: s.color }}>{s.status}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Global Sync CTA */}
-          <div className="bg-primary/10 border border-primary/20 rounded-2xl p-4 text-center space-y-2">
-            <p className="text-sm font-semibold text-on-surface">Global Sync Ready</p>
-            <p className="text-xs text-on-surface-variant">Click to broadcast updates to all tiers</p>
-            <Button className="w-full">📢 Broadcast Now</Button>
+            {/* Broadcast CTA */}
+            <div style={{ background: T.primary + '08', border: `1px solid ${T.primary}20`, borderRadius: 14, padding: 20, textAlign: 'center' }}>
+              <div style={{ fontWeight: 700, fontSize: 14, color: T.textPrimary, marginBottom: 4 }}>Global Sync Ready</div>
+              <div style={{ fontSize: 12, color: T.textMuted, marginBottom: 14 }}>Click to broadcast updates to all tiers</div>
+              <button style={{ width: '100%', padding: '10px 0', background: T.primary, color: '#fff', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>📢 Broadcast Now</button>
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   )
 }

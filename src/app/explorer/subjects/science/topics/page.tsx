@@ -1,67 +1,246 @@
 'use client'
-import { Play } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+
+import Link from 'next/link'
 
 const UNITS = [
-  { icon: '🌍', title: "Earth's Layers", status: 'completed', detail: null },
-  { icon: '🚀', title: 'The Solar System', status: 'active', detail: 'Lesson 3 of 5', pct: 60 },
-  { icon: '⚗️', title: 'Chemistry Basics', status: 'locked', detail: 'Finish Unit 2 First' },
-  { icon: '🌿', title: 'Ecosystems', status: 'locked', detail: 'Locked' },
+  {
+    icon: 'public',
+    title: "Earth's Layers",
+    unitNum: 1,
+    status: 'completed',
+    detail: null,
+    pct: null,
+    accentColor: '#00897B',
+  },
+  {
+    icon: 'rocket',
+    title: 'The Solar System',
+    unitNum: 2,
+    status: 'active',
+    detail: 'Lesson 3 of 5',
+    pct: 60,
+    accentColor: '#f97316',
+  },
+  {
+    icon: 'science',
+    title: 'Chemistry Basics',
+    unitNum: 3,
+    status: 'locked',
+    detail: 'Finish Unit 2 First',
+    pct: null,
+    accentColor: '#6b7280',
+  },
+  {
+    icon: 'forest',
+    title: 'Ecosystems',
+    unitNum: 4,
+    status: 'locked',
+    detail: 'Locked',
+    pct: null,
+    accentColor: '#6b7280',
+  },
 ]
 
 export default function ExplorerScienceTopicsPage() {
   return (
-    <div className="p-4 space-y-4">
-      {/* Subject Header */}
-      <div className="bg-gradient-to-br from-blue-500/20 to-green-500/20 rounded-2xl p-5 space-y-3">
-        <div className="flex items-center gap-2">
-          <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold">Subject Mastery</span>
-        </div>
-        <h1 className="font-display font-bold text-2xl text-on-surface">Science Adventures</h1>
-        <p className="text-xs text-on-surface-variant">Explore the universe, from microscopic cells to vast galaxies.</p>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <span className="text-lg">🏅</span>
-            <span className="text-xs font-bold text-on-surface">Level 4 Scholar</span>
+    <div
+      style={{
+        minHeight: '100vh',
+        fontFamily: '"Nunito", system-ui, sans-serif',
+        backgroundColor: '#0d1b2a',
+        padding: '0 0 40px 0',
+      }}
+    >
+      {/* Subject banner */}
+      <div
+        style={{
+          background: 'linear-gradient(135deg, #1a3a5c 0%, #0d1b2a 100%)',
+          padding: '28px 24px',
+          borderBottom: '1px solid rgba(255,255,255,0.06)',
+        }}
+      >
+        {/* Back button */}
+        <Link
+          href="/explorer/subjects/science"
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 6,
+            color: '#8892a4',
+            textDecoration: 'none',
+            fontWeight: 600,
+            fontSize: 13,
+            marginBottom: 20,
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_back</span>
+          Science World
+        </Link>
+
+        {/* Subject icon + title */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginBottom: 16 }}>
+          <div
+            style={{
+              width: 52,
+              height: 52,
+              borderRadius: 14,
+              backgroundColor: 'rgba(0,188,212,0.12)',
+              border: '1px solid rgba(0,188,212,0.3)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 28, color: '#00BCD4' }}>science</span>
           </div>
-          <div className="flex-1">
-            <div className="flex justify-between text-xs mb-1">
-              <span className="text-on-surface-variant">XP Progress</span>
-              <span className="font-semibold text-on-surface">450 / 600 XP</span>
+          <div>
+            <div style={{ fontWeight: 500, fontSize: 12, color: '#8892a4', marginBottom: 2 }}>Subject Mastery</div>
+            <h1 style={{ fontWeight: 800, fontSize: 24, color: '#fff', margin: 0 }}>Science Adventures</h1>
+          </div>
+        </div>
+
+        <p style={{ fontWeight: 500, fontSize: 13, color: '#8892a4', margin: '0 0 16px 0' }}>
+          Explore the universe, from tiny atoms to massive galaxies.
+        </p>
+
+        {/* Level + XP bar */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#facc15' }}>military_tech</span>
+            <span style={{ fontWeight: 700, fontSize: 13, color: '#fff' }}>Level 4 Scholar</span>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+              <span style={{ fontWeight: 500, fontSize: 11, color: '#8892a4' }}>XP Progress</span>
+              <span style={{ fontWeight: 700, fontSize: 11, color: '#facc15' }}>450 / 600 XP</span>
             </div>
-            <div className="h-2 bg-white/30 rounded-full overflow-hidden">
-              <div className="h-full bg-xp rounded-full" style={{ width: '75%' }} />
+            <div style={{ height: 6, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 3, overflow: 'hidden' }}>
+              <div style={{ width: '75%', height: '100%', backgroundColor: '#facc15', borderRadius: 3 }} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Units */}
-      <div className="space-y-3">
-        {UNITS.map((u, i) => (
-          <div key={u.title} className={`bg-surface-lowest rounded-2xl border p-4 ${u.status === 'locked' ? 'opacity-60 border-outline-variant' : 'border-outline-variant'}`}>
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">{u.icon}</span>
-              <div className="flex-1">
-                <div className="flex items-center gap-2">
-                  <p className="font-semibold text-sm text-on-surface">Unit {i + 1}: {u.title}</p>
-                  {u.status === 'completed' && <span className="text-green-500 text-xs">✓ Completed</span>}
-                  {u.status === 'locked' && <span className="text-xs text-on-surface-variant">🔒</span>}
+      {/* Units list */}
+      <div style={{ padding: '24px 20px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {UNITS.map((unit) => (
+          <div
+            key={unit.unitNum}
+            style={{
+              backgroundColor: '#1a2a3a',
+              borderRadius: 16,
+              padding: '16px 18px',
+              border: `1px solid ${
+                unit.status === 'completed'
+                  ? 'rgba(0,137,123,0.3)'
+                  : unit.status === 'active'
+                  ? 'rgba(249,115,22,0.3)'
+                  : 'rgba(255,255,255,0.06)'
+              }`,
+              opacity: unit.status === 'locked' ? 0.55 : 1,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+              <div
+                style={{
+                  width: 44,
+                  height: 44,
+                  borderRadius: 12,
+                  backgroundColor:
+                    unit.status === 'completed'
+                      ? 'rgba(0,137,123,0.15)'
+                      : unit.status === 'active'
+                      ? 'rgba(249,115,22,0.15)'
+                      : 'rgba(255,255,255,0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0,
+                }}
+              >
+                <span
+                  className="material-symbols-outlined"
+                  style={{
+                    fontSize: 24,
+                    color: unit.accentColor,
+                  }}
+                >
+                  {unit.icon}
+                </span>
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 3 }}>
+                  <span style={{ fontWeight: 700, fontSize: 14, color: '#fff' }}>
+                    Unit {unit.unitNum}: {unit.title}
+                  </span>
+                  {unit.status === 'completed' && (
+                    <span style={{ fontWeight: 700, fontSize: 11, color: '#00897B' }}>✓ Completed</span>
+                  )}
+                  {unit.status === 'locked' && (
+                    <span className="material-symbols-outlined" style={{ fontSize: 14, color: '#6b7280' }}>lock</span>
+                  )}
                 </div>
-                {u.detail && u.status === 'active' && (
-                  <p className="text-xs text-on-surface-variant">{u.detail}</p>
+                {unit.detail && unit.status === 'active' && (
+                  <div style={{ fontWeight: 500, fontSize: 12, color: '#8892a4' }}>{unit.detail}</div>
                 )}
-                {u.detail && u.status === 'locked' && (
-                  <p className="text-xs text-on-surface-variant">{u.detail}</p>
+                {unit.detail && unit.status === 'locked' && (
+                  <div style={{ fontWeight: 500, fontSize: 12, color: '#6b7280' }}>{unit.detail}</div>
                 )}
-                {u.pct !== undefined && (
-                  <div className="mt-2 h-1.5 bg-surface-high rounded-full overflow-hidden">
-                    <div className="h-full bg-primary rounded-full" style={{ width: `${u.pct}%` }} />
+                {unit.pct !== null && unit.pct !== undefined && (
+                  <div style={{ marginTop: 8, height: 5, backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 3, overflow: 'hidden' }}>
+                    <div
+                      style={{
+                        width: `${unit.pct}%`,
+                        height: '100%',
+                        backgroundColor: '#1976D2',
+                        borderRadius: 3,
+                      }}
+                    />
                   </div>
                 )}
               </div>
-              {u.status === 'completed' && <Button variant="outline" size="sm" className="h-7 text-xs">Review</Button>}
-              {u.status === 'active' && <Button size="sm" className="h-7 text-xs gap-1"><Play className="h-3 w-3" /> Continue</Button>}
+
+              {/* Action button */}
+              {unit.status === 'completed' && (
+                <button
+                  style={{
+                    padding: '6px 14px',
+                    borderRadius: 20,
+                    backgroundColor: 'transparent',
+                    border: '1px solid rgba(0,137,123,0.5)',
+                    color: '#00897B',
+                    fontWeight: 700,
+                    fontSize: 12,
+                    cursor: 'pointer',
+                    fontFamily: '"Nunito", system-ui, sans-serif',
+                    flexShrink: 0,
+                  }}
+                >
+                  Review
+                </button>
+              )}
+              {unit.status === 'active' && (
+                <Link
+                  href="/explorer/lessons/solar-system"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 4,
+                    padding: '6px 14px',
+                    borderRadius: 20,
+                    backgroundColor: '#f97316',
+                    color: '#fff',
+                    fontWeight: 700,
+                    fontSize: 12,
+                    textDecoration: 'none',
+                    flexShrink: 0,
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 14 }}>play_arrow</span>
+                  Continue
+                </Link>
+              )}
             </div>
           </div>
         ))}

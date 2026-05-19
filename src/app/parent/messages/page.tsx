@@ -1,193 +1,224 @@
 'use client'
 import { useState } from 'react'
-import { Send, Paperclip, Smile, Mic, Sparkles } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { cn } from '@/lib/utils'
+import Link from 'next/link'
+
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/parent/dashboard' },
+  { icon: 'people', label: 'My Children', href: '/parent/multi-child' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/parent/calendar' },
+  { icon: 'folder', label: 'Documents', href: '/parent/documents' },
+  { icon: 'sports_soccer', label: 'Extracurricular', href: '/parent/extracurricular' },
+  { icon: 'chat', label: 'Messages', href: '/parent/messages', active: true },
+  { icon: 'payments', label: 'Tuition & Fees', href: '/parent/tuition' },
+]
 
 const CONTACTS = [
-  { id: 1, name: 'Ms. Julia Simmons', role: 'Mathematics · 8th Grade', preview: 'Leo is doing great in class...', time: '10m', unread: 0, online: true },
-  { id: 2, name: 'Mr. Robert Chen', role: 'History · 8th Grade', preview: '📎 Attachment', time: '2h', unread: 0, online: false },
-  { id: 3, name: 'School Administration', role: 'Oakwood High · Main Office', preview: 'Please review the new policy...', time: 'Yesterday', unread: 2, online: true },
+  { id: 1, name: 'Ms. Julia Simmons', role: 'Mathematics · Grade 11', preview: 'Alex is doing great in class...', time: '10m', unread: 0, online: true },
+  { id: 2, name: 'Mr. Robert Chen', role: 'Physics · Grade 11', preview: '📎 Lab worksheet attached', time: '2h', unread: 0, online: false },
+  { id: 3, name: 'School Administration', role: 'St. Xavier High · Main Office', preview: 'Please review the new policy...', time: 'Yesterday', unread: 2, online: true },
+  { id: 4, name: 'Dr. Amara Osei', role: 'Chemistry · Grade 11', preview: 'Reminder: parent workshop on Fri', time: 'Mon', unread: 0, online: false },
 ]
 
 const MESSAGES = [
-  { id: 1, from: 'teacher', text: "Good morning! I wanted to share that Leo has been showing exceptional progress in our calculus unit. His problem-solving skills have really improved this term.", time: '9:14 AM' },
+  { id: 1, from: 'teacher', text: "Good morning! I wanted to share that Alex has been showing exceptional progress in our calculus unit. His problem-solving skills have really improved this term.", time: '9:14 AM' },
   { id: 2, from: 'parent', text: "That's wonderful to hear! He's been putting in a lot of extra study time. Are there any areas he should focus on for the upcoming assessment?", time: '9:32 AM' },
-  { id: 3, from: 'teacher', text: "He should review integration by parts and related rates. I've attached the practice worksheet we covered in class.", time: '9:45 AM', attachment: { name: 'calculus-practice.pdf', size: '1.2 MB' } },
-  { id: 4, from: 'parent', text: "Perfect, thank you so much! I'll make sure he goes through it this weekend.", time: '9:51 AM', read: true },
+  { id: 3, from: 'teacher', text: "He should review integration by parts and related rates. I've attached the practice worksheet we covered in class.", time: '9:45 AM', attachment: 'calculus-practice.pdf · 1.2 MB' },
+  { id: 4, from: 'parent', text: "Perfect, thank you so much! I'll make sure he goes through it this weekend.", time: '9:51 AM' },
 ]
 
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Parent</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: item.active ? '#f3f3f9' : 'transparent', borderLeft: item.active ? `3px solid ${T.primary}` : '3px solid transparent', color: item.active ? T.primary : T.textMuted, fontFamily: T.fontBody, fontWeight: item.active ? 600 : 400, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
+}
+
 export default function ParentMessagesPage() {
-  const [activeContact, setActiveContact] = useState(CONTACTS[0])
+  const [activeId, setActiveId] = useState(1)
   const [message, setMessage] = useState('')
-  const [tab, setTab] = useState("Leo's Teachers")
+  const activeContact = CONTACTS.find(c => c.id === activeId)!
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] overflow-hidden bg-surface">
-      {/* Contact List */}
-      <div className="w-72 border-r border-outline-variant flex flex-col bg-surface-lowest shrink-0">
-        <div className="p-4 border-b border-outline-variant">
-          <h2 className="font-display font-semibold text-on-surface">Communication Hub</h2>
-          <p className="text-xs text-on-surface-variant mt-0.5">Connect with your child's teachers</p>
+    <div style={{ display: 'flex', minHeight: '100vh', background: T.bg, fontFamily: T.fontBody }}>
+      <Sidebar />
+      {/* Contact list */}
+      <div style={{ width: 300, borderRight: `1px solid ${T.border}`, background: T.surface, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+        <div style={{ padding: '20px 16px 14px', borderBottom: `1px solid ${T.border}` }}>
+          <h2 style={{ fontFamily: T.fontHead, fontWeight: 700, fontSize: 16, color: T.textPrimary, marginBottom: 2 }}>Communication Hub</h2>
+          <p style={{ fontSize: 12, color: T.textMuted }}>Connect with Alex's teachers</p>
         </div>
-        <div className="flex gap-1 px-4 py-2 border-b border-outline-variant overflow-x-auto">
-          {["All Contacts", "Leo's Teachers", "School Admins"].map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              className={cn('px-3 py-1 text-xs font-medium rounded-full whitespace-nowrap transition-colors', tab === t ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-low')}
-            >
-              {t}
-            </button>
-          ))}
-        </div>
-        <div className="flex-1 overflow-y-auto divide-y divide-outline-variant">
+        <div style={{ flex: 1, overflowY: 'auto' }}>
           {CONTACTS.map(c => (
             <button
               key={c.id}
-              onClick={() => setActiveContact(c)}
-              className={cn('w-full text-left flex items-start gap-3 p-4 hover:bg-surface-low transition-colors', activeContact.id === c.id && 'bg-surface-low')}
+              onClick={() => setActiveId(c.id)}
+              style={{ width: '100%', display: 'flex', alignItems: 'flex-start', gap: 10, padding: '14px 16px', background: activeId === c.id ? T.bg : 'transparent', borderTop: 'none', borderLeft: 'none', borderRight: 'none', borderBottom: `1px solid ${T.border}`, textAlign: 'left', cursor: 'pointer', position: 'relative' }}
             >
-              <div className="relative shrink-0">
-                <Avatar size="md">
-                  <AvatarFallback>{c.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</AvatarFallback>
-                </Avatar>
-                {c.online && <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-surface-lowest" />}
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-on-surface truncate">{c.name}</p>
-                  <span className="text-xs text-on-surface-variant shrink-0">{c.time}</span>
+              <div style={{ position: 'relative', flexShrink: 0 }}>
+                <div style={{ width: 38, height: 38, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, color: T.primary }}>
+                  {c.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
                 </div>
-                <p className="text-xs text-on-surface-variant">{c.role}</p>
-                <p className="text-xs text-on-surface-variant truncate mt-0.5">{c.preview}</p>
+                {c.online && <div style={{ position: 'absolute', bottom: 1, right: 1, width: 8, height: 8, borderRadius: '50%', background: T.ai, border: `2px solid ${T.surface}` }} />}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+                  <span style={{ fontWeight: 700, fontSize: 13, color: T.textPrimary }}>{c.name}</span>
+                  <span style={{ fontSize: 11, color: T.textMuted }}>{c.time}</span>
+                </div>
+                <div style={{ fontSize: 11, color: T.textMuted, marginBottom: 2 }}>{c.role}</div>
+                <div style={{ fontSize: 12, color: T.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{c.preview}</div>
               </div>
               {c.unread > 0 && (
-                <div className="w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-white text-xs font-bold shrink-0">{c.unread}</div>
+                <div style={{ width: 18, height: 18, borderRadius: '50%', background: T.error, color: '#fff', fontSize: 10, fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>{c.unread}</div>
               )}
             </button>
           ))}
         </div>
       </div>
 
-      {/* Message Thread */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Thread Header */}
-        <div className="flex items-center gap-3 p-4 border-b border-outline-variant bg-surface-lowest">
-          <div className="relative">
-            <Avatar size="md">
-              <AvatarFallback>{activeContact.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</AvatarFallback>
-            </Avatar>
-            {activeContact.online && <div className="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-500 border-2 border-surface-lowest" />}
+      {/* Chat area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 20px', background: T.surface, borderBottom: `1px solid ${T.border}`, flexShrink: 0 }}>
+          <div style={{ position: 'relative' }}>
+            <div style={{ width: 38, height: 38, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 13, color: T.primary }}>
+              {activeContact.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+            </div>
+            {activeContact.online && <div style={{ position: 'absolute', bottom: 1, right: 1, width: 8, height: 8, borderRadius: '50%', background: T.ai, border: `2px solid ${T.surface}` }} />}
           </div>
-          <div className="flex-1">
-            <p className="font-semibold text-on-surface">{activeContact.name}</p>
-            <p className="text-xs text-on-surface-variant">{activeContact.role} · {activeContact.online ? 'Active now' : 'Offline'}</p>
+          <div>
+            <div style={{ fontWeight: 700, fontSize: 14, color: T.textPrimary }}>{activeContact.name}</div>
+            <div style={{ fontSize: 12, color: T.textMuted }}>{activeContact.role} · {activeContact.online ? 'Active now' : 'Offline'}</div>
+          </div>
+          <div style={{ marginLeft: 'auto', display: 'flex', gap: 8 }}>
+            <button style={{ padding: '7px 10px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, cursor: 'pointer', color: T.textMuted }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>call</span>
+            </button>
+            <button style={{ padding: '7px 10px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, cursor: 'pointer', color: T.textMuted }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>more_vert</span>
+            </button>
           </div>
         </div>
 
         {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          <div className="text-center">
-            <span className="text-xs text-on-surface-variant bg-surface-low px-3 py-1 rounded-full">Today, June 14</span>
+        <div style={{ flex: 1, overflowY: 'auto', padding: 20, display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <div style={{ textAlign: 'center' }}>
+            <span style={{ fontSize: 11, color: T.textMuted, background: T.bg, padding: '4px 12px', borderRadius: 20, border: `1px solid ${T.border}` }}>Today, November 14</span>
           </div>
           {MESSAGES.map(m => (
-            <div key={m.id} className={cn('flex gap-3', m.from === 'parent' && 'flex-row-reverse')}>
+            <div key={m.id} style={{ display: 'flex', gap: 10, flexDirection: m.from === 'parent' ? 'row-reverse' : 'row' }}>
               {m.from === 'teacher' && (
-                <Avatar size="sm">
-                  <AvatarFallback>{activeContact.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</AvatarFallback>
-                </Avatar>
+                <div style={{ width: 32, height: 32, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: 12, color: T.primary, flexShrink: 0 }}>
+                  {activeContact.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
+                </div>
               )}
-              <div className={cn('max-w-sm space-y-1', m.from === 'parent' && 'items-end flex flex-col')}>
-                <div className={cn('px-4 py-2.5 rounded-2xl text-sm', m.from === 'teacher' ? 'bg-surface-low text-on-surface' : 'bg-primary text-white')}>
+              <div style={{ maxWidth: '60%', display: 'flex', flexDirection: 'column', alignItems: m.from === 'parent' ? 'flex-end' : 'flex-start' }}>
+                <div style={{ padding: '10px 14px', borderRadius: m.from === 'parent' ? '16px 4px 16px 16px' : '4px 16px 16px 16px', background: m.from === 'teacher' ? T.bg : T.primary, color: m.from === 'teacher' ? T.textPrimary : '#fff', fontSize: 14 }}>
                   {m.text}
                   {m.attachment && (
-                    <div className="mt-2 flex items-center gap-2 p-2 rounded-lg bg-black/10">
-                      <span className="text-base">📄</span>
-                      <div>
-                        <p className="text-xs font-medium">{m.attachment.name}</p>
-                        <p className="text-xs opacity-70">{m.attachment.size}</p>
-                      </div>
+                    <div style={{ marginTop: 8, padding: '8px 10px', background: 'rgba(0,0,0,0.1)', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 16 }}>description</span>
+                      <span style={{ fontSize: 12 }}>{m.attachment}</span>
                     </div>
                   )}
                 </div>
-                <span className="text-xs text-on-surface-variant">{m.time}</span>
+                <span style={{ fontSize: 11, color: T.textMuted, marginTop: 3 }}>{m.time}</span>
               </div>
             </div>
           ))}
 
-          {/* AI suggested reply */}
-          <div className="bg-primary/5 border border-primary/20 rounded-xl p-3 mx-8 space-y-2">
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-ai" />
-              <span className="text-xs font-semibold text-on-surface">Suggested Reply</span>
+          {/* AI Suggested Reply */}
+          <div style={{ background: T.primary + '08', border: `1px solid ${T.primary}20`, borderRadius: 12, padding: '12px 14px', margin: '0 10%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+              <span style={{ fontSize: 12, color: T.ai }}>✦</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: T.textPrimary }}>Suggested Reply</span>
             </div>
-            <p className="text-xs text-on-surface-variant italic">"Thank you for the worksheet! We'll make sure Leo reviews it before the weekend."</p>
-            <button className="text-xs font-semibold px-3 py-1 bg-primary text-white rounded-full">Use Draft</button>
+            <p style={{ fontSize: 12, color: T.textMuted, fontStyle: 'italic', marginBottom: 8 }}>"Thank you for the worksheet! We'll make sure Alex reviews it before the weekend."</p>
+            <button style={{ padding: '5px 14px', background: T.primary, color: '#fff', border: 'none', borderRadius: 20, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Use Draft</button>
           </div>
         </div>
 
         {/* Compose */}
-        <div className="border-t border-outline-variant p-3 flex items-center gap-2">
-          <div className="flex gap-1 text-on-surface-variant">
-            <button className="p-2 rounded-full hover:bg-surface-low"><Paperclip className="h-4 w-4" /></button>
-            <button className="p-2 rounded-full hover:bg-surface-low"><Smile className="h-4 w-4" /></button>
-            <button className="p-2 rounded-full hover:bg-surface-low"><Mic className="h-4 w-4" /></button>
-          </div>
+        <div style={{ padding: '12px 16px', background: T.surface, borderTop: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button style={{ padding: '7px', background: T.surface, border: `1px solid ${T.border}`, borderRadius: 8, cursor: 'pointer', color: T.textMuted }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>attach_file</span>
+          </button>
           <input
-            className="flex-1 bg-surface-low rounded-full px-4 py-2 text-sm text-on-surface placeholder:text-on-surface-variant/50 focus:outline-none focus:ring-2 focus:ring-primary/30"
-            placeholder="Type a message..."
             value={message}
             onChange={e => setMessage(e.target.value)}
+            placeholder="Type a message..."
+            style={{ flex: 1, padding: '9px 14px', border: `1px solid ${T.border}`, borderRadius: 24, fontFamily: T.fontBody, fontSize: 14, color: T.textPrimary, background: T.bg, outline: 'none' }}
           />
-          <button className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white hover:bg-primary/90 shrink-0">
-            <Send className="h-4 w-4" />
+          <button style={{ width: 36, height: 36, borderRadius: '50%', background: T.primary, color: '#fff', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 18 }}>send</span>
           </button>
         </div>
       </div>
 
-      {/* Teacher Info Panel */}
-      <div className="w-64 border-l border-outline-variant bg-surface-lowest flex-col hidden lg:flex p-4 space-y-4 overflow-y-auto">
-        <div className="flex flex-col items-center text-center pt-2">
-          <Avatar size="lg">
-            <AvatarFallback>{activeContact.name.split(' ').map(n => n[0]).join('').slice(0, 2)}</AvatarFallback>
-          </Avatar>
-          <p className="font-semibold text-on-surface mt-2">{activeContact.name}</p>
-          <p className="text-xs text-on-surface-variant">{activeContact.role}</p>
-        </div>
-        <div className="grid grid-cols-2 gap-2 bg-surface-low rounded-xl p-3">
-          <div className="text-center">
-            <p className="font-bold text-on-surface">4.9</p>
-            <p className="text-xs text-on-surface-variant">Rating</p>
+      {/* Right panel */}
+      <div style={{ width: 240, borderLeft: `1px solid ${T.border}`, background: T.surface, padding: 20, display: 'flex', flexDirection: 'column', gap: 16, overflowY: 'auto', flexShrink: 0 }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ width: 52, height: 52, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 18, color: T.primary, margin: '0 auto 8px' }}>
+            {activeContact.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
           </div>
-          <div className="text-center">
-            <p className="font-bold text-on-surface">12</p>
-            <p className="text-xs text-on-surface-variant">Yrs Exp.</p>
+          <div style={{ fontWeight: 700, fontSize: 14, color: T.textPrimary }}>{activeContact.name}</div>
+          <div style={{ fontSize: 12, color: T.textMuted }}>{activeContact.role}</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          <div style={{ background: T.bg, borderRadius: 10, padding: '10px 0', textAlign: 'center' }}>
+            <div style={{ fontWeight: 800, fontSize: 18, color: T.textPrimary }}>4.9</div>
+            <div style={{ fontSize: 10, color: T.textMuted }}>Rating</div>
+          </div>
+          <div style={{ background: T.bg, borderRadius: 10, padding: '10px 0', textAlign: 'center' }}>
+            <div style={{ fontWeight: 800, fontSize: 18, color: T.textPrimary }}>12</div>
+            <div style={{ fontSize: 10, color: T.textMuted }}>Yrs Exp.</div>
           </div>
         </div>
-        <div className="bg-blue-50 dark:bg-blue-950/30 rounded-xl p-3 space-y-1">
-          <p className="text-xs font-semibold text-on-surface">Office Hours</p>
-          <p className="text-xs text-on-surface-variant">Mon/Wed: 3:30 – 4:30 PM</p>
-          <p className="text-xs text-on-surface-variant">Fri Virtual: 4:00 – 5:00 PM</p>
+        <div style={{ background: '#eff6ff', borderRadius: 10, padding: '12px 14px' }}>
+          <div style={{ fontWeight: 600, fontSize: 12, color: T.textPrimary, marginBottom: 4 }}>Office Hours</div>
+          <div style={{ fontSize: 11, color: T.textMuted }}>Mon/Wed: 3:30 – 4:30 PM</div>
+          <div style={{ fontSize: 11, color: T.textMuted }}>Fri Virtual: 4:00 – 5:00 PM</div>
         </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <p className="text-xs font-semibold text-on-surface">Shared Files</p>
-            <button className="text-xs text-primary">View All</button>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+            <span style={{ fontWeight: 600, fontSize: 12, color: T.textPrimary }}>Shared Files</span>
+            <button style={{ fontSize: 11, color: T.primary, background: 'none', border: 'none', cursor: 'pointer' }}>View All</button>
           </div>
           {['Report Card Q2.pdf', 'Physics Lab Slip.pdf'].map(f => (
-            <div key={f} className="flex items-center gap-2 p-2 rounded-lg hover:bg-surface-low">
-              <span className="text-red-500">📄</span>
-              <p className="text-xs text-on-surface truncate">{f}</p>
+            <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '7px 0', borderBottom: `1px solid ${T.border}` }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 16, color: T.error }}>description</span>
+              <span style={{ fontSize: 12, color: T.textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f}</span>
             </div>
           ))}
         </div>
-        <div className="bg-primary/5 border border-primary/10 rounded-xl p-3">
-          <div className="flex items-center gap-1.5 mb-1">
-            <Sparkles className="h-3 w-3 text-ai" />
-            <span className="text-xs font-semibold text-on-surface">EduWorld AI Tip</span>
+        <div style={{ background: T.ai + '08', border: `1px solid ${T.ai}30`, borderRadius: 10, padding: '12px 14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+            <span style={{ fontSize: 11, color: T.ai }}>✦</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: T.textPrimary }}>EduWorld AI Tip</span>
           </div>
-          <p className="text-xs text-on-surface-variant">Teachers respond fastest between 3–5 PM on weekdays.</p>
+          <p style={{ fontSize: 11, color: T.textMuted }}>Teachers respond fastest between 3–5 PM on weekdays.</p>
         </div>
       </div>
     </div>

@@ -1,189 +1,187 @@
 'use client'
-import { Search, Video, MoreVertical, Plus, Send, Download, FileText, BarChart2, Calendar, FolderOpen, Sparkles, Edit } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
-const CONVERSATIONS = [
-  { id: 1, icon: '👥', name: 'Advanced Physics Grp B', badge: 'Live', preview: 'Alex: The formula in slide 14 seems...' },
+const T = {
+  bg: '#f9f9ff', surface: '#ffffff', primary: '#003f7a',
+  ai: '#10B981', xp: '#F59E0B', textPrimary: '#191c20',
+  textMuted: '#424750', border: '#c2c6d2', error: '#ba1a1a',
+  fontHead: '"Plus Jakarta Sans", system-ui, sans-serif',
+  fontBody: '"Inter", system-ui, sans-serif',
+}
+
+const sidebarItems = [
+  { icon: 'dashboard', label: 'Dashboard', href: '/teacher/dashboard' },
+  { icon: 'school', label: 'My Classes', href: '/teacher/classes' },
+  { icon: 'assignment', label: 'Assignments', href: '/teacher/assignments' },
+  { icon: 'analytics', label: 'Analytics', href: '/teacher/student-insights' },
+  { icon: 'people', label: 'Students', href: '/teacher/student-groups' },
+  { icon: 'calendar_month', label: 'Calendar', href: '/teacher/calendar' },
+  { icon: 'inbox', label: 'Inbox', href: '/teacher/inbox', active: true },
+]
+
+const CONVOS = [
+  { id: 1, label: '👥', name: 'Advanced Physics Grp B', badge: 'Live', preview: 'Alex: The formula in slide 14 seems...', active: true },
   { id: 2, initials: 'MC', name: 'Marcus Chen', badge: '10:45 AM', preview: "I've uploaded my draft for the project." },
   { id: 3, initials: 'SJ', name: 'Sarah Jenkins', badge: '9:12 AM', preview: 'Can we discuss the assignment?' },
   { id: 4, ai: true, name: 'EduWorld Assistant', badge: '✦ AI', preview: '3 pending questions categorized.' },
 ]
 
-const SHARED_FILES = [
-  { icon: FileText, name: 'Lecture_Notes_04.pdf', meta: 'Shared by you • 2h ago' },
-  { icon: BarChart2, name: 'Physics_Constants.xlsx', meta: 'Shared by Sarah • Yesterday' },
-]
-
-const QUICK_ACTIONS = [
-  { icon: '📢', label: 'Announce' },
-  { icon: '📊', label: 'Create Poll' },
-  { icon: '📅', label: 'Schedule' },
-  { icon: '📁', label: 'Bulk Share' },
-]
+function Sidebar() {
+  return (
+    <aside style={{ width: 260, minHeight: '100vh', background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', padding: '24px 0', flexShrink: 0 }}>
+      <div style={{ padding: '0 20px 24px', borderBottom: `1px solid ${T.border}` }}>
+        <div style={{ fontFamily: T.fontHead, fontWeight: 800, fontSize: 20, color: T.primary }}>EduWorld</div>
+        <span style={{ display: 'inline-block', marginTop: 4, fontSize: 11, fontWeight: 600, color: T.primary, background: '#e8f0fe', borderRadius: 6, padding: '2px 8px' }}>Teacher</span>
+      </div>
+      <nav style={{ flex: 1, padding: '16px 12px' }}>
+        {sidebarItems.map(item => (
+          <Link key={item.href} href={item.href} style={{ textDecoration: 'none' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 12px', borderRadius: 8, marginBottom: 2, background: item.active ? '#f3f3f9' : 'transparent', borderLeft: item.active ? `3px solid ${T.primary}` : '3px solid transparent', color: item.active ? T.primary : T.textMuted, fontFamily: T.fontBody, fontWeight: item.active ? 600 : 400, fontSize: 14 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </div>
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  )
+}
 
 export default function TeacherStudentCommsPage() {
   return (
-    <div className="flex h-screen bg-surface-low overflow-hidden">
-      {/* Conversation List */}
-      <div className="w-72 bg-surface-lowest border-r border-outline-variant flex flex-col shrink-0">
-        <div className="p-4 border-b border-outline-variant">
-          <h2 className="font-display font-semibold text-on-surface mb-3">Communication Hub</h2>
-          <div className="flex items-center gap-1 px-2.5 py-2 bg-surface-low rounded-xl border border-outline-variant">
-            <Search className="h-4 w-4 text-on-surface-variant shrink-0" />
-            <input className="flex-1 bg-transparent text-sm outline-none placeholder:text-on-surface-variant" placeholder="Search..." />
+    <div style={{ display: 'flex', height: '100vh', fontFamily: T.fontBody, overflow: 'hidden' }}>
+      <Sidebar />
+      {/* Conversation list */}
+      <div style={{ width: 280, background: T.surface, borderRight: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0 }}>
+        <div style={{ padding: '20px 16px', borderBottom: `1px solid ${T.border}` }}>
+          <h2 style={{ fontFamily: T.fontHead, fontSize: 16, fontWeight: 700, color: T.textPrimary, marginBottom: 12 }}>Communication Hub</h2>
+          <div style={{ display: 'flex', alignItems: 'center', background: T.bg, border: `1px solid ${T.border}`, borderRadius: 10, padding: '0 10px' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16, color: T.textMuted }}>search</span>
+            <input placeholder="Search..." style={{ border: 'none', outline: 'none', padding: '8px 8px', fontFamily: T.fontBody, fontSize: 13, background: 'transparent', flex: 1 }} />
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto">
-          {CONVERSATIONS.map(c => (
-            <div key={c.id} className={`flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-surface-low ${c.id === 1 ? 'bg-primary/5 border-r-2 border-primary' : ''}`}>
-              {c.ai ? (
-                <div className="w-9 h-9 rounded-full bg-ai/20 flex items-center justify-center shrink-0">
-                  <Sparkles className="h-4 w-4 text-ai" />
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          {CONVOS.map(c => (
+            <div key={c.id} style={{
+              display: 'flex', alignItems: 'center', gap: 10, padding: '12px 16px', cursor: 'pointer',
+              background: c.active ? T.primary + '08' : 'transparent',
+              borderRight: c.active ? `3px solid ${T.primary}` : '3px solid transparent',
+              borderBottom: `1px solid ${T.border}`,
+            }}>
+              <div style={{
+                width: 38, height: 38, borderRadius: '50%', flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: c.ai ? 18 : c.label ? 18 : 12, fontWeight: 700,
+                background: c.ai ? T.ai + '20' : T.primary + '20', color: c.ai ? T.ai : T.primary,
+              }}>
+                {c.ai ? '✦' : c.label ? c.label : (c as { initials?: string }).initials}
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontWeight: 600, fontSize: 13, color: T.textPrimary }}>{c.name}</span>
+                  <span style={{ fontSize: 10, fontWeight: 700, padding: c.badge === 'Live' ? '2px 7px' : '0', borderRadius: 10, background: c.badge === 'Live' ? T.ai : 'transparent', color: c.badge === 'Live' ? '#fff' : c.badge === '✦ AI' ? T.ai : T.textMuted }}>{c.badge}</span>
                 </div>
-              ) : c.icon ? (
-                <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-lg shrink-0">{c.icon}</div>
-              ) : (
-                <div className="w-9 h-9 rounded-full bg-surface-high flex items-center justify-center text-xs font-bold text-on-surface shrink-0">{c.initials}</div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <p className="text-sm font-semibold text-on-surface truncate">{c.name}</p>
-                  <span className={`text-xs shrink-0 ml-1 ${c.badge === 'Live' ? 'bg-green-500 text-white px-1.5 py-0.5 rounded-full font-semibold' : c.badge === '✦ AI' ? 'text-ai font-semibold' : 'text-on-surface-variant'}`}>{c.badge}</span>
-                </div>
-                <p className="text-xs text-on-surface-variant truncate">{c.preview}</p>
+                <div style={{ fontSize: 12, color: T.textMuted, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', marginTop: 2 }}>{c.preview}</div>
               </div>
             </div>
           ))}
         </div>
-        <div className="p-3 border-t border-outline-variant">
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-2 text-center">
-            <p className="text-xs text-amber-700 font-semibold">⏰ Office Hours Active</p>
-            <p className="text-xs text-amber-600">Ends in 45m — Open for 1:1</p>
+        <div style={{ padding: 12, borderTop: `1px solid ${T.border}` }}>
+          <div style={{ background: T.xp + '15', border: `1px solid ${T.xp}30`, borderRadius: 10, padding: '8px 12px', textAlign: 'center' }}>
+            <div style={{ fontSize: 12, fontWeight: 700, color: T.xp }}>⏰ Office Hours Active</div>
+            <div style={{ fontSize: 11, color: T.textMuted }}>Ends in 45m — Open for 1:1</div>
           </div>
         </div>
       </div>
 
-      {/* Chat Area */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Chat Header */}
-        <div className="bg-surface-lowest border-b border-outline-variant px-4 py-3 flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-lg">👥</div>
-          <div className="flex-1">
-            <p className="font-semibold text-sm text-on-surface">Advanced Physics Grp B</p>
-            <p className="text-xs text-on-surface-variant">4 students currently active</p>
+      {/* Chat area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: T.bg }}>
+        <div style={{ padding: '14px 20px', background: T.surface, borderBottom: `1px solid ${T.border}`, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 24 }}>👥</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: 15, color: T.textPrimary }}>Advanced Physics Grp B</div>
+            <div style={{ fontSize: 12, color: T.ai, fontWeight: 600 }}>● 4 students currently active</div>
           </div>
-          <button className="p-1.5 rounded-lg hover:bg-surface-low"><Video className="h-4 w-4 text-on-surface-variant" /></button>
-          <button className="p-1.5 rounded-lg hover:bg-surface-low"><MoreVertical className="h-4 w-4 text-on-surface-variant" /></button>
+          <button style={{ background: 'none', border: 'none', cursor: 'pointer', color: T.textMuted }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 20 }}>videocam</span>
+          </button>
         </div>
 
-        {/* Messages */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          <div className="flex gap-3">
-            <div className="w-8 h-8 rounded-full bg-surface-high flex items-center justify-center text-xs font-bold text-on-surface shrink-0">MC</div>
-            <div>
-              <p className="text-xs text-on-surface-variant mb-1">Marcus Chen · 10:48 AM</p>
-              <div className="bg-surface-lowest border border-outline-variant rounded-2xl rounded-tl-sm px-4 py-2.5 text-sm text-on-surface max-w-sm">
-                Hello Professor! I&apos;m stuck on the quantum tunneling exercise. Is there a specific resource you&apos;d recommend for the probability wave calculations?
-              </div>
-            </div>
-          </div>
-          <div className="flex gap-3 flex-row-reverse">
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-bold text-primary shrink-0">You</div>
-            <div className="items-end flex flex-col">
-              <p className="text-xs text-on-surface-variant mb-1 text-right">10:50 AM</p>
-              <div className="bg-primary text-white rounded-2xl rounded-tr-sm px-4 py-2.5 text-sm max-w-sm">
-                Great question, Marcus. I&apos;ve just attached a specialized worksheet to this thread that covers the probability wave functions step by step.
+        <div style={{ flex: 1, overflowY: 'auto', padding: 24, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {/* Student message */}
+          <div style={{ display: 'flex', gap: 10 }}>
+            <div style={{ width: 34, height: 34, borderRadius: '50%', background: T.primary + '20', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: T.primary, flexShrink: 0 }}>MC</div>
+            <div style={{ maxWidth: '60%' }}>
+              <div style={{ fontSize: 11, color: T.textMuted, marginBottom: 4 }}>Marcus Chen · 10:48 AM</div>
+              <div style={{ background: T.surface, border: `1px solid ${T.border}`, borderRadius: '4px 16px 16px 16px', padding: '12px 14px', fontSize: 14, color: T.textPrimary }}>
+                Hello Professor! I'm stuck on the quantum tunneling exercise. Is there a specific resource you'd recommend for probability wave calculations?
               </div>
             </div>
           </div>
 
           {/* AI Suggestion */}
-          <div className="bg-ai/5 border border-ai/20 rounded-xl p-3 mx-4">
-            <div className="flex items-center gap-1.5 mb-1">
-              <Sparkles className="h-3.5 w-3.5 text-ai" />
-              <span className="text-xs font-semibold text-ai">EduWorld AI Suggestion</span>
+          <div style={{ background: T.ai + '10', border: `1px solid ${T.ai}30`, borderRadius: 12, padding: 14, maxWidth: '60%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 8 }}>
+              <span style={{ fontSize: 14, color: T.ai }}>✦</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: T.ai }}>AI Suggestion</span>
             </div>
-            <p className="text-xs text-on-surface-variant">3 other students in Group B have asked similar questions today. Would you like to schedule a 15-minute group huddle?</p>
-            <div className="flex gap-2 mt-2">
-              <Button size="sm" className="h-6 text-xs">Create Huddle</Button>
-              <Button variant="outline" size="sm" className="h-6 text-xs">Dismiss</Button>
+            <p style={{ fontSize: 12, color: T.textMuted }}>3 other students asked similar questions today. Schedule a 15-minute group huddle?</p>
+            <div style={{ display: 'flex', gap: 8, marginTop: 10 }}>
+              <button style={{ padding: '5px 14px', background: T.ai, color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>Create Huddle</button>
+              <button style={{ padding: '5px 14px', background: 'transparent', color: T.textMuted, border: `1px solid ${T.border}`, borderRadius: 6, fontSize: 12, cursor: 'pointer' }}>Dismiss</button>
             </div>
           </div>
 
-          {/* Attached File */}
-          <div className="flex items-center gap-3 p-3 bg-surface-lowest border border-outline-variant rounded-xl mx-4 max-w-xs">
-            <FileText className="h-8 w-8 text-red-500 shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-on-surface truncate">Quantum_Methods_V2.pdf</p>
-              <p className="text-xs text-on-surface-variant">2.4 MB · Worksheet</p>
+          {/* Teacher reply */}
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <div style={{ maxWidth: '60%' }}>
+              <div style={{ fontSize: 11, color: T.textMuted, marginBottom: 4, textAlign: 'right' }}>You · 10:50 AM</div>
+              <div style={{ background: T.primary, borderRadius: '16px 4px 16px 16px', padding: '12px 14px', fontSize: 14, color: '#fff' }}>
+                Great question, Marcus. I've just attached a specialized worksheet to this thread that covers the probability wave functions step by step.
+              </div>
             </div>
-            <Download className="h-4 w-4 text-on-surface-variant" />
           </div>
         </div>
 
-        {/* Compose Bar */}
-        <div className="bg-surface-lowest border-t border-outline-variant px-4 py-3 flex items-center gap-2">
-          <button className="text-on-surface-variant hover:text-primary"><Plus className="h-5 w-5" /></button>
-          <input className="flex-1 bg-surface-low rounded-2xl px-4 py-2 text-sm outline-none border border-outline-variant focus:border-primary placeholder:text-on-surface-variant" placeholder="Type a message..." />
-          <button className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white">
-            <Send className="h-4 w-4" />
+        {/* Compose */}
+        <div style={{ padding: '12px 20px', background: T.surface, borderTop: `1px solid ${T.border}`, display: 'flex', gap: 10, alignItems: 'center' }}>
+          <input placeholder="Type a message..." style={{ flex: 1, background: T.bg, border: `1px solid ${T.border}`, borderRadius: 24, padding: '10px 16px', fontFamily: T.fontBody, fontSize: 14, color: T.textPrimary, outline: 'none' }} />
+          <button style={{ width: 40, height: 40, borderRadius: '50%', background: T.primary, border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#fff' }}>send</span>
           </button>
         </div>
       </div>
 
-      {/* Right Sidebar */}
-      <div className="w-64 bg-surface-lowest border-l border-outline-variant flex flex-col shrink-0">
-        <div className="p-4 border-b border-outline-variant space-y-4">
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <p className="text-xs font-semibold text-on-surface-variant">Shared Files</p>
-              <button className="text-xs text-primary hover:underline">View All</button>
-            </div>
-            {SHARED_FILES.map(f => (
-              <div key={f.name} className="flex items-center gap-2 py-2">
-                <f.icon className="h-4 w-4 text-on-surface-variant shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-medium text-on-surface truncate">{f.name}</p>
-                  <p className="text-xs text-on-surface-variant">{f.meta}</p>
-                </div>
+      {/* Right panel */}
+      <div style={{ width: 240, background: T.surface, borderLeft: `1px solid ${T.border}`, display: 'flex', flexDirection: 'column', flexShrink: 0, padding: 16, gap: 16 }}>
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
+            <span style={{ fontSize: 12, fontWeight: 700, color: T.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Shared Files</span>
+            <button style={{ fontSize: 12, color: T.primary, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 600 }}>View All</button>
+          </div>
+          {[
+            { name: 'Lecture_Notes_04.pdf', meta: 'Shared by you · 2h ago', icon: 'picture_as_pdf', color: '#dc2626' },
+            { name: 'Physics_Constants.xlsx', meta: 'Shared by Sarah · Yesterday', icon: 'table_chart', color: '#15803d' },
+          ].map(f => (
+            <div key={f.name} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 18, color: f.color }}>{f.icon}</span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 12, fontWeight: 600, color: T.textPrimary, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</div>
+                <div style={{ fontSize: 11, color: T.textMuted }}>{f.meta}</div>
               </div>
+            </div>
+          ))}
+        </div>
+
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: T.textMuted, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 10 }}>Quick Actions</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+            {['Announce', 'Poll', 'Schedule', 'Bulk Share'].map(a => (
+              <button key={a} style={{ padding: '10px 6px', background: T.bg, border: `1px solid ${T.border}`, borderRadius: 10, fontSize: 12, color: T.textPrimary, cursor: 'pointer', fontWeight: 500 }}>{a}</button>
             ))}
           </div>
         </div>
 
-        <div className="p-4 border-b border-outline-variant space-y-2">
-          <p className="text-xs font-semibold text-on-surface-variant">Current Assignment</p>
-          <div className="bg-surface-low rounded-xl p-3">
-            <p className="text-sm font-semibold text-on-surface">Quantum Mechanics Lab 3</p>
-            <p className="text-xs text-on-surface-variant mt-0.5">Due in 3 days: Friday, Oct 14</p>
-            <div className="mt-2">
-              <div className="flex justify-between text-xs mb-1">
-                <span className="text-on-surface-variant">Class Submission Progress</span>
-                <span className="font-bold text-on-surface">68%</span>
-              </div>
-              <div className="h-2 bg-surface-high rounded-full overflow-hidden">
-                <div className="h-full bg-primary rounded-full" style={{ width: '68%' }} />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="p-4">
-          <p className="text-xs font-semibold text-on-surface-variant mb-2">Quick Actions</p>
-          <div className="grid grid-cols-2 gap-2">
-            {QUICK_ACTIONS.map(a => (
-              <button key={a.label} className="flex flex-col items-center gap-1 p-2.5 bg-surface-low rounded-xl hover:bg-surface-high">
-                <span className="text-lg">{a.icon}</span>
-                <span className="text-xs text-on-surface-variant font-medium">{a.label}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-auto p-4 border-t border-outline-variant">
-          <button className="w-full flex items-center justify-center gap-2 p-2.5 bg-primary rounded-xl text-white text-sm font-semibold">
-            <Edit className="h-4 w-4" /> Compose
-          </button>
+        <div style={{ marginTop: 'auto' }}>
+          <button style={{ width: '100%', padding: '10px 0', background: T.primary, color: '#fff', border: 'none', borderRadius: 10, fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Compose</button>
         </div>
       </div>
     </div>

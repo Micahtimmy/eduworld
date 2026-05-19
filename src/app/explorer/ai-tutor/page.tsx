@@ -1,81 +1,353 @@
 'use client'
-import { Button } from '@/components/ui/button'
 
-const MESSAGES = [
-  { sender: 'ai', text: "Hi Explorer! 👋 Ready to blast off? Today we're going to explore Mars — the Red Planet! What do you want to know?" },
+import { useState } from 'react'
+import Link from 'next/link'
+
+const NAV_LINKS = [
+  { icon: 'school', label: 'Learn', href: '/explorer/lessons' },
+  { icon: 'auto_stories', label: 'Practice', href: '/explorer/daily-quest' },
+  { icon: 'military_tech', label: 'Leaderboard', href: '/explorer/achievements' },
+  { icon: 'shopping_bag', label: 'Shop', href: '/explorer/shop' },
+  { icon: 'settings', label: 'Settings', href: '/explorer/profile' },
+]
+
+const INITIAL_MESSAGES = [
+  {
+    sender: 'ai',
+    text: "Hi! 👋 I saw you were working on the Fractions Quest. Ready to blast off? Today we're going to explore Mars — the Red Planet! What do you want to know?",
+  },
   { sender: 'user', text: 'Why is Mars red?' },
-  { sender: 'ai', text: "Great question! Mars is red because of iron oxide — that's rust! — on its surface. The dust is so fine it even colors the sky pink!" },
+  {
+    sender: 'ai',
+    text: "Great question! Mars is red because of iron oxide — that's rust! — on its surface. The dust is so fine it even colors the sky pink!",
+    fact: 'Iron oxide dust on Mars is so fine it floats in the atmosphere, giving the sky a pinkish hue!',
+  },
 ]
 
 const CHIPS = [
-  { icon: '🌡', label: 'How hot is it?' },
-  { icon: '💧', label: 'Is there water?' },
-  { icon: '🚀', label: 'Can we visit?' },
+  { icon: 'thermostat', label: 'How hot is it?' },
+  { icon: 'public', label: 'Is there water?' },
+  { icon: 'rocket', label: 'Can we visit?' },
 ]
 
 export default function ExplorerAiTutorPage() {
+  const [input, setInput] = useState('')
+  const [messages, setMessages] = useState(INITIAL_MESSAGES)
+
+  function sendMessage() {
+    if (!input.trim()) return
+    setMessages((prev) => [...prev, { sender: 'user', text: input }])
+    setInput('')
+  }
+
   return (
-    <div className="flex flex-col h-screen bg-slate-900">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-        <div className="flex items-center gap-2">
-          <span className="text-amber-400 text-lg">⚡</span>
-          <span className="text-white font-semibold text-sm">Spark Chat</span>
+    <div
+      style={{
+        display: 'flex',
+        height: '100vh',
+        fontFamily: '"Nunito", system-ui, sans-serif',
+        backgroundColor: '#0f1117',
+        overflow: 'hidden',
+      }}
+    >
+      {/* Sidebar */}
+      <aside
+        style={{
+          width: 220,
+          minHeight: '100vh',
+          backgroundColor: '#1a1f2e',
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '24px 16px',
+          flexShrink: 0,
+        }}
+        className="hidden md:flex"
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 24 }}>
+          <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#FFD700' }}>bolt</span>
+          <span style={{ fontWeight: 800, fontSize: 16, color: '#fff' }}>Spark Chat</span>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-amber-400">⭐</span>
-          <span className="text-orange-400">🔥</span>
-          <div className="w-7 h-7 rounded-full bg-primary/30 flex items-center justify-center">
-            <span className="text-white text-xs font-bold">E</span>
+
+        {/* Mascot avatar */}
+        <div
+          style={{
+            width: 72,
+            height: 72,
+            borderRadius: '50%',
+            backgroundColor: 'rgba(0,188,212,0.15)',
+            border: '2px solid rgba(0,188,212,0.4)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            marginBottom: 12,
+          }}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 40, color: '#00BCD4' }}>smart_toy</span>
+        </div>
+
+        <div style={{ textAlign: 'center', marginBottom: 24 }}>
+          <div style={{ fontWeight: 800, fontSize: 15, color: '#fff' }}>Spark Academy</div>
+          <div style={{ fontWeight: 500, fontSize: 12, color: '#8892a4' }}>Level 12 Explorer</div>
+        </div>
+
+        {/* Nav */}
+        <nav style={{ display: 'flex', flexDirection: 'column', gap: 2, flex: 1 }}>
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '9px 12px',
+                borderRadius: 10,
+                color: '#8892a4',
+                textDecoration: 'none',
+                fontWeight: 600,
+                fontSize: 13,
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 18 }}>{link.icon}</span>
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Quest Card */}
+        <div
+          style={{
+            backgroundColor: '#252d3d',
+            borderRadius: 12,
+            padding: '12px 14px',
+            marginTop: 16,
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#FFD700' }}>swords</span>
+            <span style={{ fontWeight: 700, fontSize: 11, color: '#FFD700' }}>Daily Quest</span>
+          </div>
+          <div style={{ fontWeight: 600, fontSize: 12, color: '#fff', marginBottom: 4 }}>Science Explorer</div>
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 4,
+              backgroundColor: 'rgba(255,87,34,0.2)',
+              borderRadius: 20,
+              padding: '3px 8px',
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 12, color: '#FF5722' }}>rocket</span>
+            <span style={{ fontWeight: 700, fontSize: 10, color: '#FF5722' }}>Mission Active</span>
           </div>
         </div>
-      </div>
+      </aside>
 
-      <div className="px-4 py-3 bg-slate-800 border-b border-white/10">
-        <p className="text-[10px] text-slate-400 uppercase font-semibold">Science Explorer</p>
-        <div className="flex items-center gap-2">
-          <h1 className="text-white font-semibold text-sm">Journey to Mars</h1>
-          <span className="text-[10px] bg-amber-500/20 text-amber-400 px-2 py-0.5 rounded-full font-semibold">🚀 Mission Active</span>
-        </div>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {MESSAGES.map((m, i) => (
-          <div key={i} className={`flex items-start gap-3 ${m.sender === 'user' ? 'flex-row-reverse' : ''}`}>
-            {m.sender === 'ai' && (
-              <div className="w-8 h-8 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
-                <span className="text-sm">⚡</span>
-              </div>
-            )}
-            <div className={`max-w-[75%] rounded-2xl px-4 py-2.5 ${m.sender === 'ai' ? 'bg-slate-700 text-white' : 'bg-primary text-white'}`}>
-              <p className="text-sm">{m.text}</p>
+      {/* Chat area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: '#1e2330', overflow: 'hidden' }}>
+        {/* Chat header */}
+        <div
+          style={{
+            padding: '16px 20px',
+            borderBottom: '1px solid rgba(255,255,255,0.06)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <div>
+            <div style={{ fontWeight: 500, fontSize: 11, color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              Science Explorer
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontWeight: 700, fontSize: 15, color: '#fff' }}>Journey to Mars</span>
+              <span
+                style={{
+                  backgroundColor: 'rgba(255,87,34,0.2)',
+                  color: '#FF5722',
+                  fontSize: 10,
+                  fontWeight: 700,
+                  padding: '2px 8px',
+                  borderRadius: 20,
+                }}
+              >
+                🚀 Mission Active
+              </span>
             </div>
           </div>
-        ))}
-
-        <div className="bg-slate-700 border border-white/10 rounded-2xl p-3 flex items-start gap-2">
-          <span className="text-lg shrink-0">🔬</span>
-          <div>
-            <p className="text-xs font-semibold text-white">Science Fact</p>
-            <p className="text-xs text-slate-300 mt-0.5">Iron oxide dust on Mars is so fine it floats in the atmosphere, giving the sky a pinkish hue!</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+            <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#FFD700' }}>star</span>
+            <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#f97316' }}>local_fire_department</span>
+            <div
+              style={{
+                width: 30,
+                height: 30,
+                borderRadius: '50%',
+                backgroundColor: 'rgba(108,99,255,0.3)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontWeight: 800,
+                fontSize: 13,
+                color: '#fff',
+              }}
+            >
+              E
+            </div>
           </div>
+        </div>
+
+        {/* Messages */}
+        <div style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+          {messages.map((msg, i) => (
+            <div key={i} style={{ display: 'flex', flexDirection: msg.sender === 'user' ? 'row-reverse' : 'row', alignItems: 'flex-start', gap: 10 }}>
+              {msg.sender === 'ai' && (
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: 'rgba(0,188,212,0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 18, color: '#00BCD4' }}>smart_toy</span>
+                </div>
+              )}
+              <div style={{ maxWidth: '72%', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                <div
+                  style={{
+                    backgroundColor: msg.sender === 'ai' ? '#252d3d' : '#2a3560',
+                    borderRadius: msg.sender === 'ai' ? '4px 16px 16px 16px' : '16px 4px 16px 16px',
+                    padding: '10px 14px',
+                    color: '#e8eaf0',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {msg.text}
+                </div>
+                {'fact' in msg && msg.fact && (
+                  <div
+                    style={{
+                      backgroundColor: 'rgba(0,188,212,0.08)',
+                      borderLeft: '3px solid #00BCD4',
+                      borderRadius: '0 10px 10px 0',
+                      padding: '8px 12px',
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      gap: 8,
+                    }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 16, color: '#00BCD4', flexShrink: 0, marginTop: 1 }}>science</span>
+                    <div>
+                      <div style={{ fontWeight: 700, fontSize: 11, color: '#00BCD4', marginBottom: 2 }}>Science Fact</div>
+                      <div style={{ fontWeight: 500, fontSize: 12, color: '#8892a4', lineHeight: 1.5 }}>{msg.fact}</div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Quick chips */}
+        <div style={{ padding: '8px 20px', display: 'flex', gap: 8, overflowX: 'auto' }}>
+          {CHIPS.map((chip) => (
+            <button
+              key={chip.label}
+              onClick={() => setInput(chip.label)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 6,
+                padding: '6px 14px',
+                backgroundColor: '#252d3d',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 20,
+                color: '#c8cdd8',
+                fontSize: 12,
+                fontWeight: 600,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+                fontFamily: '"Nunito", system-ui, sans-serif',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 14 }}>{chip.icon}</span>
+              {chip.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Input bar */}
+        <div
+          style={{
+            padding: '12px 20px 20px',
+            borderTop: '1px solid rgba(255,255,255,0.06)',
+            display: 'flex',
+            gap: 10,
+            alignItems: 'center',
+          }}
+        >
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter') sendMessage() }}
+            placeholder="Ask Spark anything..."
+            style={{
+              flex: 1,
+              backgroundColor: '#2a3245',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 14,
+              padding: '11px 16px',
+              color: '#e8eaf0',
+              fontSize: 14,
+              fontFamily: '"Nunito", system-ui, sans-serif',
+              outline: 'none',
+            }}
+          />
+          <button
+            onClick={sendMessage}
+            style={{
+              width: 42,
+              height: 42,
+              borderRadius: 12,
+              backgroundColor: '#00BCD4',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+            }}
+          >
+            <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#fff' }}>send</span>
+          </button>
         </div>
       </div>
 
-      <div className="px-4 pb-2 flex gap-2 overflow-x-auto">
-        {CHIPS.map(c => (
-          <button key={c.label} className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-700 rounded-full text-xs text-slate-200 hover:bg-slate-600 transition-colors whitespace-nowrap shrink-0">
-            <span>{c.icon}</span> {c.label}
-          </button>
-        ))}
-      </div>
-
-      <div className="p-4 border-t border-white/10 flex gap-2">
-        <input
-          type="text"
-          placeholder="Ask Spark anything..."
-          className="flex-1 bg-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-500/50"
-        />
-        <Button className="bg-amber-500 hover:bg-amber-600 text-white px-4">⚡</Button>
+      {/* Watermark */}
+      <div
+        style={{
+          position: 'fixed',
+          bottom: 12,
+          right: 16,
+          fontFamily: '"Nunito", system-ui, sans-serif',
+          fontSize: 11,
+          color: '#4b5563',
+          zIndex: 10,
+        }}
+      >
+        EWD-018
       </div>
     </div>
   )

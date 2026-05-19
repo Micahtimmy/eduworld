@@ -1,149 +1,466 @@
 'use client'
-import { Sparkles, BookOpen, MessageCircle, Search, ExternalLink, ChevronRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
 
-const ROLE_DOCS = [
-  { icon: '🎒', role: 'Explorer', desc: 'Learning quests, gamification, parent controls' },
-  { icon: '🏆', role: 'Achiever', desc: 'Exam prep, university planning, AI tutor' },
-  { icon: '🎓', role: 'Scholar', desc: 'Research tools, financial aid, coursework' },
-  { icon: '👩‍🏫', role: 'Teacher', desc: 'Lesson builder, gradebook, assessments' },
-  { icon: '👪', role: 'Parent', desc: 'Progress monitoring, payments, communication' },
-  { icon: '🏫', role: 'Admin', desc: 'Enrollment, data governance, reporting' },
+const ROLE_CARDS = [
+  { icon: 'explore',      title: 'Explorer',  tag: 'Onboarding Orientation',    links: [{ label: 'Setup Guide', href: '/explorer/onboarding/name' }, { label: 'FAQ', href: '#faq' }] },
+  { icon: 'emoji_events', title: 'Achiever',  tag: 'Certificates & Milestones', links: [{ label: 'Claim Badges', href: '/achiever/dashboard' }, { label: 'Submissions', href: '/achiever/dashboard' }] },
+  { icon: 'history_edu',  title: 'Scholar',   tag: 'Research Integrations',     links: [{ label: 'Library', href: '/scholar/command-center' }, { label: 'API Docs', href: '#api' }] },
+  { icon: 'co_present',   title: 'Teacher',   tag: 'Lesson & Grading',          links: [{ label: 'Lesson Builder', href: '/teacher/dashboard' }, { label: 'Gradebook', href: '/teacher/dashboard' }] },
+  { icon: 'family_home',  title: 'Parent',    tag: 'Progress & Payments',       links: [{ label: 'Progress', href: '/parent/dashboard' }, { label: 'Invoices', href: '/parent/dashboard' }] },
+  { icon: 'admin_panel_settings', title: 'Admin', tag: 'School Management',    links: [{ label: 'Enrolment', href: '/admin/dashboard' }, { label: 'Reports', href: '/admin/dashboard' }] },
 ]
 
-const QUICK_LINKS = [
-  { icon: '✦', label: 'Ask EduWorld AI', desc: 'Instant answers to your questions', tag: 'AI' },
-  { icon: '📊', label: 'System Health Status', desc: 'Live uptime and incident reports', tag: 'STATUS' },
-  { icon: '❓', label: 'Common Queries', desc: 'Most frequently asked questions', tag: 'FAQ' },
+const DOC_SECTIONS = [
+  { icon: 'payments',  label: 'Billing & Subscriptions' },
+  { icon: 'security',  label: 'Privacy & Security' },
+  { icon: 'hub',       label: 'API & Integrations' },
+  { icon: 'groups',    label: 'Community Rules' },
 ]
 
-const TUTORIALS = [
-  { title: 'Getting Started with AI Tutoring', duration: '4 min read', tag: 'FEATURED' },
-  { title: 'Setting Up Your Classroom in EduWorld', duration: '6 min read', tag: 'TEACHER' },
-  { title: 'Financial Aid Application Walkthrough', duration: '5 min read', tag: 'SCHOLAR' },
+const QUERIES = [
+  'How do I reset my password?',
+  'How do I link a child account?',
+  'Where can I view invoices?',
+  'How do I change my email?',
 ]
 
 export default function SupportPage() {
   return (
-    <div className="p-6 space-y-6 max-w-4xl mx-auto">
-      <div className="text-center space-y-2">
-        <h1 className="font-display font-bold text-3xl text-on-surface">EduWorld Support</h1>
-        <p className="text-sm text-on-surface-variant">Global Knowledge Architecture — find help across every role and module.</p>
-      </div>
+    <div style={{ minHeight: '100vh', backgroundColor: '#ffffff', fontFamily: '"Inter", system-ui, sans-serif' }}>
 
-      {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-on-surface-variant" />
-        <input
-          className="w-full pl-10 pr-4 py-3 bg-surface-lowest border border-outline-variant rounded-2xl text-sm outline-none focus:border-primary placeholder:text-on-surface-variant"
-          placeholder="Search documentation, tutorials, and FAQs..."
-        />
-      </div>
+      {/* Nav bar */}
+      <nav style={{
+        backgroundColor: '#191c20',
+        height: 64,
+        display: 'flex',
+        alignItems: 'center',
+        padding: '0 32px',
+        gap: 24,
+      }}>
+        <span style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 20, color: '#ffffff', letterSpacing: '-0.01em' }}>
+          EduWorld
+        </span>
 
-      {/* Quick Access */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {QUICK_LINKS.map(q => (
-          <div key={q.label} className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-2 hover:border-primary/50 cursor-pointer transition-colors">
-            <div className="flex items-center justify-between">
-              <span className={`text-xl ${q.icon === '✦' ? 'text-ai' : ''}`}>{q.icon}</span>
-              <span className={`text-xs px-2 py-0.5 rounded-full font-semibold ${q.tag === 'AI' ? 'bg-ai/10 text-ai' : 'bg-primary/10 text-primary'}`}>{q.tag}</span>
-            </div>
-            <p className="font-semibold text-sm text-on-surface">{q.label}</p>
-            <p className="text-xs text-on-surface-variant">{q.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <div className="lg:col-span-2 space-y-6">
-          {/* Featured Tutorial */}
-          <div className="bg-ai/5 border border-ai/20 rounded-2xl p-5 space-y-3">
-            <div className="flex items-center gap-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-ai" />
-              <span className="text-xs font-bold text-ai uppercase">Featured Tutorial</span>
-            </div>
-            <h2 className="font-display font-semibold text-on-surface">Maximising AI Tutoring for Better Results</h2>
-            <p className="text-sm text-on-surface-variant">Learn how to use EduWorld&apos;s adaptive AI tutor to close knowledge gaps, prepare for exams, and get personalised feedback in real time.</p>
-            <div className="flex items-center gap-3">
-              <Button size="sm" className="gap-1.5">Watch Tutorial <ExternalLink className="h-3 w-3" /></Button>
-              <span className="text-xs text-on-surface-variant">8 min · Video + Article</span>
-            </div>
-          </div>
-
-          {/* Browse Documentation */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-4">
-            <div className="flex items-center gap-2">
-              <BookOpen className="h-4 w-4 text-on-surface-variant" />
-              <h2 className="font-display font-semibold text-on-surface">Browse Documentation by Role</h2>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              {ROLE_DOCS.map(r => (
-                <div key={r.role} className="flex items-center gap-3 p-3 bg-surface-low rounded-xl hover:bg-surface-high cursor-pointer transition-colors">
-                  <span className="text-xl">{r.icon}</span>
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold text-on-surface">{r.role}</p>
-                    <p className="text-xs text-on-surface-variant">{r.desc}</p>
-                  </div>
-                  <ChevronRight className="h-3.5 w-3.5 text-on-surface-variant shrink-0" />
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Recent Tutorials */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-5 space-y-3">
-            <h2 className="font-display font-semibold text-on-surface">Recent Articles & Tutorials</h2>
-            <div className="space-y-2">
-              {TUTORIALS.map(t => (
-                <div key={t.title} className="flex items-center gap-3 p-3 bg-surface-low rounded-xl hover:bg-surface-high cursor-pointer transition-colors">
-                  <div className="flex-1">
-                    <p className="text-sm font-semibold text-on-surface">{t.title}</p>
-                    <p className="text-xs text-on-surface-variant">{t.duration}</p>
-                  </div>
-                  <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full font-semibold shrink-0">{t.tag}</span>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* Search */}
+        <div style={{ flex: 1, maxWidth: 480, position: 'relative' }}>
+          <span
+            className="material-symbols-outlined"
+            style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', fontSize: 20, color: 'rgba(255,255,255,0.5)', pointerEvents: 'none' }}
+          >
+            search
+          </span>
+          <input
+            placeholder="Search the knowledge base..."
+            style={{
+              width: '100%',
+              padding: '8px 16px 8px 40px',
+              backgroundColor: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.15)',
+              borderRadius: 999,
+              color: '#ffffff',
+              fontSize: 14,
+              outline: 'none',
+              boxSizing: 'border-box',
+            }}
+          />
         </div>
 
-        <div className="space-y-4">
-          {/* Contact Support */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <div className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4 text-primary" />
-              <p className="font-semibold text-sm text-on-surface">Contact Support</p>
-            </div>
-            <p className="text-xs text-on-surface-variant">Our team is available Monday–Friday, 9am–6pm. Average response time: 2 hours.</p>
-            <Button size="sm" className="w-full">Open a Ticket</Button>
-            <Button size="sm" variant="outline" className="w-full">Live Chat</Button>
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+          {['notifications', 'auto_awesome', 'account_circle'].map(icon => (
+            <button key={icon} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'rgba(255,255,255,0.7)', display: 'flex', alignItems: 'center' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 22 }}>{icon}</span>
+            </button>
+          ))}
+        </div>
+      </nav>
+
+      <div style={{ display: 'flex' }}>
+
+        {/* Sidebar */}
+        <aside style={{
+          width: 240,
+          minHeight: 'calc(100vh - 64px)',
+          backgroundColor: '#f8f9fa',
+          borderRight: '1px solid #e5e7eb',
+          padding: '24px 0',
+          flexShrink: 0,
+        }}>
+          {[
+            { icon: 'help',      label: 'Help Center',  active: true },
+            { icon: 'dashboard', label: 'Dashboard',    active: false },
+            { icon: 'school',    label: 'Learning Hub', active: false },
+            { icon: 'analytics', label: 'Analytics',    active: false },
+            { icon: 'settings',  label: 'Settings',     active: false },
+          ].map(item => (
+            <button
+              key={item.icon}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+                width: '100%',
+                padding: '10px 20px',
+                background: item.active ? '#e8edf5' : 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: item.active ? '#003f7a' : '#424750',
+                fontFamily: '"Inter", system-ui, sans-serif',
+                fontSize: 14,
+                fontWeight: item.active ? 600 : 400,
+                textAlign: 'left',
+              }}
+            >
+              <span className="material-symbols-outlined" style={{ fontSize: 20 }}>{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+        </aside>
+
+        {/* Main content */}
+        <main style={{ flex: 1, padding: '48px 64px', maxWidth: 1100 }}>
+
+          {/* Breadcrumb */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginBottom: 40, color: '#6b7280', fontSize: 13 }}>
+            <span>Home</span>
+            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>chevron_right</span>
+            <span style={{ color: '#111827', fontWeight: 500 }}>Support & Knowledge Hub</span>
           </div>
 
-          {/* Community */}
-          <div className="bg-surface-lowest rounded-2xl border border-outline-variant p-4 space-y-3">
-            <p className="font-semibold text-sm text-on-surface">Community Hub</p>
-            <p className="text-xs text-on-surface-variant">Join 42,000+ educators and students sharing strategies, resources, and feedback.</p>
-            <div className="flex gap-2">
-              <div className="flex -space-x-2">
-                {['A', 'B', 'C', 'D'].map(l => (
-                  <div key={l} className="w-7 h-7 rounded-full bg-primary/20 border-2 border-surface-lowest flex items-center justify-center text-xs font-bold text-primary">{l}</div>
+          {/* Hero */}
+          <div style={{ marginBottom: 56, display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, backgroundColor: 'rgba(108,99,255,0.08)', border: '1px solid rgba(108,99,255,0.2)', borderRadius: 999, padding: '4px 12px', width: 'fit-content' }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 14, color: '#6c63ff' }}>auto_awesome</span>
+              <span style={{ fontSize: 12, fontWeight: 700, color: '#6c63ff', letterSpacing: '0.05em', textTransform: 'uppercase' }}>EduWorld Support 2.0</span>
+            </div>
+            <h1 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontSize: 'clamp(28px, 3.5vw, 40px)', fontWeight: 700, color: '#111827', margin: 0, letterSpacing: '-0.02em', lineHeight: 1.2 }}>
+              How can we help you today?
+            </h1>
+            <p style={{ fontSize: 16, color: '#6b7280', margin: 0, maxWidth: 540, lineHeight: 1.6 }}>
+              Explore our knowledge base, get instant AI answers, or connect with our global community of educators and learners.
+            </p>
+          </div>
+
+          {/* Role cards — 3 columns */}
+          <section style={{ marginBottom: 56 }}>
+            <h2 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontSize: 20, fontWeight: 700, color: '#111827', margin: '0 0 24px 0' }}>
+              Knowledge for Every Role
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+              {ROLE_CARDS.map(card => (
+                <div
+                  key={card.title}
+                  style={{
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 16,
+                    padding: 24,
+                    cursor: 'pointer',
+                    transition: 'box-shadow 150ms, transform 150ms',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px -4px rgba(0,0,0,0.12)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: 16, marginBottom: 16 }}>
+                    <div style={{ width: 44, height: 44, borderRadius: 12, backgroundColor: 'rgba(0,63,122,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <span className="material-symbols-outlined" style={{ fontSize: 22, color: '#003f7a' }}>{card.icon}</span>
+                    </div>
+                    <div>
+                      <p style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 16, color: '#111827', margin: '0 0 4px 0' }}>{card.title}</p>
+                      <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#6b7280', backgroundColor: '#e5e7eb', padding: '2px 8px', borderRadius: 999 }}>{card.tag}</span>
+                    </div>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    {card.links.map(link => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 14, color: '#374151', textDecoration: 'none', padding: '4px 0' }}
+                        onMouseEnter={e => { e.currentTarget.style.color = '#003f7a' }}
+                        onMouseLeave={e => { e.currentTarget.style.color = '#374151' }}
+                      >
+                        {link.label}
+                        <span className="material-symbols-outlined" style={{ fontSize: 16 }}>arrow_outward</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Quick Access — 2 columns */}
+          <section style={{ marginBottom: 56 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+
+              {/* AI Assistant card */}
+              <div style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: 16, padding: 28 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 24, color: '#6c63ff' }}>auto_awesome</span>
+                  <p style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 18, color: '#111827', margin: 0 }}>AI Assistant</p>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#6c63ff', backgroundColor: 'rgba(108,99,255,0.1)', padding: '2px 8px', borderRadius: 999 }}>AI STATUS: ACTIVE</span>
+                </div>
+                <p style={{ fontSize: 14, color: '#6b7280', margin: '0 0 20px 0', lineHeight: 1.6 }}>
+                  Get instant answers to any EduWorld question powered by our AI knowledge base.
+                </p>
+                <button
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 8,
+                    padding: '10px 20px',
+                    backgroundColor: '#6c63ff',
+                    color: '#ffffff',
+                    border: 'none', borderRadius: 999,
+                    fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+                    fontWeight: 600, fontSize: 14,
+                    cursor: 'pointer',
+                    transition: 'background-color 150ms',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#5a54e0' }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#6c63ff' }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>smart_toy</span>
+                  Ask AI
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>arrow_forward</span>
+                </button>
+              </div>
+
+              {/* System Health card */}
+              <div style={{ backgroundColor: '#f8f9fa', border: '1px solid #e5e7eb', borderRadius: 16, padding: 28 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+                  <span className="material-symbols-outlined" style={{ fontSize: 24, color: '#f59e0b' }}>bolt</span>
+                  <p style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 18, color: '#111827', margin: 0 }}>System Health</p>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontWeight: 600, color: '#16a34a', backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0', padding: '2px 10px', borderRadius: 999 }}>
+                    <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#22c55e', display: 'inline-block' }} />
+                    Operational
+                  </span>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                  <p style={{ fontSize: 13, color: '#6b7280', margin: '0 0 8px 0' }}>Common queries:</p>
+                  {QUERIES.map(q => (
+                    <a
+                      key={q}
+                      href="#"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: 14, color: '#374151', textDecoration: 'none' }}
+                      onMouseEnter={e => { e.currentTarget.style.color = '#003f7a' }}
+                      onMouseLeave={e => { e.currentTarget.style.color = '#374151' }}
+                    >
+                      {q}
+                      <span className="material-symbols-outlined" style={{ fontSize: 16, flexShrink: 0 }}>arrow_forward</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Tutorial Banner */}
+          <section style={{ marginBottom: 56 }}>
+            <div style={{
+              backgroundColor: '#f8f9fa',
+              border: '1px solid #e5e7eb',
+              borderRadius: 16,
+              padding: 32,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 32,
+            }}>
+              <div style={{ width: 80, height: 80, borderRadius: 16, backgroundColor: '#e8edf5', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                <span className="material-symbols-outlined" style={{ fontSize: 36, color: '#003f7a' }}>play_circle</span>
+              </div>
+              <div style={{ flex: 1 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#6c63ff', backgroundColor: 'rgba(108,99,255,0.08)', padding: '3px 10px', borderRadius: 999, marginBottom: 8, display: 'inline-block' }}>NEW TUTORIAL</span>
+                <h3 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontWeight: 700, fontSize: 20, color: '#111827', margin: '8px 0 8px 0' }}>
+                  Maximising AI Tutoring for Better Results
+                </h3>
+                <p style={{ fontSize: 14, color: '#6b7280', margin: '0 0 16px 0', lineHeight: 1.5 }}>
+                  Learn how to use EduWorld's adaptive AI tutor to close knowledge gaps and get personalised feedback in real time.
+                </p>
+                <button
+                  style={{
+                    display: 'inline-flex', alignItems: 'center', gap: 6,
+                    padding: '10px 20px',
+                    backgroundColor: '#003f7a',
+                    color: '#ffffff',
+                    border: 'none', borderRadius: 999,
+                    fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+                    fontWeight: 600, fontSize: 14,
+                    cursor: 'pointer',
+                    transition: 'background-color 150ms',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#1e5799' }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#003f7a' }}
+                >
+                  Watch Now
+                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>schedule</span>
+                  <span style={{ color: 'rgba(255,255,255,0.7)' }}>12 mins</span>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* Browse Documentation — 4 column icon grid */}
+          <section style={{ marginBottom: 64 }}>
+            <h2 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontSize: 20, fontWeight: 700, color: '#111827', margin: '0 0 24px 0' }}>
+              Browse Documentation
+            </h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+              {DOC_SECTIONS.map(s => (
+                <button
+                  key={s.icon}
+                  style={{
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+                    padding: 24,
+                    backgroundColor: '#f8f9fa',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: 16,
+                    cursor: 'pointer',
+                    transition: 'box-shadow 150ms, transform 150ms',
+                    fontFamily: '"Inter", system-ui, sans-serif',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.boxShadow = '0 8px 24px -4px rgba(0,0,0,0.10)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 28, color: '#003f7a' }}>{s.icon}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: '#374151', textAlign: 'center', lineHeight: 1.4 }}>{s.label}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          {/* CTA Banner */}
+          <section style={{ marginBottom: 32 }}>
+            <div style={{
+              backgroundColor: '#191c20',
+              borderRadius: 20,
+              padding: 48,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: 24,
+              textAlign: 'center',
+              position: 'relative',
+              overflow: 'hidden',
+            }}>
+              {/* Avatar row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: -8 }}>
+                {['#6c63ff', '#003f7a', '#10b981', '#f59e0b'].map((color, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      width: 44, height: 44, borderRadius: '50%',
+                      backgroundColor: color,
+                      border: '3px solid #191c20',
+                      marginLeft: i === 0 ? 0 : -12,
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    }}
+                  >
+                    <span className="material-symbols-outlined" style={{ fontSize: 20, color: '#ffffff' }}>person</span>
+                  </div>
                 ))}
               </div>
-              <span className="text-xs text-on-surface-variant self-center">+38k members</span>
-            </div>
-            <Button size="sm" variant="outline" className="w-full">Join Community</Button>
-          </div>
 
-          {/* System Status */}
-          <div className="bg-green-50 border border-green-200 rounded-2xl p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-green-500" />
-              <p className="font-semibold text-sm text-on-surface">All Systems Operational</p>
+              <div>
+                <h2 style={{ fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif', fontSize: 28, fontWeight: 700, color: '#ffffff', margin: '0 0 8px 0' }}>
+                  Can't find what you're looking for?
+                </h2>
+                <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', margin: 0 }}>
+                  Our community and support team are here to help you.
+                </p>
+              </div>
+
+              <div style={{ display: 'flex', gap: 12 }}>
+                <button
+                  style={{
+                    padding: '12px 28px',
+                    backgroundColor: 'transparent',
+                    color: '#ffffff',
+                    border: '2px solid rgba(255,255,255,0.4)',
+                    borderRadius: 999,
+                    fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+                    fontWeight: 600, fontSize: 14,
+                    cursor: 'pointer',
+                    transition: 'border-color 150ms, background-color 150ms',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = '#ffffff'
+                    e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.08)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)'
+                    e.currentTarget.style.backgroundColor = 'transparent'
+                  }}
+                >
+                  Join Community
+                </button>
+                <button
+                  style={{
+                    padding: '12px 28px',
+                    backgroundColor: '#ffffff',
+                    color: '#191c20',
+                    border: 'none',
+                    borderRadius: 999,
+                    fontFamily: '"Plus Jakarta Sans", system-ui, sans-serif',
+                    fontWeight: 700, fontSize: 14,
+                    cursor: 'pointer',
+                    transition: 'background-color 150ms',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#f0f0f0' }}
+                  onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#ffffff' }}
+                >
+                  Contact Support
+                </button>
+              </div>
+
+              {/* Decorative spark */}
+              <span
+                className="material-symbols-outlined"
+                style={{ position: 'absolute', bottom: 16, right: 24, fontSize: 32, color: 'rgba(255,255,255,0.08)' }}
+              >
+                auto_awesome
+              </span>
             </div>
-            <p className="text-xs text-on-surface-variant">Last checked 2 min ago. 99.98% uptime this month.</p>
-          </div>
-        </div>
+          </section>
+
+        </main>
       </div>
+
+      {/* Footer */}
+      <footer style={{
+        backgroundColor: '#191c20',
+        padding: '20px 32px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}>
+        <span style={{ fontFamily: '"Inter", system-ui, sans-serif', fontSize: 13, color: 'rgba(255,255,255,0.5)' }}>
+          EduWorld Hub | © 2025 EduWorld Global Infrastructure
+        </span>
+        <div style={{ display: 'flex', gap: 24 }}>
+          {['Privacy Policy', 'Terms of Service', 'Cookie Settings'].map(link => (
+            <a
+              key={link}
+              href="#"
+              style={{ fontSize: 13, color: 'rgba(255,255,255,0.5)', textDecoration: 'none', transition: 'color 150ms' }}
+              onMouseEnter={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.9)' }}
+              onMouseLeave={e => { e.currentTarget.style.color = 'rgba(255,255,255,0.5)' }}
+            >
+              {link}
+            </a>
+          ))}
+        </div>
+        <span className="material-symbols-outlined" style={{ fontSize: 18, color: 'rgba(255,255,255,0.2)' }}>auto_awesome</span>
+      </footer>
+
     </div>
   )
 }

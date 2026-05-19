@@ -478,9 +478,9 @@ export default function SignupPage() {
 
         <p style={{ textAlign: 'center', fontFamily: '"Inter", system-ui, sans-serif', fontSize: '14px', color: '#424750', marginTop: 16 }}>
           By signing up, you agree to our{' '}
-          <Link href="/terms" style={{ textDecoration: 'underline', color: '#424750' }}>Terms</Link>
+          <a href="/support#terms" style={{ textDecoration: 'underline', color: '#424750' }}>Terms</a>
           {' '}and{' '}
-          <Link href="/privacy" style={{ textDecoration: 'underline', color: '#424750' }}>Privacy Policy</Link>.
+          <a href="/support#privacy" style={{ textDecoration: 'underline', color: '#424750' }}>Privacy Policy</a>.
         </p>
       </div>
     </div>
